@@ -1,0 +1,10 @@
+Package: rmongo
+Type: Package
+Title: R-MongoDB driver
+Version: 1.0
+Date: 2011-06-27
+Author: Gerald Lindsly
+Maintainer: Gerald Lindsly <gerald.lindsly@gmail.com>
+Description: Provides an interface to MongoDB for R
+License: GPL (>=2)
+LazyLoad: yes
