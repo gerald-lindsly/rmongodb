@@ -1,0 +1,1 @@
+This is an R extension supporting access to MongoDB
