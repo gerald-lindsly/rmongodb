@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="R_internet">
+      <UniqueIdentifier>{db727b2b-ca86-4b7b-9887-4068702465e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="R_include">
+      <UniqueIdentifier>{8263e643-2859-450b-89d2-e5bb3dcd5623}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="R_include\R_ext">
+      <UniqueIdentifier>{380f5822-85fc-41ab-86dd-abf703d2cf8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="R_util">
+      <UniqueIdentifier>{e63c9e95-4974-4f64-9009-957de48116a4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="rmongo\src\api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dev\R-2.13.0\src\modules\internet\sock.h">
+      <Filter>R_internet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\ga.h">
+      <Filter>R_include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\graphapp.h">
+      <Filter>R_include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\iconv.h">
+      <Filter>R_include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\libintl.h">
+      <Filter>R_include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R.h">
+      <Filter>R_include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\Rconfig.h">
+      <Filter>R_include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\Rdefines.h">
+      <Filter>R_include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\Rembedded.h">
+      <Filter>R_include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\Rinternals.h">
+      <Filter>R_include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\Rmath.h">
+      <Filter>R_include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\Rversion.h">
+      <Filter>R_include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\S.h">
+      <Filter>R_include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\zconf.h">
+      <Filter>R_include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\zlib.h">
+      <Filter>R_include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\Applic.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\Arith.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\BLAS.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\Boolean.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\Callbacks.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\Complex.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\Constants.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\Error.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\eventloop.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\GetX11Image.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\GraphicsDevice.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\GraphicsEngine.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\Lapack.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\libextern.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\Linpack.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\MathThreads.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\Memory.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\Parse.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\Print.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\PrtUtil.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\QuartzDevice.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\Random.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\RConverters.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\Rdynload.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\R-ftp-http.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\Riconv.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\rlocale.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\RS.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\RStartup.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\stats_package.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\stats_stubs.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\Utils.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\R_ext\Visibility.h">
+      <Filter>R_include\R_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="rmongo\src\Config.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rmongo\src\sock.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="rmongo\src\api.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dev\R-2.13.0\src\modules\internet\internet.c">
+      <Filter>R_internet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dev\R-2.13.0\src\modules\internet\nanoftp.c">
+      <Filter>R_internet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dev\R-2.13.0\src\modules\internet\nanohttp.c">
+      <Filter>R_internet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dev\R-2.13.0\src\modules\internet\Rhttpd.c">
+      <Filter>R_internet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dev\R-2.13.0\src\modules\internet\Rsock.c">
+      <Filter>R_internet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dev\R-2.13.0\src\modules\internet\sock.c">
+      <Filter>R_internet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dev\R-2.13.0\src\modules\internet\sockconn.c">
+      <Filter>R_internet</Filter>
+    </ClCompile>
+    <ClCompile Include="rmongo\src\sock.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="rmongo\NAMESPACE" />
+    <None Include="rmongo\R\connection.R">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="rmongo\R\onLoad.R">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\..\dev\R-2.13.0\src\library\utils\R\sock.R">
+      <Filter>R_util</Filter>
+    </None>
+    <None Include="rmongo\src\makevars.win">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

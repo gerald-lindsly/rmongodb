@@ -1,1 +1,3 @@
 useDynLib(rmongo, .registration = TRUE)
+
+export(mongo.Connection)

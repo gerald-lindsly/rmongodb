@@ -1,0 +1,10 @@
+rmongo/Read-and-delete-me
+rmongo/src-i386
+rmongo/src-x64
+ipch/
+rmongo.Rcheck/
+rmongo.opensdf
+rmongo.sdf
+rmongo.suo
+rmongo.vcxproj.user
+rmongo_1.0.tar.gz
