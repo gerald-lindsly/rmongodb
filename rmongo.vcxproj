@@ -60,8 +60,18 @@
     <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\zconf.h" />
     <ClInclude Include="..\..\..\Program Files\R\R-2.13.0\include\zlib.h" />
     <ClInclude Include="rmongo\src\api.h" />
+    <ClInclude Include="rmongo\src\api_bson.h" />
+    <ClInclude Include="rmongo\src\api_mongo.h" />
+    <ClInclude Include="rmongo\src\bson.h" />
     <ClInclude Include="rmongo\src\Config.h" />
+    <ClInclude Include="rmongo\src\encoding.h" />
+    <ClInclude Include="rmongo\src\gridfs.h" />
+    <ClInclude Include="rmongo\src\md5.h" />
+    <ClInclude Include="rmongo\src\mongo.h" />
+    <ClInclude Include="rmongo\src\net.h" />
+    <ClInclude Include="rmongo\src\platform_hacks.h" />
     <ClInclude Include="rmongo\src\sock.h" />
+    <ClInclude Include="rmongo\src\symbols.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\dev\R-2.13.0\src\modules\internet\internet.c" />
@@ -72,11 +82,23 @@
     <ClCompile Include="..\..\..\dev\R-2.13.0\src\modules\internet\sock.c" />
     <ClCompile Include="..\..\..\dev\R-2.13.0\src\modules\internet\sockconn.c" />
     <ClCompile Include="rmongo\src\api.c" />
+    <ClCompile Include="rmongo\src\api_bson.c" />
+    <ClCompile Include="rmongo\src\api_mongo.c" />
+    <ClCompile Include="rmongo\src\bson.c" />
+    <ClCompile Include="rmongo\src\encoding.c" />
+    <ClCompile Include="rmongo\src\gridfs.c" />
+    <ClCompile Include="rmongo\src\md5.c" />
+    <ClCompile Include="rmongo\src\mongo.c" />
+    <ClCompile Include="rmongo\src\net.c" />
+    <ClCompile Include="rmongo\src\numbers.c" />
     <ClCompile Include="rmongo\src\sock.c" />
+    <ClCompile Include="rmongo\src\sock_init.c" />
+    <ClCompile Include="rmongo\src\symbols.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\dev\R-2.13.0\src\library\utils\R\sock.R" />
     <None Include="rmongo\NAMESPACE" />
+    <None Include="rmongo\R\bson.R" />
     <None Include="rmongo\R\connection.R" />
     <None Include="rmongo\R\onLoad.R" />
     <None Include="rmongo\src\makevars.win" />

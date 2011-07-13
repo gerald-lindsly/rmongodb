@@ -21,6 +21,9 @@
     <Filter Include="R_util">
       <UniqueIdentifier>{e63c9e95-4974-4f64-9009-957de48116a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\mongo-c-driver">
+      <UniqueIdentifier>{d7a229cc-168c-4e59-b23f-166ac5c0567f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rmongo\src\api.h">
@@ -176,6 +179,36 @@
     <ClInclude Include="rmongo\src\sock.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="rmongo\src\bson.h">
+      <Filter>Source Files\mongo-c-driver</Filter>
+    </ClInclude>
+    <ClInclude Include="rmongo\src\encoding.h">
+      <Filter>Source Files\mongo-c-driver</Filter>
+    </ClInclude>
+    <ClInclude Include="rmongo\src\gridfs.h">
+      <Filter>Source Files\mongo-c-driver</Filter>
+    </ClInclude>
+    <ClInclude Include="rmongo\src\md5.h">
+      <Filter>Source Files\mongo-c-driver</Filter>
+    </ClInclude>
+    <ClInclude Include="rmongo\src\mongo.h">
+      <Filter>Source Files\mongo-c-driver</Filter>
+    </ClInclude>
+    <ClInclude Include="rmongo\src\net.h">
+      <Filter>Source Files\mongo-c-driver</Filter>
+    </ClInclude>
+    <ClInclude Include="rmongo\src\platform_hacks.h">
+      <Filter>Source Files\mongo-c-driver</Filter>
+    </ClInclude>
+    <ClInclude Include="rmongo\src\api_bson.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rmongo\src\symbols.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rmongo\src\api_mongo.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rmongo\src\api.c">
@@ -205,6 +238,39 @@
     <ClCompile Include="rmongo\src\sock.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rmongo\src\sock_init.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rmongo\src\bson.c">
+      <Filter>Source Files\mongo-c-driver</Filter>
+    </ClCompile>
+    <ClCompile Include="rmongo\src\encoding.c">
+      <Filter>Source Files\mongo-c-driver</Filter>
+    </ClCompile>
+    <ClCompile Include="rmongo\src\gridfs.c">
+      <Filter>Source Files\mongo-c-driver</Filter>
+    </ClCompile>
+    <ClCompile Include="rmongo\src\md5.c">
+      <Filter>Source Files\mongo-c-driver</Filter>
+    </ClCompile>
+    <ClCompile Include="rmongo\src\mongo.c">
+      <Filter>Source Files\mongo-c-driver</Filter>
+    </ClCompile>
+    <ClCompile Include="rmongo\src\net.c">
+      <Filter>Source Files\mongo-c-driver</Filter>
+    </ClCompile>
+    <ClCompile Include="rmongo\src\numbers.c">
+      <Filter>Source Files\mongo-c-driver</Filter>
+    </ClCompile>
+    <ClCompile Include="rmongo\src\api_bson.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rmongo\src\symbols.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rmongo\src\api_mongo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="rmongo\NAMESPACE" />
@@ -218,6 +284,9 @@
       <Filter>R_util</Filter>
     </None>
     <None Include="rmongo\src\makevars.win">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="rmongo\R\bson.R">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

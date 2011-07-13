@@ -1,9 +1,12 @@
-#include "api.h"
-
 #include <R.h>
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 #include <R_ext/Visibility.h>
+
+#include "api_bson.h"
+#include "api_mongo.h"
+
+int sock_init();
 
 
 #define CDEF(name)  {"mongo." #name, (DL_FUNC) &name, sizeof(name ## _t)/sizeof(name ## _t[0]), name ##_t}
@@ -12,11 +15,33 @@ static R_NativePrimitiveArgType sock_connect_t[] = {INTSXP, STRSXP};
 static R_NativePrimitiveArgType sock_close_t[] = {INTSXP};
 
 static const R_CMethodDef CEntries[] = {
-    CDEF(sock_connect),
-    CDEF(sock_close),
+	{"mongo.sock_init", (DL_FUNC)sock_init, 0, NULL},
     {NULL, NULL, 0}
 };
 
+
+static const R_CallMethodDef callMethods[] = {
+	{ ".mongo.connection.create", (DL_FUNC) connection_create, 0 },
+	{ ".mongo.connection.connect", (DL_FUNC) connection_connect, 1 },
+	{ ".mongo.connection.getSocket", (DL_FUNC) connection_getSocket, 1 },
+	{ ".mongo.connection.isConnected", (DL_FUNC) connection_isConnected, 1 },
+	{ ".mongo.connection.getErr", (DL_FUNC) connection_getErr, 1 },
+
+	{ ".mongo.bson.empty", (DL_FUNC) mongo_bson_empty, 0}, 
+	{ ".mongo.bson.clear", (DL_FUNC) mongo_bson_clear, 1}, 
+	{ ".mongo.bson.copy", (DL_FUNC) mongo_bson_copy, 1}, 
+	{ ".mongo.bson.size", (DL_FUNC) mongo_bson_size, 0}, 
+
+	{ ".mongo.bson.buffer.create", (DL_FUNC) mongo_bson_buffer_create, 0}, 
+	{ ".mongo.bson.from.buffer", (DL_FUNC) mongo_bson_from_buffer, 1}, 
+	{ ".mongo.bson.buffer.append.int", (DL_FUNC) mongo_bson_buffer_append_int, 3},
+	{ ".mongo.bson.buffer.append.string", (DL_FUNC) mongo_bson_buffer_append_string, 3},
+
+	{ ".mongo.insert", (DL_FUNC) rmongo_insert, 3 },
+	{ NULL, NULL, 0 }
+};
+
+
 void attribute_visible R_init_rmongo(DllInfo *dll) {
-    R_registerRoutines(dll, CEntries, NULL, NULL, NULL);
+    R_registerRoutines(dll, CEntries, callMethods, NULL, NULL);
 }

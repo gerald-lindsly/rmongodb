@@ -8,3 +8,16 @@ rmongo.sdf
 rmongo.suo
 rmongo.vcxproj.user
 rmongo_1.0.tar.gz
+src/bson.h
+src/bson.c
+src/encoding.h
+src/encoding.c
+src/gridfs.c
+src/md5.h
+src/md5.c
+src/mongo.h
+src/mongo.c
+src/net.h
+src/net.c
+src/numbers.c
+src/platform_hacks.h

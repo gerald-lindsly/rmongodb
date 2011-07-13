@@ -1,3 +1,13 @@
 useDynLib(rmongo, .registration = TRUE)
 
 export(mongo.Connection)
+export(mongo.Connection.connect)
+
+export(mongo.bson.empty)
+export(mongo.bson.clear)
+export(mongo.bson.copy)
+export(mongo.bson.buffer.create)
+export(mongo.bson.from.buffer)
+export(mongo.bson.buffer.append.int)
+export(mongo.bson.buffer.append.string)
+export(mongo.insert)
