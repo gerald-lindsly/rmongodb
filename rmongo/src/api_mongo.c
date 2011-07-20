@@ -38,7 +38,7 @@ SEXP connection_connect(SEXP connection)
 		const char* shost = CHAR(STRING_ELT(host, 0));
 		ret = mongo_connect(conn, shost, port);
 		if (ret)
-			Rprintf("Unable to connect to %s:%d, error code = %d", shost, port, conn->err);
+			Rprintf("Unable to connect to %s:%d, error code = %d\n", shost, port, conn->err);
 	}
 	else
 		error("replset not implemeted yet");
@@ -85,7 +85,6 @@ SEXP rmongo_insert(SEXP connection, SEXP ns, SEXP b)
 	const char* _ns = CHAR(STRING_ELT(ns, 0));
 	bson* _b = (bson*)R_ExternalPtrAddr(getAttrib(b, sym_mongo_bson));
 	INTEGER(ret)[0] = mongo_insert(conn, _ns, _b);
-	printf("\n%d (%d), %s, %s\n", conn->sock, conn->err, _ns, _b->data);
     UNPROTECT(1);
 	return ret;
 }

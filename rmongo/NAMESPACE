@@ -2,10 +2,29 @@ useDynLib(rmongo, .registration = TRUE)
 
 export(mongo.Connection)
 export(mongo.Connection.connect)
+export(mongo.Connection.isConnected)
+export(mongo.Connection.getErr)
+
+export(mongo.insert)
 
 export(mongo.bson.empty)
 export(mongo.bson.clear)
 export(mongo.bson.copy)
+export(mongo.bson.size)
+export(mongo.bson.print)
+export(print.mongo.bson)
+export(mongo.bson.find)
+
+export(mongo.bson.iterator.more)
+export(mongo.bson.iterator.next)
+export(mongo.bson.iterator.type)
+export(mongo.bson.iterator.key)
+
+export(mongo.oid.from.string)
+export(mongo.string.from.oid)
+export(mongo.oid.print)
+export(print.mongo.oid)
+
 export(mongo.bson.buffer.create)
 export(mongo.bson.from.buffer)
 export(mongo.bson.buffer.append.int)
