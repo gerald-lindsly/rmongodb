@@ -74,6 +74,9 @@ mongo.bson.buffer.append.bool <- function(buf, name, value)
 mongo.bson.buffer.append.double <- function(buf, name, value)
 	.Call(".mongo.bson.buffer.append.double", buf, name, value)
 
+mongo.bson.buffer.append.complex <- function(buf, name, value)
+	.Call(".mongo.bson.buffer.append.complex", buf, name, value)
+
 mongo.bson.buffer.append.long <- function(buf, name, value)
 	.Call(".mongo.bson.buffer.append.long", buf, name, value)
 
@@ -94,6 +97,15 @@ mongo.bson.buffer.append.string <- function(buf, name, value)
 
 mongo.bson.buffer.append.oid <- function(buf, name, value)
 	.Call(".mongo.bson.buffer.append.oid", buf, name, value)
+
+mongo.bson.buffer.append.bson <- function(buf, name, value)
+	.Call(".mongo.bson.buffer.append.bson", buf, name, value)
+
+mongo.bson.buffer.append.element <- function(buf, name, value)
+	.Call(".mongo.bson.buffer.append.element", buf, name, value)
+
+mongo.bson.buffer.append <- function(buf, name, value)
+	.Call(".mongo.bson.buffer.append", buf, name, value)
 
 mongo.sys.time <- function()
 	.Call(".mongo.sys.time")

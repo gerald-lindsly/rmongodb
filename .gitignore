@@ -12,6 +12,7 @@ rmongo/src/bson.h
 rmongo/src/bson.c
 rmongo/src/encoding.h
 rmongo/src/encoding.c
+rmongo/src/gridfs.h
 rmongo/src/gridfs.c
 rmongo/src/md5.h
 rmongo/src/md5.c

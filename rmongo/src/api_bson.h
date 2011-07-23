@@ -23,13 +23,19 @@ SEXP mongo_oid_print(SEXP oid);
 
 SEXP mongo_bson_buffer_create();
 SEXP mongo_bson_from_buffer(SEXP buf);
+SEXP mongo_bson_buffer_append_null(SEXP buf, SEXP name);
 SEXP mongo_bson_buffer_append_int(SEXP buf, SEXP name, SEXP value);
 SEXP mongo_bson_buffer_append_bool(SEXP buf, SEXP name, SEXP value);
 SEXP mongo_bson_buffer_append_long(SEXP buf, SEXP name, SEXP value);
 SEXP mongo_bson_buffer_append_double(SEXP buf, SEXP name, SEXP value);
+SEXP mongo_bson_buffer_append_complex(SEXP buf, SEXP name, SEXP value);
 SEXP mongo_bson_buffer_append_time(SEXP buf, SEXP name, SEXP value);
 SEXP mongo_bson_buffer_append_timestamp(SEXP buf, SEXP name, SEXP value);
 SEXP mongo_bson_buffer_append_oid(SEXP buf, SEXP name, SEXP value);
-SEXP mongo_bson_buffer_append_null(SEXP buf, SEXP name);
+SEXP mongo_bson_buffer_append_bson(SEXP buf, SEXP name, SEXP value);
+SEXP mongo_bson_buffer_append_element(SEXP buf, SEXP name, SEXP value);
+SEXP mongo_bson_buffer_append_list(SEXP buf, SEXP name, SEXP value);
+SEXP mongo_bson_buffer_append(SEXP buf, SEXP name, SEXP value);
+SEXP mongo_bson_list(SEXP b);
 
 SEXP mongo_bson_buffer_append_string(SEXP buf, SEXP name, SEXP value);
