@@ -32,7 +32,7 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.bson.copy", (DL_FUNC) mongo_bson_copy, 1},
     { ".mongo.bson.size", (DL_FUNC) mongo_bson_size, 1},
     { ".mongo.bson.print", (DL_FUNC) mongo_bson_print, 1},
-    { ".mongo.bson.list", (DL_FUNC) mongo_bson_list, 1},
+    { ".mongo.bson.to.list", (DL_FUNC) mongo_bson_to_list, 1},
 
     { ".mongo.bson.iterator.create", (DL_FUNC) mongo_bson_iterator_create, 1},
     { ".mongo.bson.find", (DL_FUNC) mongo_bson_find, 3},
@@ -47,6 +47,9 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.oid.print", (DL_FUNC) mongo_oid_print, 1},
 
     { ".mongo.timestamp.create", (DL_FUNC) mongo_timestamp_create, 2},
+    { ".mongo.code.create", (DL_FUNC) mongo_code_create, 1},
+    { ".mongo.symbol.create", (DL_FUNC) mongo_symbol_create, 1},
+    { ".mongo.undefined.create", (DL_FUNC) mongo_undefined_create, 0},
 
     { ".mongo.bson.buffer.create", (DL_FUNC) mongo_bson_buffer_create, 0},
     { ".mongo.bson.from.buffer", (DL_FUNC) mongo_bson_from_buffer, 1},
@@ -56,13 +59,19 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.bson.buffer.append.double", (DL_FUNC) mongo_bson_buffer_append_double, 3},
     { ".mongo.bson.buffer.append.complex", (DL_FUNC) mongo_bson_buffer_append_complex, 3},
     { ".mongo.bson.buffer.append.null", (DL_FUNC) mongo_bson_buffer_append_null, 2},
+    { ".mongo.bson.buffer.append.undefined", (DL_FUNC) mongo_bson_buffer_append_undefined, 2},
     { ".mongo.bson.buffer.append.time", (DL_FUNC) mongo_bson_buffer_append_time, 3},
     { ".mongo.bson.buffer.append.timestamp", (DL_FUNC) mongo_bson_buffer_append_timestamp, 3},
     { ".mongo.bson.buffer.append.string", (DL_FUNC) mongo_bson_buffer_append_string, 3},
+    { ".mongo.bson.buffer.append.code", (DL_FUNC) mongo_bson_buffer_append_code, 3},
+    { ".mongo.bson.buffer.append.symbol", (DL_FUNC) mongo_bson_buffer_append_symbol, 3},
     { ".mongo.bson.buffer.append.oid", (DL_FUNC) mongo_bson_buffer_append_oid, 3},
     { ".mongo.bson.buffer.append.bson", (DL_FUNC) mongo_bson_buffer_append_bson, 3},
     { ".mongo.bson.buffer.append.element", (DL_FUNC) mongo_bson_buffer_append_element, 3},
     { ".mongo.bson.buffer.append", (DL_FUNC) mongo_bson_buffer_append, 3},
+    { ".mongo.bson.buffer.start.object", (DL_FUNC) mongo_bson_buffer_start_object, 2},
+    { ".mongo.bson.buffer.start.array", (DL_FUNC) mongo_bson_buffer_start_array, 2},
+    { ".mongo.bson.buffer.finish.object", (DL_FUNC) mongo_bson_buffer_finish_object, 1},
 
     { ".mongo.insert", (DL_FUNC) rmongo_insert, 3 },
     { NULL, NULL, 0 }

@@ -11,17 +11,37 @@
     oid <- mongo.oid.from.string("1234567890AB1234567890AB")
     mongo.bson.buffer.append.oid(buf, "_id", oid)
     mongo.bson.buffer.append.null(buf, "Null")
+
+    mongo.bson.buffer.start.object(buf, "One_Four")
+    for (x in 1:4)
+        mongo.bson.buffer.append.int(buf, as.character(x), x)
+    mongo.bson.buffer.finish.object(buf)
+
+    code <- mongo.code.create("CoDe")
+    mongo.bson.buffer.append(buf, "code", code)
+
+    mongo.bson.buffer.append.symbol(buf, "symbol", "SyMbOl")
+
+    mongo.bson.buffer.append.undefined(buf, "undefined1")
+    undef <- mongo.undefined.create()
+    mongo.bson.buffer.append(buf, "undefined2", undef)
+
+
     mongo.bson.buffer.append.time(buf, "Now", Sys.time())
     ts <- mongo.timestamp.create(Sys.time() + 60 * 60 * 1000, 25L)
     mongo.bson.buffer.append.timestamp(buf, "Later", ts)
+
     b <- mongo.bson.from.buffer(buf)
     print(b)
+
     iter <- mongo.bson.iterator.create(b)
     while (mongo.bson.iterator.next(iter)) {
         print(mongo.bson.iterator.key(iter))
         print(mongo.bson.iterator.value(iter))
     }
     print(attr(ts, "increment"))
+
+    print(mongo.bson.to.list(b))
     connection <- mongo.Connection()
     if (mongo.Connection.isConnected(connection))
         print(mongo.insert(connection, "test.test", b))

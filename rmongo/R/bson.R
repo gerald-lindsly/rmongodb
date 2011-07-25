@@ -13,6 +13,9 @@ mongo.bson.size <- function(b)
 mongo.bson.print <- function(b)
     .Call(".mongo.bson.print", b)
 
+mongo.bson.to.list <- function(b)
+    .Call(".mongo.bson.to.list", b)
+
 print.mongo.bson <- function(b)
     .Call(".mongo.bson.print", b)
 
@@ -57,6 +60,15 @@ mongo.bson.iterator.value <- function(iter)
 mongo.timestamp.create <- function(t, i)
     .Call(".mongo.timestamp.create", t, i)
 
+mongo.code.create <- function(str)
+    .Call(".mongo.code.create", str)
+
+mongo.symbol.create <- function(str)
+    .Call(".mongo.symbol.create", str)
+
+mongo.undefined.create <- function()
+    .Call(".mongo.undefined.create")
+
 
 mongo.bson.buffer.create <- function()
     .Call(".mongo.bson.buffer.create")
@@ -82,6 +94,9 @@ mongo.bson.buffer.append.long <- function(buf, name, value)
 mongo.bson.buffer.append.null <- function(buf, name)
     .Call(".mongo.bson.buffer.append.null", buf, name)
 
+mongo.bson.buffer.append.undefined <- function(buf, name)
+    .Call(".mongo.bson.buffer.append.undefined", buf, name)
+
 mongo.bson.buffer.append.string <- function(buf, name, value)
     .Call(".mongo.bson.buffer.append.string", buf, name, value)
 
@@ -90,6 +105,12 @@ mongo.bson.buffer.append.time <- function(buf, name, value)
 
 mongo.bson.buffer.append.timestamp <- function(buf, name, value)
     .Call(".mongo.bson.buffer.append.timestamp", buf, name, value)
+
+mongo.bson.buffer.append.code <- function(buf, name, value)
+    .Call(".mongo.bson.buffer.append.code", buf, name, value)
+
+mongo.bson.buffer.append.symbol <- function(buf, name, value)
+    .Call(".mongo.bson.buffer.append.symbol", buf, name, value)
 
 mongo.bson.buffer.append.string <- function(buf, name, value)
     .Call(".mongo.bson.buffer.append.string", buf, name, value)
@@ -105,6 +126,17 @@ mongo.bson.buffer.append.element <- function(buf, name, value)
 
 mongo.bson.buffer.append <- function(buf, name, value)
     .Call(".mongo.bson.buffer.append", buf, name, value)
+
+mongo.bson.buffer.start.object <- function(buf, name)
+    .Call(".mongo.bson.buffer.start.object", buf, name)
+
+mongo.bson.buffer.start.array <- function(buf, name)
+    .Call(".mongo.bson.buffer.start.array", buf, name)
+
+mongo.bson.buffer.finish.object <- function(buf)
+    .Call(".mongo.bson.buffer.finish.object", buf)
+
+
 
 mongo.sys.time <- function()
     .Call(".mongo.sys.time")
