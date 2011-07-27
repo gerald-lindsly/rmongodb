@@ -38,6 +38,9 @@ mongo.bson.iterator.key <- function(iter)
 mongo.bson.iterator.type <- function(iter)
     .Call(".mongo.bson.iterator.type", iter)
 
+mongo.bson.iterator.value <- function(iter)
+    .Call(".mongo.bson.iterator.value", iter)
+
 mongo.oid.from.string <- function(str)
     .Call(".mongo.oid.from.string", str)
 
@@ -51,17 +54,14 @@ print.mongo.oid <- function(oid)
     .Call(".mongo.oid.print", oid)
 
 
-mongo.bson.iterator.type <- function(iter)
-    .Call(".mongo.bson.iterator.type", iter)
-
-mongo.bson.iterator.value <- function(iter)
-    .Call(".mongo.bson.iterator.value", iter)
-
 mongo.timestamp.create <- function(t, i)
     .Call(".mongo.timestamp.create", t, i)
 
 mongo.code.create <- function(str)
     .Call(".mongo.code.create", str)
+
+mongo.code.w.scope.create <- function(str, b)
+    .Call(".mongo.code.w.scope.create", str, b)
 
 mongo.symbol.create <- function(str)
     .Call(".mongo.symbol.create", str)
@@ -108,6 +108,9 @@ mongo.bson.buffer.append.timestamp <- function(buf, name, value)
 
 mongo.bson.buffer.append.code <- function(buf, name, value)
     .Call(".mongo.bson.buffer.append.code", buf, name, value)
+
+mongo.bson.buffer.append.code.w.scope <- function(buf, name, value)
+    .Call(".mongo.bson.buffer.append.code.w.scope", buf, name, value)
 
 mongo.bson.buffer.append.symbol <- function(buf, name, value)
     .Call(".mongo.bson.buffer.append.symbol", buf, name, value)

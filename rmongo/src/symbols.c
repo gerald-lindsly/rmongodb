@@ -8,6 +8,7 @@ SEXP sym_mongo_bson_buffer;
 SEXP sym_mongo_bson_iterator;
 SEXP sym_mongo_oid;
 SEXP sym_increment;
+SEXP sym_scope;
 
 void install_mongo_symbols() {
     sym_mongo_bson_iterator = install("mongo.bson.iterator");
@@ -18,4 +19,5 @@ void install_mongo_symbols() {
     sym_mongo_bson_buffer = install("mongo.bson.buffer");
     sym_mongo_oid = install("mongo.oid");
     sym_increment = install("increment");
+    sym_scope = install("scope");
 }

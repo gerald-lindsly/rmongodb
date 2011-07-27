@@ -5,6 +5,43 @@
 
 #include <stdlib.h>
 
+int _hasClass(SEXP cls, const char* name) {
+    int len = LENGTH(cls);
+    int i;
+    for (i = 0; i < len; i++)
+        if (strcmp(CHAR(STRING_ELT(cls, i)), name) == 0)
+            return 1;
+    return 0;
+}
+
+
+void _checkClass(SEXP b, const char* name) {
+    SEXP cls = getAttrib(b, R_ClassSymbol);
+    if (cls == R_NilValue || !_hasClass(cls, name))
+        error("Expected an object with class '%s'\n", name);
+}
+
+
+void _checkBSON(SEXP b) {
+    _checkClass(b, "mongo.bson");
+}
+
+
+void _checkBuffer(SEXP buf) {
+    _checkClass(buf, "mongo.bson.buffer");
+}
+
+
+void _checkIterator(SEXP iter) {
+    _checkClass(iter, "mongo.bson.iterator");
+}
+
+
+void _checkOID(SEXP oid) {
+    _checkClass(oid, "mongo.oid");
+}
+
+
 static void bsonFinalizer(SEXP ptr) {
     if (!R_ExternalPtrAddr(ptr)) return;
     bson* b = (bson*)R_ExternalPtrAddr(ptr);
@@ -62,6 +99,30 @@ SEXP mongo_code_create(SEXP code)
 }
 
 
+SEXP _mongo_code_w_scope_create(const char* code, bson* b)
+{
+    SEXP ret, cls, _b;
+    PROTECT(ret = allocVector(STRSXP, 1));
+    SET_STRING_ELT(ret, 0, mkChar(code));
+    PROTECT(cls = allocVector(STRSXP, 2));
+    SET_STRING_ELT(cls, 0, mkChar("mongo.code.w.scope"));
+    SET_STRING_ELT(cls, 1, mkChar("mongo.code"));
+    classgets(ret, cls);
+    _b = _mongo_bson_create(b);
+    setAttrib(ret, sym_scope, _b);
+    UNPROTECT(5);
+    return ret;
+}
+
+
+SEXP mongo_code_w_scope_create(SEXP code, SEXP b)
+{
+    _checkBSON(b);
+    bson* _b = (bson*)R_ExternalPtrAddr(getAttrib(b, sym_mongo_bson));
+    return _mongo_code_w_scope_create(CHAR(STRING_ELT(code, 0)), _b);
+}
+
+
 SEXP _mongo_symbol_create(const char* symbol)
 {
     SEXP ret, cls;
@@ -101,43 +162,6 @@ SEXP mongo_bson_empty() {
     SEXP ret = _mongo_bson_create(&b);
     UNPROTECT(3);
     return ret;
-}
-
-
-int _hasClass(SEXP cls, const char* name) {
-    int len = LENGTH(cls);
-    int i;
-    for (i = 0; i < len; i++)
-        if (strcmp(CHAR(STRING_ELT(cls, i)), name) == 0)
-            return 1;
-    return 0;
-}
-
-
-void _checkClass(SEXP b, const char* name) {
-    SEXP cls = getAttrib(b, R_ClassSymbol);
-    if (cls == R_NilValue || !_hasClass(cls, name))
-        error("Expected an object with class '%s'\n", name);
-}
-
-
-void _checkBSON(SEXP b) {
-    _checkClass(b, "mongo.bson");
-}
-
-
-void _checkBuffer(SEXP buf) {
-    _checkClass(buf, "mongo.bson.buffer");
-}
-
-
-void _checkIterator(SEXP iter) {
-    _checkClass(iter, "mongo.bson.iterator");
-}
-
-
-void _checkOID(SEXP oid) {
-    _checkClass(oid, "mongo.oid");
 }
 
 
@@ -569,6 +593,13 @@ returnSubObject: {
             return ret;
         }
 
+    case BSON_CODEWSCOPE: {
+        const char* code = bson_iterator_code(_iter);
+        bson b;
+        bson_iterator_code_scope(_iter, &b);
+        return _mongo_code_w_scope_create(code, &b);
+    }
+
     case 0:
         PROTECT(ret = allocVector(INTSXP, 1));
         INTEGER(ret)[0] = 0;
@@ -753,6 +784,14 @@ returnSubObject: {
                 el = _mongo_bson_to_list(&sub);
                 break;
             }
+
+        case BSON_CODEWSCOPE: {
+            const char* code = bson_iterator_code(&iter);
+            bson b;
+            bson_iterator_code_scope(&iter, &b);
+            el =  _mongo_code_w_scope_create(code, &b);
+            break;
+        }
 
         case 0:
             el = allocVector(INTSXP, 1);
@@ -1081,6 +1120,24 @@ SEXP mongo_bson_buffer_append_code(SEXP buf, SEXP name, SEXP value) {
 }
 
 
+SEXP mongo_bson_buffer_append_code_w_scope(SEXP buf, SEXP name, SEXP value)
+{
+    _checkBuffer(buf);
+    _checkClass(value, "mongo.code.w.scope");
+    SEXP ret;
+    PROTECT(ret = allocVector(LGLSXP, 1));
+    bson_buffer* _buf = (bson_buffer*)R_ExternalPtrAddr(getAttrib(buf, sym_mongo_bson_buffer));
+    const char* _name = CHAR(STRING_ELT(name, 0));
+    const char* code = CHAR(STRING_ELT(value, 0));
+    SEXP b = getAttrib(value, sym_scope);
+    _checkBSON(b);
+    bson* scope = (bson*)R_ExternalPtrAddr(getAttrib(value, sym_mongo_bson));
+    LOGICAL(ret)[0] = (bson_append_code_w_scope(_buf, _name, code, scope) == 0);
+    UNPROTECT(1);
+    return ret;
+}
+
+
 SEXP mongo_bson_buffer_append_symbol(SEXP buf, SEXP name, SEXP value) {
     _checkBuffer(buf);
     SEXP ret;
@@ -1108,6 +1165,8 @@ SEXP mongo_bson_buffer_append(SEXP buf, SEXP name, SEXP value) {
             return mongo_bson_buffer_append_timestamp(buf, name, value);
         if (_hasClass(cls, "POSIXct"))
             return mongo_bson_buffer_append_time(buf, name, value);
+        if (_hasClass(cls, "mongo.code.w.scope"))
+            return mongo_bson_buffer_append_code_w_scope(buf, name, value);
         if (_hasClass(cls, "mongo.code"))
             return mongo_bson_buffer_append_code(buf, name, value);
         if (_hasClass(cls, "mongo.symbol"))

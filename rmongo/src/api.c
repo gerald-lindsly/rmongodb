@@ -48,6 +48,7 @@ static const R_CallMethodDef callMethods[] = {
 
     { ".mongo.timestamp.create", (DL_FUNC) mongo_timestamp_create, 2},
     { ".mongo.code.create", (DL_FUNC) mongo_code_create, 1},
+    { ".mongo.code.w.scope.create", (DL_FUNC) mongo_code_w_scope_create, 2},
     { ".mongo.symbol.create", (DL_FUNC) mongo_symbol_create, 1},
     { ".mongo.undefined.create", (DL_FUNC) mongo_undefined_create, 0},
 
@@ -64,6 +65,7 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.bson.buffer.append.timestamp", (DL_FUNC) mongo_bson_buffer_append_timestamp, 3},
     { ".mongo.bson.buffer.append.string", (DL_FUNC) mongo_bson_buffer_append_string, 3},
     { ".mongo.bson.buffer.append.code", (DL_FUNC) mongo_bson_buffer_append_code, 3},
+    { ".mongo.bson.buffer.append.code.w.scope", (DL_FUNC) mongo_bson_buffer_append_code_w_scope, 3},
     { ".mongo.bson.buffer.append.symbol", (DL_FUNC) mongo_bson_buffer_append_symbol, 3},
     { ".mongo.bson.buffer.append.oid", (DL_FUNC) mongo_bson_buffer_append_oid, 3},
     { ".mongo.bson.buffer.append.bson", (DL_FUNC) mongo_bson_buffer_append_bson, 3},

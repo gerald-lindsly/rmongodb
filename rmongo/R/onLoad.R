@@ -3,6 +3,17 @@
     .C("mongo.sock_init")
 
     buf <- mongo.bson.buffer.create()
+    mongo.bson.buffer.append(buf, "x", 5L)
+    scope <- mongo.bson.from.buffer(buf)
+
+    print("A")
+    codew <- mongo.code.w.scope.create("y = x", scope)
+    print("B")
+    print("C")
+
+    buf <- mongo.bson.buffer.create()
+    print("D")
+
     mongo.bson.buffer.append.string(buf, "name", "Gerald")
     mongo.bson.buffer.append.int(buf, "age", 48L)
     mongo.bson.buffer.append.bool(buf, "True", TRUE)
@@ -19,6 +30,8 @@
 
     code <- mongo.code.create("CoDe")
     mongo.bson.buffer.append(buf, "code", code)
+
+    mongo.bson.buffer.append(buf, "CodeW", codew)
 
     mongo.bson.buffer.append.symbol(buf, "symbol", "SyMbOl")
 
