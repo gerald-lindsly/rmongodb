@@ -47,6 +47,12 @@ mongo.oid.from.string <- function(str)
 mongo.string.from.oid <- function(oid)
     .Call(".mongo.string.from.oid", oid)
 
+mongo.oid.create <- function()
+    .Call(".mongo.oid.create")
+
+mongo.oid.time <- function(oid)
+    .Call(".mongo.oid.time", oid)
+
 mongo.oid.print <- function(oid)
     .Call(".mongo.oid.print", oid)
 

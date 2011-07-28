@@ -1,4 +1,4 @@
-#include "net.h"
+#include "platform/net.h"
 #include "symbols.h"
 
 /* Initialize the socket services */

@@ -5,6 +5,8 @@
 
 #include <stdlib.h>
 
+typedef bson bson_buffer;
+
 int _hasClass(SEXP cls, const char* name) {
     int len = LENGTH(cls);
     int i;
@@ -56,7 +58,7 @@ SEXP _mongo_bson_create(bson* b) {
     PROTECT(ret = allocVector(INTSXP, 1));
     INTEGER(ret)[0] = 0;
     bson* obj = Calloc(1, bson);
-    memcpy(obj, b, sizeof(bson));
+    bson_copy(obj, b);
     ptr = R_MakeExternalPtr(obj, sym_mongo_bson, R_NilValue);
     PROTECT(ptr);
     R_RegisterCFinalizerEx(ptr, bsonFinalizer, TRUE);
@@ -177,9 +179,7 @@ SEXP mongo_bson_clear(SEXP b) {
 SEXP mongo_bson_copy(SEXP b) {
     _checkBSON(b);
     bson* _b = (bson*)R_ExternalPtrAddr(getAttrib(b, sym_mongo_bson));
-    bson obj;
-    bson_copy(&obj, _b);
-    SEXP ret =_mongo_bson_create(&obj);
+    SEXP ret =_mongo_bson_create(_b);
     UNPROTECT(3);
     return ret;
 }
@@ -188,7 +188,7 @@ SEXP mongo_bson_copy(SEXP b) {
 static void bson_bufferFinalizer(SEXP ptr) {
     if (!R_ExternalPtrAddr(ptr)) return;
     bson_buffer* b = (bson_buffer*)R_ExternalPtrAddr(ptr);
-    bson_buffer_destroy(b);
+    bson_destroy(b);
     Free(b);
     R_ClearExternalPtr(ptr); /* not really needed */
 }
@@ -199,7 +199,7 @@ SEXP mongo_bson_buffer_create() {
     PROTECT(ret = allocVector(INTSXP, 1));
     INTEGER(ret)[0] = 0;
     bson_buffer* buf = Calloc(1, bson_buffer);
-    bson_buffer_init(buf);
+    bson_init(buf);
     ptr = R_MakeExternalPtr(buf, sym_mongo_bson_buffer, R_NilValue);
     PROTECT(ptr);
     R_RegisterCFinalizerEx(ptr, bson_bufferFinalizer, TRUE);
@@ -216,9 +216,8 @@ SEXP mongo_bson_from_buffer(SEXP buf) {
     _checkBuffer(buf);
     SEXP ret;
     bson_buffer* _buf = (bson_buffer*)R_ExternalPtrAddr(getAttrib(buf, sym_mongo_bson_buffer));
-    bson b;
-    bson_from_buffer(&b, _buf);
-    ret = _mongo_bson_create(&b);
+    bson_finish(_buf);
+    ret = _mongo_bson_create(_buf);
     UNPROTECT(3);
     return ret;
 }
@@ -249,8 +248,8 @@ SEXP mongo_bson_print(SEXP b) {
 
 static void bsonIteratorFinalizer(SEXP ptr) {
     if (!R_ExternalPtrAddr(ptr)) return;
-    bson* b = (bson*)R_ExternalPtrAddr(ptr);
-    Free(b);
+    bson_iterator* iter = (bson_iterator*)R_ExternalPtrAddr(ptr);
+    Free(iter);
     R_ClearExternalPtr(ptr); /* not really needed */
 }
 
@@ -389,6 +388,24 @@ SEXP _mongo_oid_create(bson_oid_t* oid) {
 }
 
 
+SEXP mongo_oid_create() {
+    bson_oid_t* oid = Calloc(1, bson_oid_t);
+    bson_oid_gen(oid);
+    SEXP ret = _mongo_oid_create(oid);
+    UNPROTECT(3);
+    return ret;
+}
+
+
+SEXP mongo_oid_time(SEXP oid) {
+    _checkOID(oid);
+    bson_oid_t* _oid = (bson_oid_t*)R_ExternalPtrAddr(getAttrib(oid, sym_mongo_oid));
+    SEXP ret = _createPOSIXct(bson_oid_generated_time(_oid));
+    UNPROTECT(2);
+    return ret;
+}
+
+
 SEXP mongo_oid_from_string(SEXP s) {
     const char* _s = CHAR(STRING_ELT(s, 0));
     if (strlen(_s) != 24)
@@ -419,7 +436,7 @@ SEXP mongo_oid_print(SEXP oid) {
     bson_oid_t* _oid = (bson_oid_t*)R_ExternalPtrAddr(getAttrib(oid, sym_mongo_oid));
     char s[25];
     bson_oid_to_string(_oid, s);
-    Rprintf("{ $oid : \"%s\" }\n");
+    Rprintf("{ $oid : \"%s\" }\n", s);
     return oid;
 }
 
@@ -1131,7 +1148,7 @@ SEXP mongo_bson_buffer_append_code_w_scope(SEXP buf, SEXP name, SEXP value)
     const char* code = CHAR(STRING_ELT(value, 0));
     SEXP b = getAttrib(value, sym_scope);
     _checkBSON(b);
-    bson* scope = (bson*)R_ExternalPtrAddr(getAttrib(value, sym_mongo_bson));
+    bson* scope = (bson*)R_ExternalPtrAddr(getAttrib(b, sym_mongo_bson));
     LOGICAL(ret)[0] = (bson_append_code_w_scope(_buf, _name, code, scope) == 0);
     UNPROTECT(1);
     return ret;
@@ -1199,8 +1216,12 @@ SEXP mongo_bson_buffer_append_list(SEXP buf, SEXP name, SEXP value) {
     int len = LENGTH(value);
     int i;
     SEXP names = getAttrib(value, R_NamesSymbol);
-    for (i = 0; i < len && success; i++)
-        success &= LOGICAL(mongo_bson_buffer_append(buf, STRING_ELT(names, i), VECTOR_ELT(value, i)))[0];
+    if (names != R_NilValue)
+        for (i = 0; i < len && success; i++)
+            success &= LOGICAL(mongo_bson_buffer_append(buf, STRING_ELT(names, i), VECTOR_ELT(value, i)))[0];
+    else
+        for (i = 0; i < len && success; i++)
+            success &= LOGICAL(mongo_bson_buffer_append(buf, mkChar(numstr(i+1)), VECTOR_ELT(value, i)))[0];
     success &= (bson_append_finish_object(_buf) == 0);
     LOGICAL(ret)[0] = success;
     UNPROTECT(1);

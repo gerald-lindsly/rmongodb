@@ -42,6 +42,8 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.bson.iterator.type", (DL_FUNC) mongo_bson_iterator_type, 1},
     { ".mongo.bson.iterator.value", (DL_FUNC) mongo_bson_iterator_value, 1},
 
+    { ".mongo.oid.create", (DL_FUNC) mongo_oid_create, 0},
+    { ".mongo.oid.time", (DL_FUNC) mongo_oid_time, 1},
     { ".mongo.oid.from.string", (DL_FUNC) mongo_oid_from_string, 1},
     { ".mongo.string.from.oid", (DL_FUNC) mongo_string_from_oid, 1},
     { ".mongo.oid.print", (DL_FUNC) mongo_oid_print, 1},

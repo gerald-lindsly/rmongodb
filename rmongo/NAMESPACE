@@ -24,6 +24,8 @@ export(mongo.bson.iterator.value)
 
 export(mongo.oid.from.string)
 export(mongo.string.from.oid)
+export(mongo.oid.create)
+export(mongo.oid.time)
 export(mongo.oid.print)
 export(print.mongo.oid)
 

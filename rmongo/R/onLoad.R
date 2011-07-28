@@ -5,15 +5,9 @@
     buf <- mongo.bson.buffer.create()
     mongo.bson.buffer.append(buf, "x", 5L)
     scope <- mongo.bson.from.buffer(buf)
-
-    print("A")
     codew <- mongo.code.w.scope.create("y = x", scope)
-    print("B")
-    print("C")
 
     buf <- mongo.bson.buffer.create()
-    print("D")
-
     mongo.bson.buffer.append.string(buf, "name", "Gerald")
     mongo.bson.buffer.append.int(buf, "age", 48L)
     mongo.bson.buffer.append.bool(buf, "True", TRUE)
@@ -21,6 +15,9 @@
     mongo.bson.buffer.append.long(buf, "YearSeconds", 365 * 24 * 60 * 60)
     oid <- mongo.oid.from.string("1234567890AB1234567890AB")
     mongo.bson.buffer.append.oid(buf, "_id", oid)
+    id <- mongo.oid.create()
+    print(mongo.oid.time(id))
+    mongo.bson.buffer.append(buf, "ID", id)
     mongo.bson.buffer.append.null(buf, "Null")
 
     mongo.bson.buffer.start.object(buf, "One_Four")
