@@ -52,8 +52,67 @@
     print(attr(ts, "increment"))
 
     print(mongo.bson.to.list(b))
-    connection <- mongo.Connection()
-    if (mongo.Connection.isConnected(connection))
-        print(mongo.insert(connection, "test.test", b))
+    mongo <- mongo.create()
+    if (mongo.isConnected(mongo)) {
+        ns <- "test.test"
+        print(mongo.insert(mongo, ns, b))
+
+        buf <- mongo.bson.buffer.create()
+        mongo.bson.buffer.append(buf, "name", "Dwight")
+        mongo.bson.buffer.append(buf, "city", "NY")
+        b <- mongo.bson.from.buffer(buf)
+        mongo.insert(mongo, ns, b)
+
+        buf <- mongo.bson.buffer.create()
+        mongo.bson.buffer.append(buf, "name", "Dave")
+        mongo.bson.buffer.append(buf, "city", "Cinci")
+        b <- mongo.bson.from.buffer(buf)
+        mongo.insert(mongo, ns, b)
+
+        buf <- mongo.bson.buffer.create()
+        mongo.bson.buffer.append(buf, "name", "Fred")
+        mongo.bson.buffer.append(buf, "city", "Dayton")
+        b <- mongo.bson.from.buffer(buf)
+        mongo.insert(mongo, ns, b)
+
+        print(mongo.index.create(mongo, ns, "city"))
+
+        print(mongo.index.create(mongo, ns, c("name", "city")))
+
+        buf <- mongo.bson.buffer.create()
+        mongo.bson.buffer.append(buf, "name", "Dave")
+        query  <- mongo.bson.from.buffer(buf)
+        result <- mongo.find.one(mongo, ns, query)
+
+        if (mongo.bson.find(result, "city", iter)) {
+            buf <- mongo.bson.buffer.create()
+            mongo.bson.buffer.append(buf, "city", mongo.bson.iterator.value(iter))
+            query <- mongo.bson.from.buffer(buf)
+            print(mongo.find.one(mongo, ns, query))
+        }
+
+        buf <- mongo.bson.buffer.create()
+        mongo.bson.buffer.append(buf, "_id", oid)
+        query <- mongo.bson.from.buffer(buf)
+
+        buf <- mongo.bson.buffer.create()
+        mongo.bson.buffer.start.object(buf, "$inc")
+        mongo.bson.buffer.append(buf, "age", 1L)
+        mongo.bson.buffer.finish.object(buf)
+        op  <- mongo.bson.from.buffer(buf)
+
+        mongo.update(mongo, ns, query, op)
+
+        cursor <- mongo.find(mongo, ns, limit=100L)
+        while (mongo.cursor.next(cursor))
+            print(mongo.cursor.value(cursor))
+
+        buf <- mongo.bson.buffer.create()
+        mongo.bson.buffer.append(buf, "name", "")
+        mongo.bson.buffer.append(buf, "age", 1L)
+        b <- mongo.bson.from.buffer(buf)
+        print(mongo.index.create(mongo, ns, b))
 
     }
+
+}

@@ -21,11 +21,11 @@ static const R_CMethodDef CEntries[] = {
 
 
 static const R_CallMethodDef callMethods[] = {
-    { ".mongo.connection.create", (DL_FUNC) connection_create, 0 },
-    { ".mongo.connection.connect", (DL_FUNC) connection_connect, 1 },
-    { ".mongo.connection.getSocket", (DL_FUNC) connection_getSocket, 1 },
-    { ".mongo.connection.isConnected", (DL_FUNC) connection_isConnected, 1 },
-    { ".mongo.connection.getErr", (DL_FUNC) connection_getErr, 1 },
+    { ".mongo.create", (DL_FUNC) mongo_create, 0 },
+    { ".mongo.connect", (DL_FUNC) rmongo_connect, 1 },
+    { ".mongo.getSocket", (DL_FUNC) mongo_getSocket, 1 },
+    { ".mongo.isConnected", (DL_FUNC) mongo_isConnected, 1 },
+    { ".mongo.getErr", (DL_FUNC) mongo_getErr, 1 },
 
     { ".mongo.bson.empty", (DL_FUNC) mongo_bson_empty, 0},
     { ".mongo.bson.clear", (DL_FUNC) mongo_bson_clear, 1},
@@ -78,6 +78,14 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.bson.buffer.finish.object", (DL_FUNC) mongo_bson_buffer_finish_object, 1},
 
     { ".mongo.insert", (DL_FUNC) rmongo_insert, 3 },
+    { ".mongo.update", (DL_FUNC) rmongo_update, 5 },
+    { ".mongo.remove", (DL_FUNC) rmongo_remove, 3 },
+    { ".mongo.find.one", (DL_FUNC) rmongo_find_one, 4 },
+    { ".mongo.find", (DL_FUNC) rmongo_find, 7 },
+    { ".mongo.cursor.next", (DL_FUNC) rmongo_cursor_next, 1 },
+    { ".mongo.cursor.value", (DL_FUNC) mongo_cursor_value, 1 },
+    { ".mongo.index.create", (DL_FUNC) mongo_index_create, 4 },
+
     { NULL, NULL, 0 }
 };
 

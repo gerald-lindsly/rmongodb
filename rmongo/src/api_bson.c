@@ -1,33 +1,12 @@
 #include <R.h>
 #include "api_bson.h"
-#include "bson.h"
 #include "symbols.h"
+#include "utility.h"
+
 
 #include <stdlib.h>
 
 typedef bson bson_buffer;
-
-int _hasClass(SEXP cls, const char* name) {
-    int len = LENGTH(cls);
-    int i;
-    for (i = 0; i < len; i++)
-        if (strcmp(CHAR(STRING_ELT(cls, i)), name) == 0)
-            return 1;
-    return 0;
-}
-
-
-void _checkClass(SEXP b, const char* name) {
-    SEXP cls = getAttrib(b, R_ClassSymbol);
-    if (cls == R_NilValue || !_hasClass(cls, name))
-        error("Expected an object with class '%s'\n", name);
-}
-
-
-void _checkBSON(SEXP b) {
-    _checkClass(b, "mongo.bson");
-}
-
 
 void _checkBuffer(SEXP buf) {
     _checkClass(buf, "mongo.bson.buffer");
@@ -59,6 +38,7 @@ SEXP _mongo_bson_create(bson* b) {
     INTEGER(ret)[0] = 0;
     bson* obj = Calloc(1, bson);
     bson_copy(obj, b);
+    b->finished = 1;
     ptr = R_MakeExternalPtr(obj, sym_mongo_bson, R_NilValue);
     PROTECT(ptr);
     R_RegisterCFinalizerEx(ptr, bsonFinalizer, TRUE);

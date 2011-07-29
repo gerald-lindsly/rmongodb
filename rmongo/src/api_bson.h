@@ -1,5 +1,7 @@
 #include <Rinternals.h>
 
+#include "bson.h"
+
 SEXP mongo_sys_time();
 
 SEXP mongo_bson_empty();
@@ -52,3 +54,5 @@ SEXP mongo_bson_buffer_append(SEXP buf, SEXP name, SEXP value);
 SEXP mongo_bson_buffer_start_array(SEXP buf, SEXP name);
 SEXP mongo_bson_buffer_start_object(SEXP buf, SEXP name);
 SEXP mongo_bson_buffer_finish_object(SEXP buf);
+
+SEXP _mongo_bson_create(bson* b);

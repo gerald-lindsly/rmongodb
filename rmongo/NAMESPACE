@@ -1,11 +1,9 @@
 useDynLib(rmongo, .registration = TRUE)
 
-export(mongo.Connection)
-export(mongo.Connection.connect)
-export(mongo.Connection.isConnected)
-export(mongo.Connection.getErr)
-
-export(mongo.insert)
+export(mongo.create)
+export(mongo.connect)
+export(mongo.isConnected)
+export(mongo.getErr)
 
 export(mongo.bson.empty)
 export(mongo.bson.clear)
@@ -58,3 +56,30 @@ export(mongo.bson.buffer.start.object)
 export(mongo.bson.buffer.start.array)
 export(mongo.bson.buffer.finish.object)
 
+export(mongo.insert)
+
+export(mongo.update.upsert)
+export(mongo.update.multi)
+
+export(mongo.update)
+export(mongo.remove)
+export(mongo.find.one)
+
+export(mongo.find.cursor.tailable)
+export(mongo.find.slave.ok)
+export(mongo.find.oplog.replay)
+export(mongo.find.no.cursor.timeout)
+export(mongo.find.await.data)
+export(mongo.find.exhaust)
+export(mongo.find.partial.results)
+
+export(mongo.find)
+export(mongo.cursor.next)
+export(mongo.cursor.value)
+
+export(mongo.index.unique)
+export(mongo.index.drop.dups)
+export(mongo.index.background)
+export(mongo.index.sparse)
+
+export(mongo.index.create)
