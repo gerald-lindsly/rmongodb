@@ -24,6 +24,9 @@
     <Filter Include="Source Files\mongo-c-driver">
       <UniqueIdentifier>{d7a229cc-168c-4e59-b23f-166ac5c0567f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\mongo-c-driver\platform">
+      <UniqueIdentifier>{a3886109-8c0b-4580-ae68-bfabf02a7b9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rmongo\src\api.h">
@@ -194,9 +197,6 @@
     <ClInclude Include="rmongo\src\mongo.h">
       <Filter>Source Files\mongo-c-driver</Filter>
     </ClInclude>
-    <ClInclude Include="rmongo\src\net.h">
-      <Filter>Source Files\mongo-c-driver</Filter>
-    </ClInclude>
     <ClInclude Include="rmongo\src\platform_hacks.h">
       <Filter>Source Files\mongo-c-driver</Filter>
     </ClInclude>
@@ -207,6 +207,18 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="rmongo\src\api_mongo.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rmongo\src\platform\net.h">
+      <Filter>Source Files\mongo-c-driver\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="rmongo\src\platform\platform_hacks.h">
+      <Filter>Source Files\mongo-c-driver\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="rmongo\src\net.h">
+      <Filter>Source Files\mongo-c-driver</Filter>
+    </ClInclude>
+    <ClInclude Include="rmongo\src\utility.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -256,9 +268,6 @@
     <ClCompile Include="rmongo\src\mongo.c">
       <Filter>Source Files\mongo-c-driver</Filter>
     </ClCompile>
-    <ClCompile Include="rmongo\src\net.c">
-      <Filter>Source Files\mongo-c-driver</Filter>
-    </ClCompile>
     <ClCompile Include="rmongo\src\numbers.c">
       <Filter>Source Files\mongo-c-driver</Filter>
     </ClCompile>
@@ -271,12 +280,18 @@
     <ClCompile Include="rmongo\src\api_mongo.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rmongo\src\platform\net.c">
+      <Filter>Source Files\mongo-c-driver\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="rmongo\src\net.c">
+      <Filter>Source Files\mongo-c-driver</Filter>
+    </ClCompile>
+    <ClCompile Include="rmongo\src\utility.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="rmongo\NAMESPACE" />
-    <None Include="rmongo\R\connection.R">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="rmongo\R\onLoad.R">
       <Filter>Source Files</Filter>
     </None>
@@ -287,6 +302,9 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="rmongo\R\bson.R">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="rmongo\R\mongo.R">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

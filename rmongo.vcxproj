@@ -69,9 +69,12 @@
     <ClInclude Include="rmongo\src\md5.h" />
     <ClInclude Include="rmongo\src\mongo.h" />
     <ClInclude Include="rmongo\src\net.h" />
+    <ClInclude Include="rmongo\src\platform\net.h" />
+    <ClInclude Include="rmongo\src\platform\platform_hacks.h" />
     <ClInclude Include="rmongo\src\platform_hacks.h" />
     <ClInclude Include="rmongo\src\sock.h" />
     <ClInclude Include="rmongo\src\symbols.h" />
+    <ClInclude Include="rmongo\src\utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\dev\R-2.13.0\src\modules\internet\internet.c" />
@@ -91,15 +94,17 @@
     <ClCompile Include="rmongo\src\mongo.c" />
     <ClCompile Include="rmongo\src\net.c" />
     <ClCompile Include="rmongo\src\numbers.c" />
+    <ClCompile Include="rmongo\src\platform\net.c" />
     <ClCompile Include="rmongo\src\sock.c" />
     <ClCompile Include="rmongo\src\sock_init.c" />
     <ClCompile Include="rmongo\src\symbols.c" />
+    <ClCompile Include="rmongo\src\utility.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\dev\R-2.13.0\src\library\utils\R\sock.R" />
     <None Include="rmongo\NAMESPACE" />
     <None Include="rmongo\R\bson.R" />
-    <None Include="rmongo\R\connection.R" />
+    <None Include="rmongo\R\mongo.R" />
     <None Include="rmongo\R\onLoad.R" />
     <None Include="rmongo\src\makevars.win" />
   </ItemGroup>

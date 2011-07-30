@@ -2,10 +2,11 @@
 
 SEXP mongo_create();
 SEXP rmongo_connect(SEXP connection);
-SEXP mongo_isConnected(SEXP connection);
-SEXP mongo_getSocket(SEXP connection);
-SEXP mongo_getErr(SEXP connection);
-
+SEXP mongo_is_connected(SEXP connection);
+SEXP mongo_get_socket(SEXP connection);
+SEXP mongo_get_err(SEXP connection);
+SEXP mongo_get_server_err(SEXP connection);
+SEXP mongo_get_server_err_string(SEXP connection);
 
 SEXP rmongo_insert(SEXP connection, SEXP ns, SEXP bson);
 SEXP rmongo_update(SEXP connection, SEXP ns, SEXP cond, SEXP op, SEXP flags);
@@ -14,4 +15,10 @@ SEXP rmongo_find_one(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields);
 SEXP rmongo_find(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields, SEXP limit, SEXP skip, SEXP options);
 SEXP rmongo_cursor_next(SEXP cursor);
 SEXP mongo_cursor_value(SEXP cursor);
+SEXP rmongo_cursor_destroy(SEXP cursor);
 SEXP mongo_index_create(SEXP mongo_conn, SEXP ns, SEXP key, SEXP options);
+SEXP rmongo_count(SEXP mongo_conn, SEXP ns, SEXP query);
+SEXP mongo_command(SEXP mongo_conn, SEXP db, SEXP command);
+SEXP mongo_simple_command(SEXP mongo_conn, SEXP db, SEXP cmdstr, SEXP arg);
+SEXP mongo_drop_database(SEXP mongo_conn, SEXP db);
+SEXP mongo_drop_collection(SEXP mongo_conn, SEXP ns);

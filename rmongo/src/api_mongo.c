@@ -59,7 +59,8 @@ SEXP rmongo_connect(SEXP mongo_conn) {
     return mongo_conn;
 }
 
-SEXP mongo_getSocket(SEXP mongo_conn) {
+
+SEXP mongo_get_socket(SEXP mongo_conn) {
     _checkMongo(mongo_conn);
     SEXP ret;
     mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
@@ -69,7 +70,8 @@ SEXP mongo_getSocket(SEXP mongo_conn) {
     return ret;
 }
 
-SEXP mongo_isConnected(SEXP mongo_conn) {
+
+SEXP mongo_is_connected(SEXP mongo_conn) {
     _checkMongo(mongo_conn);
     SEXP ret;
     mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
@@ -79,12 +81,35 @@ SEXP mongo_isConnected(SEXP mongo_conn) {
     return ret;
 }
 
-SEXP mongo_getErr(SEXP mongo_conn) {
+
+SEXP mongo_get_err(SEXP mongo_conn) {
     _checkMongo(mongo_conn);
     SEXP ret;
     PROTECT(ret = allocVector(INTSXP, 1));
     mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
     INTEGER(ret)[0] = conn->err;
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP mongo_get_server_err(SEXP connection) {
+    _checkMongo(connection);
+    SEXP ret;
+    PROTECT(ret = allocVector(INTSXP, 1));
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(connection, sym_mongo));
+    INTEGER(ret)[0] = conn->lasterrcode;
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP mongo_get_server_err_string(SEXP connection) {
+    _checkMongo(connection);
+    SEXP ret;
+    PROTECT(ret = allocVector(STRSXP, 1));
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(connection, sym_mongo));
+    SET_STRING_ELT(ret, 0, mkChar(conn->lasterrstr));
     UNPROTECT(1);
     return ret;
 }
@@ -226,6 +251,19 @@ SEXP mongo_cursor_value(SEXP cursor) {
 }
 
 
+SEXP rmongo_cursor_destroy(SEXP cursor) {
+    _checkCursor(cursor);
+    SEXP ptr = getAttrib(cursor, sym_mongo_cursor);
+    mongo_cursor* _cursor = (mongo_cursor*)R_ExternalPtrAddr(ptr);
+    SEXP ret;
+    PROTECT(ret = allocVector(LGLSXP, 1));
+    LOGICAL(ret)[0] = mongo_cursor_destroy(_cursor);
+    R_ClearExternalPtr(ptr);
+    UNPROTECT(1);
+    return ret;
+}
+
+
 SEXP mongo_index_create(SEXP mongo_conn, SEXP ns, SEXP key, SEXP options) {
     _checkMongo(mongo_conn);
     mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
@@ -256,6 +294,96 @@ SEXP mongo_index_create(SEXP mongo_conn, SEXP ns, SEXP key, SEXP options) {
         return R_NilValue;
     SEXP ret = _mongo_bson_create(&out);
     UNPROTECT(3);
+    return ret;
+}
+
+
+SEXP rmongo_count(SEXP mongo_conn, SEXP ns, SEXP query) {
+    _checkMongo(mongo_conn);
+    _checkBSON(query);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    const char* _ns = CHAR(STRING_ELT(ns, 0));
+    char* p = strchr((char*)_ns, '.');
+    if (!p)
+        error("Expected a '.' in the namespace.");
+    int len = p - (char*)_ns;
+    char* db = Calloc(len+1, char);
+    strncpy(db, _ns, len);
+    db[len] = '\0';
+    bson* _query = (bson*)R_ExternalPtrAddr(getAttrib(query, sym_mongo_bson));
+    int64_t count = mongo_count(conn, db, p+1, _query);
+    Free(db);
+    SEXP ret;
+    PROTECT(ret = allocVector(REALSXP, 1));
+    REAL(ret)[0] = count;
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP mongo_command(SEXP mongo_conn, SEXP db, SEXP command) {
+    _checkMongo(mongo_conn);
+    _checkBSON(command);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    const char* _db = CHAR(STRING_ELT(db, 0));
+    bson* _command = (bson*)R_ExternalPtrAddr(getAttrib(command, sym_mongo_bson));
+    bson out;
+    if (mongo_run_command(conn, _db, _command, &out) != MONGO_OK)
+        return R_NilValue;
+    SEXP ret = _mongo_bson_create(&out);
+    UNPROTECT(3);
+    return ret;
+}
+
+
+SEXP mongo_simple_command(SEXP mongo_conn, SEXP db, SEXP cmdstr, SEXP arg) {
+    _checkMongo(mongo_conn);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    const char* _db = CHAR(STRING_ELT(db, 0));
+    const char* _cmdstr = CHAR(STRING_ELT(cmdstr, 0));
+    bson out;
+    int success;
+    if (TYPEOF(arg) == STRSXP)
+        success = mongo_simple_str_command(conn, _db, _cmdstr, CHAR(STRING_ELT(arg, 0)), &out);
+    else
+        success = mongo_simple_int_command(conn, _db, _cmdstr, asInteger(arg), &out);
+    if (!success)
+        return R_NilValue;
+    SEXP ret = _mongo_bson_create(&out);
+    UNPROTECT(3);
+    return ret;
+}
+
+
+SEXP mongo_drop_database(SEXP mongo_conn, SEXP db) {
+    _checkMongo(mongo_conn);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    const char* _db = CHAR(STRING_ELT(db, 0));
+    SEXP ret;
+    PROTECT(ret = allocVector(LGLSXP, 1));
+    LOGICAL(ret)[0] = (mongo_cmd_drop_db(conn, _db) == MONGO_OK);
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP mongo_drop_collection(SEXP mongo_conn, SEXP ns) {
+    _checkMongo(mongo_conn);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    const char* _ns = CHAR(STRING_ELT(ns, 0));
+    char* p = strchr((char*)_ns, '.');
+    if (!p)
+        error("Expected a '.' in the namespace.");
+    int len = p - (char*)_ns;
+    char* db = Calloc(len+1, char);
+    strncpy(db, _ns, len);
+    db[len] = '\0';
+    bson out;
+    SEXP ret;
+    PROTECT(ret = allocVector(LGLSXP, 1));
+    LOGICAL(ret)[0] = (mongo_cmd_drop_collection(conn, db, p+1, &out) == MONGO_OK);
+    Free(db);
+    UNPROTECT(1);
     return ret;
 }
 

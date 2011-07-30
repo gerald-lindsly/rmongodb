@@ -53,8 +53,12 @@
 
     print(mongo.bson.to.list(b))
     mongo <- mongo.create()
-    if (mongo.isConnected(mongo)) {
+    if (mongo.is.connected(mongo)) {
         ns <- "test.test"
+        print(mongo.drop.collection(mongo, ns))
+        print(mongo.drop.collection(mongo, "foo.bar"))
+        print(mongo.drop.database(mongo, "test"))
+
         print(mongo.insert(mongo, ns, b))
 
         buf <- mongo.bson.buffer.create()
@@ -106,12 +110,21 @@
         cursor <- mongo.find(mongo, ns, limit=100L)
         while (mongo.cursor.next(cursor))
             print(mongo.cursor.value(cursor))
+        mongo.cursor.destroy(cursor)
 
         buf <- mongo.bson.buffer.create()
         mongo.bson.buffer.append(buf, "name", "")
         mongo.bson.buffer.append(buf, "age", 1L)
         b <- mongo.bson.from.buffer(buf)
         print(mongo.index.create(mongo, ns, b))
+
+        print(mongo.count(mongo, ns))
+
+        buf <- mongo.bson.buffer.create()
+        mongo.bson.buffer.append(buf, "count", "test")
+        mongo.bson.buffer.append(buf, "query", mongo.bson.empty())
+        command <- mongo.bson.from.buffer(buf)
+        print(mongo.command(mongo, "test", command))
 
     }
 

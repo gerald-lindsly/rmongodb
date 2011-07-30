@@ -1,13 +1,20 @@
-mongo.connect <- function(mongo) {
+mongo.connect <- function(mongo)
     .Call(".mongo.connect", mongo)
-}
 
+mongo.is.connected <- function(mongo)
+    .Call(".mongo.is.connected", mongo)
 
-mongo.isConnected <- function(mongo)
-    .Call(".mongo.isConnected", mongo)
+mongo.get.socket <- function(mongo)
+    .Call(".mongo.get.socket", mongo)
 
-mongo.getErr <- function(mongo)
-    .Call(".mongo.getErr", mongo)
+mongo.get.err <- function(mongo)
+    .Call(".mongo.get.err", mongo)
+
+mongo.get.server.err <- function(mongo)
+    .Call(".mongo.get.server.err", mongo)
+
+mongo.get.server.err.string <- function(mongo)
+    .Call(".mongo.get.server.err.string", mongo)
 
 mongo.insert <- function(mongo, ns, b)
     .Call(".mongo.insert", mongo, ns, b)
@@ -37,13 +44,14 @@ mongo.find.partial.results   <- 128L
 mongo.find <- function(mongo, ns, query=mongo.bson.empty(), fields=mongo.bson.empty(), limit=1L, skip=0L, options=0L)
     .Call(".mongo.find", mongo, ns, query, fields, limit, skip, options)
 
-mongo.cursor.next <- function(cursor) {
+mongo.cursor.next <- function(cursor)
     .Call(".mongo.cursor.next", cursor)
-}
 
-mongo.cursor.value <- function(cursor) {
+mongo.cursor.value <- function(cursor)
     .Call(".mongo.cursor.value", cursor)
-}
+
+mongo.cursor.destroy <- function(cursor)
+    .Call(".mongo.cursor.destroy", cursor)
 
 
 mongo.index.unique     <- 1L
@@ -53,6 +61,22 @@ mongo.index.sparse     <- 16L
 
 mongo.index.create <- function(mongo, ns, key, options=0L)
     .Call(".mongo.index.create", mongo, ns, key, options)
+
+
+mongo.count <- function(mongo, ns, query=mongo.bson.empty())
+    .Call(".mongo.count", mongo, ns, query)
+
+mongo.command <- function(mongo, db, command)
+    .Call(".mongo.command", mongo, db, command)
+
+mongo.simple.command <- function(mongo, db, cmdstr, arg)
+    .Call(".mongo.simple.command", mongo, db, cmdstr, arg)
+
+mongo.drop.database <- function(mongo, db)
+    .Call(".mongo.drop.database", mongo, db)
+
+mongo.drop.collection <- function(mongo, ns)
+    .Call(".mongo.drop.collection", mongo, ns)
 
 
 mongo.database_names <- function(mongo) {

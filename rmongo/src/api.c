@@ -23,9 +23,11 @@ static const R_CMethodDef CEntries[] = {
 static const R_CallMethodDef callMethods[] = {
     { ".mongo.create", (DL_FUNC) mongo_create, 0 },
     { ".mongo.connect", (DL_FUNC) rmongo_connect, 1 },
-    { ".mongo.getSocket", (DL_FUNC) mongo_getSocket, 1 },
-    { ".mongo.isConnected", (DL_FUNC) mongo_isConnected, 1 },
-    { ".mongo.getErr", (DL_FUNC) mongo_getErr, 1 },
+    { ".mongo.get.socket", (DL_FUNC) mongo_get_socket, 1 },
+    { ".mongo.is.connected", (DL_FUNC) mongo_is_connected, 1 },
+    { ".mongo.get.err", (DL_FUNC) mongo_get_err, 1 },
+    { ".mongo.get.server.err", (DL_FUNC) mongo_get_server_err, 1 },
+    { ".mongo.get.server.err.string", (DL_FUNC) mongo_get_server_err_string, 1 },
 
     { ".mongo.bson.empty", (DL_FUNC) mongo_bson_empty, 0},
     { ".mongo.bson.clear", (DL_FUNC) mongo_bson_clear, 1},
@@ -84,7 +86,13 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.find", (DL_FUNC) rmongo_find, 7 },
     { ".mongo.cursor.next", (DL_FUNC) rmongo_cursor_next, 1 },
     { ".mongo.cursor.value", (DL_FUNC) mongo_cursor_value, 1 },
+    { ".mongo.cursor.destroy", (DL_FUNC) rmongo_cursor_destroy, 1 },
     { ".mongo.index.create", (DL_FUNC) mongo_index_create, 4 },
+    { ".mongo.count", (DL_FUNC) rmongo_count, 3 },
+    { ".mongo.command", (DL_FUNC) mongo_command, 3 },
+    { ".mongo.simple.command", (DL_FUNC) mongo_simple_command, 4 },
+    { ".mongo.drop.database", (DL_FUNC) mongo_drop_database, 2 },
+    { ".mongo.drop.collection", (DL_FUNC) mongo_drop_collection, 2 },
 
     { NULL, NULL, 0 }
 };
