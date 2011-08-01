@@ -79,6 +79,22 @@ mongo.drop.collection <- function(mongo, ns)
     .Call(".mongo.drop.collection", mongo, ns)
 
 
+mongo.reset.error <- function(mongo, db)
+    .Call(".mongo.reset.error", mongo, db)
+
+mongo.get.last.error <- function(mongo, db)
+    .Call(".mongo.get.last.error", mongo, db)
+
+mongo.get.prev.error <- function(mongo, db)
+    .Call(".mongo.get.prev.error", mongo, db)
+
+mongo.is.master <- function(mongo, db)
+    .Call(".mongo.is.master", mongo, db)
+
+mongo.add.user <- function(mongo, db, user, pass)
+    .Call(".mongo.add.user", mongo, db, user, pass)
+
+
 mongo.database_names <- function(mongo) {
 
 }

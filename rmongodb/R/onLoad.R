@@ -1,7 +1,4 @@
 .onLoad <- function(libname, pkgname) {
-    print("rmongo package (mongo-r-driver) loaded")
-    .C("mongo.sock_init")
-
     buf <- mongo.bson.buffer.create()
     mongo.bson.buffer.append(buf, "x", 5L)
     scope <- mongo.bson.from.buffer(buf)
@@ -54,11 +51,23 @@
     print(mongo.bson.to.list(b))
     mongo <- mongo.create()
     if (mongo.is.connected(mongo)) {
-        ns <- "test.test"
+        db <- "test"
+        ns <- paste(db, "test", sep=".")
+        mongo.reset.error(mongo, db)
+        print("drop collection x2")
         print(mongo.drop.collection(mongo, ns))
         print(mongo.drop.collection(mongo, "foo.bar"))
-        print(mongo.drop.database(mongo, "test"))
+        print("drop database")
+        print(mongo.drop.database(mongo, db))
 
+        print("add user")
+        print(mongo.add.user(mongo, db, "Gerald", "PaSsWoRd"))
+
+        mongo.simple.command(mongo, db, "badcommand", 0L)
+        print("last error")
+        print(mongo.get.last.error(mongo, db))
+
+        print("insert")
         print(mongo.insert(mongo, ns, b))
 
         buf <- mongo.bson.buffer.create()
@@ -79,6 +88,7 @@
         b <- mongo.bson.from.buffer(buf)
         mongo.insert(mongo, ns, b)
 
+        print("index create x2")
         print(mongo.index.create(mongo, ns, "city"))
 
         print(mongo.index.create(mongo, ns, c("name", "city")))
@@ -89,9 +99,11 @@
         result <- mongo.find.one(mongo, ns, query)
 
         if (mongo.bson.find(result, "city", iter)) {
+            city <- mongo.bson.iterator.value(iter)
             buf <- mongo.bson.buffer.create()
-            mongo.bson.buffer.append(buf, "city", mongo.bson.iterator.value(iter))
+            mongo.bson.buffer.append(buf, "city", city)
             query <- mongo.bson.from.buffer(buf)
+            print(paste("find city: ", city, sep=""))
             print(mongo.find.one(mongo, ns, query))
         }
 
@@ -116,10 +128,11 @@
         mongo.bson.buffer.append(buf, "name", "")
         mongo.bson.buffer.append(buf, "age", 1L)
         b <- mongo.bson.from.buffer(buf)
+        print("index create")
         print(mongo.index.create(mongo, ns, b))
 
+        print("count x2")
         print(mongo.count(mongo, ns))
-
         buf <- mongo.bson.buffer.create()
         mongo.bson.buffer.append(buf, "count", "test")
         mongo.bson.buffer.append(buf, "query", mongo.bson.empty())

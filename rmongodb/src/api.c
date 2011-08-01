@@ -1,24 +1,12 @@
 #include <R.h>
-#include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 #include <R_ext/Visibility.h>
 
+#include "symbols.h"
 #include "api_bson.h"
 #include "api_mongo.h"
 
 int sock_init();
-
-
-#define CDEF(name)  {"mongo." #name, (DL_FUNC) &name, sizeof(name ## _t)/sizeof(name ## _t[0]), name ##_t}
-
-static R_NativePrimitiveArgType sock_connect_t[] = {INTSXP, STRSXP};
-static R_NativePrimitiveArgType sock_close_t[] = {INTSXP};
-
-static const R_CMethodDef CEntries[] = {
-    {"mongo.sock_init", (DL_FUNC)sock_init, 0, NULL},
-    {NULL, NULL, 0}
-};
-
 
 static const R_CallMethodDef callMethods[] = {
     { ".mongo.create", (DL_FUNC) mongo_create, 0 },
@@ -93,11 +81,46 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.simple.command", (DL_FUNC) mongo_simple_command, 4 },
     { ".mongo.drop.database", (DL_FUNC) mongo_drop_database, 2 },
     { ".mongo.drop.collection", (DL_FUNC) mongo_drop_collection, 2 },
+    { ".mongo.reset.error", (DL_FUNC) mongo_reset_error, 2 },
+    { ".mongo.get.last.error", (DL_FUNC) mongo_get_last_error, 2 },
+    { ".mongo.get.prev.error", (DL_FUNC) mongo_get_prev_error, 2 },
+    { ".mongo.is.master", (DL_FUNC) mongo_get_prev_error, 2 },
+    { ".mongo.add.user", (DL_FUNC) mongo_add_user, 4 },
 
     { NULL, NULL, 0 }
 };
 
 
+static void* _malloc(size_t size) {
+    return (void*)Calloc(size, char);
+}
+
+
+static void* _realloc(void* p, size_t size) {
+    return (void*)Realloc(p, size, char);
+}
+
+
+static void _free(void* p) {
+    Free(p);
+}
+
+static void _err_handler(const char* errmsg) {
+    error(errmsg);
+}
+
+
 void attribute_visible R_init_rmongo(DllInfo *dll) {
-    R_registerRoutines(dll, CEntries, callMethods, NULL, NULL);
+    R_registerRoutines(dll, NULL, callMethods, NULL, NULL);
+
+    sock_init();
+	install_mongo_symbols();
+    bson_set_malloc(_malloc);
+    bson_set_realloc(_realloc);
+    bson_set_free(_free);
+    bson_set_printf((printf_func)Rprintf);
+    bson_set_errprintf((printf_func)Rprintf);
+    set_bson_err_handler(_err_handler);
+
+    Rprintf("rmongodb package (mongo-r-driver) loaded\n");
 }

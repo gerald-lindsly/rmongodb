@@ -117,13 +117,33 @@ SEXP mongo_get_server_err_string(SEXP connection) {
 
 SEXP rmongo_insert(SEXP mongo_conn, SEXP ns, SEXP b) {
     _checkMongo(mongo_conn);
-    _checkBSON(b);
-    SEXP ret;
-    PROTECT(ret = allocVector(LGLSXP, 1));
     mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
     const char* _ns = CHAR(STRING_ELT(ns, 0));
-    bson* _b = (bson*)R_ExternalPtrAddr(getAttrib(b, sym_mongo_bson));
-    LOGICAL(ret)[0] = (mongo_insert(conn, _ns, _b) == MONGO_OK);
+    SEXP ret;
+    PROTECT(ret = allocVector(LGLSXP, 1));
+    if (TYPEOF(b) == VECSXP) {
+        int len = LENGTH(b);
+        bson** blist = Calloc(len, bson*);
+        int i;
+        int success = 1;
+        for (i = 0; i < len && success; i++) {
+            SEXP _b = VECTOR_ELT(b, i);
+            if (!_isBSON(_b))
+                success = 0;
+            else
+                blist[i] = (bson*)R_ExternalPtrAddr(getAttrib(_b, sym_mongo_bson));
+        }
+        if (success)
+            LOGICAL(ret)[0] = (mongo_insert_batch(conn, _ns, blist, len) == MONGO_OK);
+        Free(blist);
+        if (!success)
+            error("Expected list of mongo.bson class objects");
+    }
+    else {
+        _checkBSON(b);
+        bson* _b = (bson*)R_ExternalPtrAddr(getAttrib(b, sym_mongo_bson));
+        LOGICAL(ret)[0] = (mongo_insert(conn, _ns, _b) == MONGO_OK);
+    }
     UNPROTECT(1);
     return ret;
 }
@@ -387,4 +407,79 @@ SEXP mongo_drop_collection(SEXP mongo_conn, SEXP ns) {
     return ret;
 }
 
+
+SEXP mongo_reset_error(SEXP mongo_conn, SEXP db) {
+    _checkMongo(mongo_conn);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    const char* _db = CHAR(STRING_ELT(db, 0));
+    mongo_cmd_reset_error(conn, _db);
+    return R_NilValue;
+}
+
+
+SEXP mongo_get_last_error(SEXP mongo_conn, SEXP db) {
+    _checkMongo(mongo_conn);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    const char* _db = CHAR(STRING_ELT(db, 0));
+    bson out;
+    if (mongo_cmd_get_last_error(conn, _db, &out) == MONGO_OK)
+        return R_NilValue;
+    SEXP ret = _mongo_bson_create(&out);
+    UNPROTECT(3);
+    return ret;
+}
+
+
+SEXP mongo_get_prev_error(SEXP mongo_conn, SEXP db) {
+    _checkMongo(mongo_conn);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    const char* _db = CHAR(STRING_ELT(db, 0));
+    bson out;
+    if (mongo_cmd_get_prev_error(conn, _db, &out) == MONGO_OK)
+        return R_NilValue;
+    SEXP ret = _mongo_bson_create(&out);
+    UNPROTECT(3);
+    return ret;
+}
+
+
+SEXP mongo_is_master(SEXP mongo_conn) {
+    _checkMongo(mongo_conn);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    bson out;
+    SEXP ret;
+    PROTECT(ret = allocVector(LGLSXP, 1));
+    LOGICAL(ret)[0] = mongo_cmd_ismaster(conn, &out);
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP mongo_add_user(SEXP mongo_conn, SEXP db, SEXP user, SEXP pass)
+{
+    _checkMongo(mongo_conn);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    const char* _db = CHAR(STRING_ELT(db, 0));
+    const char* _user = CHAR(STRING_ELT(user, 0));
+    const char* _pass = CHAR(STRING_ELT(pass, 0));
+    SEXP ret;
+    PROTECT(ret = allocVector(LGLSXP, 1));
+    LOGICAL(ret)[0] = (mongo_cmd_add_user(conn, _db, _user, _pass) == MONGO_OK);
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP mongo_authenticate(SEXP mongo_conn, SEXP db, SEXP user, SEXP pass) {
+    _checkMongo(mongo_conn);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    const char* _db = CHAR(STRING_ELT(db, 0));
+    const char* _user = CHAR(STRING_ELT(user, 0));
+    const char* _pass = CHAR(STRING_ELT(pass, 0));
+    SEXP ret;
+    PROTECT(ret = allocVector(LGLSXP, 1));
+    LOGICAL(ret)[0] = (mongo_cmd_authenticate(conn, _db, _user, _pass) == MONGO_OK);
+    UNPROTECT(1);
+    return ret;
+}
 

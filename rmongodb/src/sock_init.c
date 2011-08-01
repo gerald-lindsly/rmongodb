@@ -1,5 +1,8 @@
-#include "platform/net.h"
+#include <R.h>
+#include "net.h"
 #include "symbols.h"
+
+
 
 /* Initialize the socket services */
 int sock_init()
@@ -8,8 +11,6 @@ int sock_init()
     static int retval;
     if (called_once) return retval;
     called_once = 1;
-
-	install_mongo_symbols();
 
 #if defined(_WIN32)
     WSADATA wsaData;

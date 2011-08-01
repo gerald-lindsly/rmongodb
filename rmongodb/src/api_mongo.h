@@ -22,3 +22,10 @@ SEXP mongo_command(SEXP mongo_conn, SEXP db, SEXP command);
 SEXP mongo_simple_command(SEXP mongo_conn, SEXP db, SEXP cmdstr, SEXP arg);
 SEXP mongo_drop_database(SEXP mongo_conn, SEXP db);
 SEXP mongo_drop_collection(SEXP mongo_conn, SEXP ns);
+
+SEXP mongo_reset_error(SEXP mongo_conn, SEXP db);
+SEXP mongo_get_last_error(SEXP mongo_conn, SEXP db);
+SEXP mongo_get_prev_error(SEXP mongo_conn, SEXP db);
+SEXP mongo_is_master(SEXP mongo_conn);
+SEXP mongo_add_user(SEXP mongo_conn, SEXP db, SEXP user, SEXP pass);
+
