@@ -10,6 +10,9 @@ SEXP sym_mongo_oid;
 SEXP sym_increment;
 SEXP sym_scope;
 SEXP sym_mongo_cursor;
+SEXP sym_options;
+SEXP sym_mongo_binary;
+SEXP sym_length;
 
 void install_mongo_symbols() {
     sym_mongo = install("mongo");
@@ -22,4 +25,7 @@ void install_mongo_symbols() {
     sym_increment = install("increment");
     sym_scope = install("scope");
     sym_mongo_cursor = install("mongo.cursor");
+    sym_options = install("options");
+    sym_mongo_binary = install("mongo.binary");
+    sym_length = install("length");
 }

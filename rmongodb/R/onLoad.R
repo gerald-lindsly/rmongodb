@@ -33,6 +33,14 @@
     undef <- mongo.undefined.create()
     mongo.bson.buffer.append(buf, "undefined2", undef)
 
+    mongo.bson.buffer.append(buf, "regex", mongo.regex.create("pattern", "options"))
+
+    bin <- mongo.binary.create(type=1, length=3)
+    for (i in 0:2)
+        mongo.binary.set(bin, i, i * 3)
+    for (i in 0:2)
+        print(mongo.binary.get(bin, i))
+    mongo.bson.buffer.append(buf, "bin", bin)
 
     mongo.bson.buffer.append.time(buf, "Now", Sys.time())
     ts <- mongo.timestamp.create(Sys.time() + 60 * 60 * 1000, 25L)

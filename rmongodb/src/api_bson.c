@@ -23,6 +23,11 @@ void _checkOID(SEXP oid) {
 }
 
 
+void _checkBinary(SEXP bin) {
+    _checkClass(bin, "mongo.binary");
+}
+
+
 static void bsonFinalizer(SEXP ptr) {
     if (!R_ExternalPtrAddr(ptr)) return;
     bson* b = (bson*)R_ExternalPtrAddr(ptr);
@@ -102,6 +107,92 @@ SEXP mongo_code_w_scope_create(SEXP code, SEXP b)
     _checkBSON(b);
     bson* _b = (bson*)R_ExternalPtrAddr(getAttrib(b, sym_mongo_bson));
     return _mongo_code_w_scope_create(CHAR(STRING_ELT(code, 0)), _b);
+}
+
+
+SEXP _mongo_regex_create(const char* pattern, const char* options)
+{
+    SEXP ret, cls;
+    PROTECT(ret = allocVector(STRSXP, 1));
+    SET_STRING_ELT(ret, 0, mkChar(pattern));
+    PROTECT(cls = allocVector(STRSXP, 1));
+    SET_STRING_ELT(cls, 0, mkChar("mongo.regex"));
+    classgets(ret, cls);
+    SEXP opts;
+    PROTECT(opts = allocVector(STRSXP, 1));
+    SET_STRING_ELT(opts, 0, mkChar(options));
+    setAttrib(ret, sym_options, opts);
+    UNPROTECT(3);
+    return ret;
+}
+
+
+SEXP mongo_regex_create(SEXP pattern, SEXP options)
+{
+    return _mongo_regex_create(CHAR(STRING_ELT(pattern, 0)), CHAR(STRING_ELT(options, 0)));
+}
+
+
+static void binaryFinalizer(SEXP ptr) {
+    if (!R_ExternalPtrAddr(ptr)) return;
+    void* b = (void*)R_ExternalPtrAddr(ptr);
+    Free(b);
+    R_ClearExternalPtr(ptr); /* not really needed */
+}
+
+
+SEXP _mongo_binary_create(char type, const char* data, int len)
+{
+    SEXP ret, cls, ptr;
+    PROTECT(ret = allocVector(INTSXP, 1));
+    INTEGER(ret)[0] = type;
+    void* d = (void*)Calloc(len, char);
+    if (data) memcpy(d, data, len);
+    ptr = R_MakeExternalPtr(d, sym_mongo_binary, R_NilValue);
+    PROTECT(ptr);
+    R_RegisterCFinalizerEx(ptr, binaryFinalizer, TRUE);
+    setAttrib(ret, sym_mongo_binary, ptr);
+    SEXP rlen;
+    PROTECT(rlen = allocVector(INTSXP, 1));
+    INTEGER(rlen)[0] = len;
+    setAttrib(ret, sym_length, rlen);
+    PROTECT(cls = allocVector(STRSXP, 1));
+    SET_STRING_ELT(cls, 0, mkChar("mongo.binary"));
+    classgets(ret, cls);
+    UNPROTECT(4);
+    return ret;
+}
+
+
+SEXP mongo_binary_create(SEXP type, SEXP len) {
+    return _mongo_binary_create(asInteger(type), NULL, asInteger(len));
+}
+
+
+SEXP mongo_binary_set(SEXP bin, SEXP index, SEXP value) {
+    _checkBinary(bin);
+    int i = asInteger(index);
+    int len = INTEGER(getAttrib(bin, sym_length))[0];
+    if (i >= len)
+        error("index (%d) must be less than length (%d) of binary object", i, len);
+    char* data = (char*)R_ExternalPtrAddr(getAttrib(bin, sym_mongo_binary));
+    data[i] = (char)asInteger(value);
+    return R_NilValue;
+}
+
+
+SEXP mongo_binary_get(SEXP bin, SEXP index) {
+    _checkBinary(bin);
+    int i = asInteger(index);
+    int len = INTEGER(getAttrib(bin, sym_length))[0];
+    if (i >= len)
+        error("index (%d) must be less than length (%d) of binary object", i, len);
+    char* data = (char*)R_ExternalPtrAddr(getAttrib(bin, sym_mongo_binary));
+    SEXP ret;
+    PROTECT(ret = allocVector(INTSXP, 1));
+    INTEGER(ret)[0] = (int)data[i];
+    UNPROTECT(1);
+    return ret;
 }
 
 
@@ -545,6 +636,14 @@ SEXP mongo_bson_iterator_value(SEXP iter) {
     case BSON_UNDEFINED:
         return mongo_undefined_create();
 
+    case BSON_REGEX:
+        return _mongo_regex_create(bson_iterator_regex(_iter), bson_iterator_regex_opts(_iter));
+
+    case BSON_BINDATA:
+        return _mongo_binary_create(bson_iterator_bin_type(_iter), 
+                                    bson_iterator_bin_data(_iter), 
+                                    bson_iterator_bin_len(_iter));
+
     case BSON_NULL:
         return R_NilValue;
 
@@ -759,6 +858,16 @@ SEXP _mongo_bson_to_list(bson_iterator* _iter)
 
         case BSON_UNDEFINED:
             el = mongo_undefined_create();
+            break;
+
+        case BSON_REGEX:
+            el = _mongo_regex_create(bson_iterator_regex(&iter), bson_iterator_regex_opts(&iter));
+            break;
+
+        case BSON_BINDATA:
+            el = _mongo_binary_create(bson_iterator_bin_type(&iter), 
+                                      bson_iterator_bin_data(&iter), 
+                                      bson_iterator_bin_len(&iter));
             break;
 
         case BSON_ARRAY: {
@@ -1135,6 +1244,24 @@ SEXP mongo_bson_buffer_append_code_w_scope(SEXP buf, SEXP name, SEXP value)
 }
 
 
+SEXP mongo_bson_buffer_append_regex(SEXP buf, SEXP name, SEXP value)
+{
+    _checkBuffer(buf);
+    SEXP ret;
+    PROTECT(ret = allocVector(LGLSXP, 1));
+    bson_buffer* _buf = (bson_buffer*)R_ExternalPtrAddr(getAttrib(buf, sym_mongo_bson_buffer));
+    const char* _name = CHAR(STRING_ELT(name, 0));
+    const char* pattern = CHAR(STRING_ELT(value, 0));
+    const char* options = "";
+    SEXP opts = getAttrib(value, sym_options);
+    if (opts != R_NilValue)
+        options = CHAR(STRING_ELT(opts, 0));
+    LOGICAL(ret)[0] = (bson_append_regex(_buf, _name, pattern, options) == 0);
+    UNPROTECT(1);
+    return ret;
+}
+
+
 SEXP mongo_bson_buffer_append_symbol(SEXP buf, SEXP name, SEXP value) {
     _checkBuffer(buf);
     SEXP ret;
@@ -1142,6 +1269,21 @@ SEXP mongo_bson_buffer_append_symbol(SEXP buf, SEXP name, SEXP value) {
     bson_buffer* _buf = (bson_buffer*)R_ExternalPtrAddr(getAttrib(buf, sym_mongo_bson_buffer));
     const char* _name = CHAR(STRING_ELT(name, 0));
     LOGICAL(ret)[0] = (bson_append_symbol(_buf, _name, CHAR(STRING_ELT(value, 0))) == 0);
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP mongo_bson_buffer_append_binary(SEXP buf, SEXP name, SEXP value) {
+    _checkBuffer(buf);
+    _checkBinary(value);
+    SEXP ret;
+    PROTECT(ret = allocVector(LGLSXP, 1));
+    bson_buffer* _buf = (bson_buffer*)R_ExternalPtrAddr(getAttrib(buf, sym_mongo_bson_buffer));
+    const char* _name = CHAR(STRING_ELT(name, 0));
+    int len = INTEGER(getAttrib(value, sym_length))[0];
+    char* data = (char*)R_ExternalPtrAddr(getAttrib(value, sym_mongo_binary));
+    LOGICAL(ret)[0] = (bson_append_binary(_buf, _name, INTEGER(value)[0], data, len) == 0);
     UNPROTECT(1);
     return ret;
 }
@@ -1170,6 +1312,10 @@ SEXP mongo_bson_buffer_append(SEXP buf, SEXP name, SEXP value) {
             return mongo_bson_buffer_append_symbol(buf, name, value);
         if (_hasClass(cls, "mongo.undefined"))
             return mongo_bson_buffer_append_undefined(buf, name);
+        if (_hasClass(cls, "mongo.regex"))
+            return mongo_bson_buffer_append_regex(buf, name, value);
+        if (_hasClass(cls, "mongo.binary"))
+            return mongo_bson_buffer_append_binary(buf, name, value);
     }
     int t = TYPEOF(value);
     switch (t) {
