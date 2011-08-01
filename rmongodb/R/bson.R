@@ -1,12 +1,6 @@
 mongo.bson.empty <- function()
     .Call(".mongo.bson.empty")
 
-mongo.bson.clear <- function(b)
-    .Call(".mongo.bson.clear")
-
-mongo.bson.copy <- function(b)
-    .Call(".mongo.bson.copy", b)
-
 mongo.bson.size <- function(b)
     .Call(".mongo.bson.size", b)
 

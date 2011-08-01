@@ -18,8 +18,6 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.get.server.err.string", (DL_FUNC) mongo_get_server_err_string, 1 },
 
     { ".mongo.bson.empty", (DL_FUNC) mongo_bson_empty, 0},
-    { ".mongo.bson.clear", (DL_FUNC) mongo_bson_clear, 1},
-    { ".mongo.bson.copy", (DL_FUNC) mongo_bson_copy, 1},
     { ".mongo.bson.size", (DL_FUNC) mongo_bson_size, 1},
     { ".mongo.bson.print", (DL_FUNC) mongo_bson_print, 1},
     { ".mongo.bson.to.list", (DL_FUNC) mongo_bson_to_list, 1},
@@ -116,7 +114,7 @@ static void _err_handler(const char* errmsg) {
 }
 
 
-void attribute_visible R_init_rmongo(DllInfo *dll) {
+void attribute_visible R_init_rmongodb(DllInfo *dll) {
     R_registerRoutines(dll, NULL, callMethods, NULL, NULL);
 
     sock_init();

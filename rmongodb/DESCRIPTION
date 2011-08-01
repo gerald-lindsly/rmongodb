@@ -1,4 +1,4 @@
-Package: rmongo
+Package: rmongodb
 Type: Package
 Title: R-MongoDB driver
 Version: 1.0

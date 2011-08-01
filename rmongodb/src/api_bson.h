@@ -5,8 +5,6 @@
 SEXP mongo_sys_time();
 
 SEXP mongo_bson_empty();
-SEXP mongo_bson_clear(SEXP b);
-SEXP mongo_bson_copy(SEXP b);
 SEXP mongo_bson_size(SEXP b);
 SEXP mongo_bson_print(SEXP b);
 
