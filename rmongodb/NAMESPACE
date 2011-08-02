@@ -1,7 +1,8 @@
 useDynLib(rmongodb, .registration = TRUE)
 
 export(mongo.create)
-export(mongo.connect)
+export(mongo.reconnect)
+export(mongo.disconnect)
 export(mongo.is.connected)
 export(mongo.get.socket)
 export(mongo.get.err)
