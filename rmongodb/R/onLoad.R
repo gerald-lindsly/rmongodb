@@ -104,8 +104,10 @@
         buf <- mongo.bson.buffer.create()
         mongo.bson.buffer.append(buf, "name", "Dave")
         query  <- mongo.bson.from.buffer(buf)
+        print("find.one")
         result <- mongo.find.one(mongo, ns, query)
 
+        print("bson.find")
         if (mongo.bson.find(result, "city", iter)) {
             city <- mongo.bson.iterator.value(iter)
             buf <- mongo.bson.buffer.create()

@@ -1,11 +1,47 @@
+mongo.create <- function(host="127.0.0.1", name="", username="", password="", db_name="admin", timeout=0L) {
+    mongo <- .Call(".mongo.create")
+    attr(mongo, "host") <- host
+    attr(mongo, "name") <- name
+    attr(mongo, "username") <- username
+    attr(mongo, "password") <- password
+    attr(mongo, "db_name") <- db_name
+    attr(mongo, "timeout") <- timeout
+    mongo.connect(mongo)
+    mongo
+}
+
 mongo.connect <- function(mongo)
     .Call(".mongo.connect", mongo)
+
+mongo.disconnect <- function(mongo)
+    .Call(".mongo.disconnect", mongo)
+
+mongo.reconnect <- function(mongo)
+    .Call(".mongo.reconnect", mongo)
 
 mongo.is.connected <- function(mongo)
     .Call(".mongo.is.connected", mongo)
 
 mongo.get.socket <- function(mongo)
     .Call(".mongo.get.socket", mongo)
+
+mongo.is.master <- function(mongo, db)
+    .Call(".mongo.is.master", mongo, db)
+
+mongo.authenticate <- function(mongo, db, user, pass)
+    .Call(".mongo.authenticate", mongo, db, user, pass)
+
+mongo.add.user <- function(mongo, db, user, pass)
+    .Call(".mongo.add.user", mongo, db, user, pass)
+
+mongo.get.last.error <- function(mongo, db)
+    .Call(".mongo.get.last.error", mongo, db)
+
+mongo.get.prev.error <- function(mongo, db)
+    .Call(".mongo.get.prev.error", mongo, db)
+
+mongo.reset.error <- function(mongo, db)
+    .Call(".mongo.reset.error", mongo, db)
 
 mongo.get.err <- function(mongo)
     .Call(".mongo.get.err", mongo)
@@ -79,40 +115,11 @@ mongo.drop.collection <- function(mongo, ns)
     .Call(".mongo.drop.collection", mongo, ns)
 
 
-mongo.reset.error <- function(mongo, db)
-    .Call(".mongo.reset.error", mongo, db)
-
-mongo.get.last.error <- function(mongo, db)
-    .Call(".mongo.get.last.error", mongo, db)
-
-mongo.get.prev.error <- function(mongo, db)
-    .Call(".mongo.get.prev.error", mongo, db)
-
-mongo.is.master <- function(mongo, db)
-    .Call(".mongo.is.master", mongo, db)
-
-mongo.add.user <- function(mongo, db, user, pass)
-    .Call(".mongo.add.user", mongo, db, user, pass)
-
 
 mongo.database_names <- function(mongo) {
 
 }
 
-
-mongo.get_database <- function(mongo, dbname) {
-
-}
-
-
-mongo.get_master <- function(mongo) {
-
-}
-
-
-mongo.Connection.authenticate <- function(mongo, dbname, username, password, is_digest=FALSE) {
-
-}
 
 mongo.send <- function(mongo, str) {
 
@@ -121,13 +128,4 @@ mongo.send <- function(mongo, str) {
 
 mongo.recv <- function(mongo, info) {
 
-}
-
-
-mongo.create <- function(host="127.0.0.1", port=27017L, username="", password="", db_name="admin", w=1, wtimeout=1000, auto_reconnect=TRUE, timeout=1000, .query_timeout=30000, find_master=FALSE, auto_connect=TRUE) {
-    mongo <- .Call(".mongo.create")
-    attr(mongo, "host") <- host
-    attr(mongo, "port") <- port
-    if (auto_connect) mongo.connect(mongo)
-    mongo
 }

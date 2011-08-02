@@ -2,7 +2,9 @@
 
 SEXP sym_mongo;
 SEXP sym_host;
-SEXP sym_port;
+SEXP sym_name;
+SEXP sym_username;
+SEXP sym_timeout;
 SEXP sym_mongo_bson;
 SEXP sym_mongo_bson_buffer;
 SEXP sym_mongo_bson_iterator;
@@ -17,7 +19,9 @@ SEXP sym_length;
 void install_mongo_symbols() {
     sym_mongo = install("mongo");
     sym_host = install("host");
-    sym_port = install("port");
+    sym_name = install("name");
+    sym_username = install("username");
+    sym_timeout = install("timeout");
     sym_mongo_bson = install("mongo.bson");
     sym_mongo_bson_buffer = install("mongo.bson.buffer");
     sym_mongo_bson_iterator = install("mongo.bson.iterator");

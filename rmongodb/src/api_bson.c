@@ -231,9 +231,12 @@ SEXP mongo_undefined_create()
 
 SEXP mongo_bson_empty() {
     bson b;
+    Rprintf("Empty 1\n");
     bson_empty(&b);
-    SEXP ret = _mongo_bson_create(&b);
-    UNPROTECT(3);
+    Rprintf("2\n");
+   SEXP ret = _mongo_bson_create(&b);
+    Rprintf("3\n");
+   UNPROTECT(3);
     return ret;
 }
 
@@ -334,7 +337,7 @@ SEXP mongo_bson_iterator_create(SEXP b) {
     ptr = R_MakeExternalPtr(iter, sym_mongo_bson_iterator, R_NilValue);
     PROTECT(ptr);
     bson* _b = (bson*)R_ExternalPtrAddr(getAttrib(b, sym_mongo_bson));
-    bson_iterator_init(iter, _b->data);
+    bson_iterator_init(iter, _b);
     R_RegisterCFinalizerEx(ptr, bsonIteratorFinalizer, TRUE);
     setAttrib(ret, sym_mongo_bson_iterator, ptr);
     PROTECT(cls = allocVector(STRSXP, 1));
@@ -920,7 +923,7 @@ SEXP mongo_bson_to_list(SEXP b) {
     _checkBSON(b);
     bson* _b = (bson*)R_ExternalPtrAddr(getAttrib(b, sym_mongo_bson));
     bson_iterator iter;
-    bson_iterator_init(&iter, _b->data);
+    bson_iterator_init(&iter, _b);
     return _mongo_bson_to_list(&iter);
 }
 

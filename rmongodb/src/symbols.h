@@ -4,7 +4,9 @@ void install_mongo_symbols();
 
 extern SEXP sym_mongo;
 extern SEXP sym_host;
-extern SEXP sym_port;
+extern SEXP sym_name;
+extern SEXP sym_username;
+extern SEXP sym_timeout;
 extern SEXP sym_mongo_bson;
 extern SEXP sym_mongo_bson_buffer;
 extern SEXP sym_mongo_bson_iterator;

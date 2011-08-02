@@ -2,6 +2,8 @@
 
 SEXP mongo_create();
 SEXP rmongo_connect(SEXP connection);
+SEXP rmongo_reconnect(SEXP mongo_conn);
+SEXP rmongo_disconnect(SEXP mongo_conn);
 SEXP mongo_is_connected(SEXP connection);
 SEXP mongo_get_socket(SEXP connection);
 SEXP mongo_get_err(SEXP connection);
@@ -28,4 +30,4 @@ SEXP mongo_get_last_error(SEXP mongo_conn, SEXP db);
 SEXP mongo_get_prev_error(SEXP mongo_conn, SEXP db);
 SEXP mongo_is_master(SEXP mongo_conn);
 SEXP mongo_add_user(SEXP mongo_conn, SEXP db, SEXP user, SEXP pass);
-
+SEXP mongo_authenticate(SEXP mongo_conn, SEXP db, SEXP user, SEXP pass);

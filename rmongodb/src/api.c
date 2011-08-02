@@ -11,11 +11,33 @@ int sock_init();
 static const R_CallMethodDef callMethods[] = {
     { ".mongo.create", (DL_FUNC) mongo_create, 0 },
     { ".mongo.connect", (DL_FUNC) rmongo_connect, 1 },
+    { ".mongo.reconnect", (DL_FUNC) rmongo_reconnect, 1 },
+    { ".mongo.disconnect", (DL_FUNC) rmongo_disconnect, 1 },
     { ".mongo.get.socket", (DL_FUNC) mongo_get_socket, 1 },
     { ".mongo.is.connected", (DL_FUNC) mongo_is_connected, 1 },
+    { ".mongo.get.last.error", (DL_FUNC) mongo_get_last_error, 2 },
+    { ".mongo.get.prev.error", (DL_FUNC) mongo_get_prev_error, 2 },
+    { ".mongo.reset.error", (DL_FUNC) mongo_reset_error, 2 },
+    { ".mongo.is.master", (DL_FUNC) mongo_get_prev_error, 2 },
+    { ".mongo.add.user", (DL_FUNC) mongo_add_user, 4 },
+    { ".mongo.authenticate", (DL_FUNC) mongo_authenticate, 4 },
     { ".mongo.get.err", (DL_FUNC) mongo_get_err, 1 },
     { ".mongo.get.server.err", (DL_FUNC) mongo_get_server_err, 1 },
     { ".mongo.get.server.err.string", (DL_FUNC) mongo_get_server_err_string, 1 },
+    { ".mongo.insert", (DL_FUNC) rmongo_insert, 3 },
+    { ".mongo.update", (DL_FUNC) rmongo_update, 5 },
+    { ".mongo.remove", (DL_FUNC) rmongo_remove, 3 },
+    { ".mongo.find.one", (DL_FUNC) rmongo_find_one, 4 },
+    { ".mongo.find", (DL_FUNC) rmongo_find, 7 },
+    { ".mongo.cursor.next", (DL_FUNC) rmongo_cursor_next, 1 },
+    { ".mongo.cursor.value", (DL_FUNC) mongo_cursor_value, 1 },
+    { ".mongo.cursor.destroy", (DL_FUNC) rmongo_cursor_destroy, 1 },
+    { ".mongo.index.create", (DL_FUNC) mongo_index_create, 4 },
+    { ".mongo.count", (DL_FUNC) rmongo_count, 3 },
+    { ".mongo.command", (DL_FUNC) mongo_command, 3 },
+    { ".mongo.simple.command", (DL_FUNC) mongo_simple_command, 4 },
+    { ".mongo.drop.database", (DL_FUNC) mongo_drop_database, 2 },
+    { ".mongo.drop.collection", (DL_FUNC) mongo_drop_collection, 2 },
 
     { ".mongo.bson.empty", (DL_FUNC) mongo_bson_empty, 0},
     { ".mongo.bson.size", (DL_FUNC) mongo_bson_size, 1},
@@ -71,26 +93,6 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.bson.buffer.start.array", (DL_FUNC) mongo_bson_buffer_start_array, 2},
     { ".mongo.bson.buffer.finish.object", (DL_FUNC) mongo_bson_buffer_finish_object, 1},
 
-    { ".mongo.insert", (DL_FUNC) rmongo_insert, 3 },
-    { ".mongo.update", (DL_FUNC) rmongo_update, 5 },
-    { ".mongo.remove", (DL_FUNC) rmongo_remove, 3 },
-    { ".mongo.find.one", (DL_FUNC) rmongo_find_one, 4 },
-    { ".mongo.find", (DL_FUNC) rmongo_find, 7 },
-    { ".mongo.cursor.next", (DL_FUNC) rmongo_cursor_next, 1 },
-    { ".mongo.cursor.value", (DL_FUNC) mongo_cursor_value, 1 },
-    { ".mongo.cursor.destroy", (DL_FUNC) rmongo_cursor_destroy, 1 },
-    { ".mongo.index.create", (DL_FUNC) mongo_index_create, 4 },
-    { ".mongo.count", (DL_FUNC) rmongo_count, 3 },
-    { ".mongo.command", (DL_FUNC) mongo_command, 3 },
-    { ".mongo.simple.command", (DL_FUNC) mongo_simple_command, 4 },
-    { ".mongo.drop.database", (DL_FUNC) mongo_drop_database, 2 },
-    { ".mongo.drop.collection", (DL_FUNC) mongo_drop_collection, 2 },
-    { ".mongo.reset.error", (DL_FUNC) mongo_reset_error, 2 },
-    { ".mongo.get.last.error", (DL_FUNC) mongo_get_last_error, 2 },
-    { ".mongo.get.prev.error", (DL_FUNC) mongo_get_prev_error, 2 },
-    { ".mongo.is.master", (DL_FUNC) mongo_get_prev_error, 2 },
-    { ".mongo.add.user", (DL_FUNC) mongo_add_user, 4 },
-
     { NULL, NULL, 0 }
 };
 
@@ -119,12 +121,13 @@ void attribute_visible R_init_rmongodb(DllInfo *dll) {
 
     sock_init();
 	install_mongo_symbols();
-    bson_set_malloc(_malloc);
-    bson_set_realloc(_realloc);
-    bson_set_free(_free);
-    bson_set_printf((printf_func)Rprintf);
-    bson_set_errprintf((printf_func)Rprintf);
+    bson_malloc_func = _malloc;
+    bson_realloc_func = _realloc;
+    bson_free = _free;
+    bson_printf = (bson_printf_func)Rprintf;
+    bson_errprintf = (bson_printf_func)Rprintf;
     set_bson_err_handler(_err_handler);
 
-    Rprintf("rmongodb package (mongo-r-driver) loaded\n");
+    Rprintf("rmongodb package (mongo-r-driver) loaded\n"
+    "Use 'help(\"mongo\")' to get started.\n");
 }

@@ -41,23 +41,71 @@ SEXP mongo_create() {
 
 SEXP rmongo_connect(SEXP mongo_conn) {
     _checkMongo(mongo_conn);
-    int ret;
+    mongo_host_port hp;
     mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
     SEXP host = getAttrib(mongo_conn, sym_host);
-    if (LENGTH(host) == 0)
-        error("no hosts defined");
-    if (LENGTH(host) == 1) {
-        int port = INTEGER(getAttrib(mongo_conn, sym_port))[0];
-        const char* shost = CHAR(STRING_ELT(host, 0));
-        ret = mongo_connect(conn, shost, port);
-        if (ret)
-            Rprintf("Unable to connect to %s:%d, error code = %d\n", shost, port, conn->err);
+    int len = LENGTH(host);
+    int i;
+    if (len == 0)
+        error("No hosts defined\n");
+    const char* name = CHAR(STRING_ELT(getAttrib(mongo_conn, sym_name), 0));
+    if (name[0] == '\0') {
+        for (i = 0; i < len; i++) {
+            mongo_parse_host(CHAR(STRING_ELT(host, i)), &hp);
+            if (mongo_connect(conn, hp.host, hp.port) == MONGO_OK)
+                break;
+        }
+        if (i == len) {
+            if (len == 1)
+                Rprintf("Unable to connect to %s:%d, error code = %d\n", hp.host, hp.port, conn->err);
+            else
+                Rprintf("Unable to connect to any of the given hosts\n");
+            return mongo_conn;
+        }
     }
-    else
-        error("replset not implemeted yet");
+    else {
+        mongo_replset_init(conn, name);
+        for (i = 0; i < len; i++) {
+            mongo_parse_host(CHAR(STRING_ELT(host, i)), &hp);
+            mongo_replset_add_seed(conn, hp.host, hp.port);
+        }
+        if (mongo_replset_connect(conn) != MONGO_OK)
+            Rprintf("Unable to connect to replset\n");
+    }
+
+
+    int timeout = asInteger(getAttrib(mongo_conn, sym_timeout));
+    if (timeout > 0)
+        mongo_set_op_timeout(conn, timeout);
+
+    SEXP username = getAttrib(mongo_conn, sym_username);
+    if (CHAR(STRING_ELT(username, 0))[0] != '\0') {
+        SEXP password = getAttrib(mongo_conn, install("password"));
+        SEXP db = getAttrib(mongo_conn, install("db_name"));
+        SEXP ret = mongo_authenticate(mongo_conn, db, username, password);
+        if (!LOGICAL(ret)[0])
+            mongo_disconnect(conn);
+    }
 
     return mongo_conn;
 }
+
+
+SEXP rmongo_reconnect(SEXP mongo_conn) {
+    _checkMongo(mongo_conn);
+   mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+   if (mongo_reconnect(conn) != MONGO_OK)
+       Rprintf("Unable to reconnect\n");
+   return mongo_conn;
+ }
+
+
+SEXP rmongo_disconnect(SEXP mongo_conn) {
+    _checkMongo(mongo_conn);
+   mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+   mongo_disconnect(conn);
+   return R_NilValue;
+ }
 
 
 SEXP mongo_get_socket(SEXP mongo_conn) {
