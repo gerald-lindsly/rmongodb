@@ -17,8 +17,8 @@ mongo.bson.empty()
 An empty mongo.bson object
 }
 \examples{
-## Use an empty mongo.bson for the query object which matches everything.
-## This happens to be the default value for the query parameter to mongo.count,
-## but we explicity use mongo.bson.empty() here for an example.
+# Use an empty mongo.bson for the query object which matches everything.
+# This happens to be the default value for the query parameter to mongo.count,
+# but we explicity use mongo.bson.empty() here for an example.
 print(mongo.count(mongo, "test.people", query=mongo.bson.empty()))
 }

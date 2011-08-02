@@ -1,6 +1,6 @@
-\name{rmongo-package}
-\alias{rmongo-package}
-\alias{rmongo}
+\name{rmongodb-package}
+\alias{rmongodb-package}
+\alias{rmongodb}
 \docType{package}
 \title{
 R-MongoDB driver
@@ -10,7 +10,7 @@ Provides an interface to MongoDB for R
 }
 \details{
 \tabular{ll}{
-Package: \tab rmongo\cr
+Package: \tab rmongodb\cr
 Type: \tab Package\cr
 Version: \tab 1.0\cr
 Date: \tab 2011-06-27\cr
