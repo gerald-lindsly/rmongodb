@@ -59,6 +59,10 @@
     print(mongo.bson.to.list(b))
     mongo <- mongo.create()
     if (mongo.is.connected(mongo)) {
+        print(mongo.get.primary(mongo))
+        mongo.set.timeout(mongo, 2000)
+        print(mongo.get.timeout(mongo))
+
         db <- "test"
         ns <- paste(db, "test", sep=".")
         mongo.reset.error(mongo, db)

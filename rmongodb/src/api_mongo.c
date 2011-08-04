@@ -59,7 +59,7 @@ SEXP rmongo_connect(SEXP mongo_conn) {
             if (len == 1)
                 Rprintf("Unable to connect to %s:%d, error code = %d\n", hp.host, hp.port, conn->err);
             else
-                Rprintf("Unable to connect to any of the given hosts\n");
+                Rprintf("Unable to connect to any of the given hosts, error code = %d\n", conn->err);
             return mongo_conn;
         }
     }
@@ -73,7 +73,6 @@ SEXP rmongo_connect(SEXP mongo_conn) {
             Rprintf("Unable to connect to replset\n");
     }
 
-
     int timeout = asInteger(getAttrib(mongo_conn, sym_timeout));
     if (timeout > 0)
         mongo_set_op_timeout(conn, timeout);
@@ -81,10 +80,12 @@ SEXP rmongo_connect(SEXP mongo_conn) {
     SEXP username = getAttrib(mongo_conn, sym_username);
     if (CHAR(STRING_ELT(username, 0))[0] != '\0') {
         SEXP password = getAttrib(mongo_conn, install("password"));
-        SEXP db = getAttrib(mongo_conn, install("db_name"));
-        SEXP ret = mongo_authenticate(mongo_conn, db, username, password);
-        if (!LOGICAL(ret)[0])
+        SEXP db = getAttrib(mongo_conn, install("db"));
+        SEXP ret = mongo_authenticate(mongo_conn, username, password, db);
+        if (!LOGICAL(ret)[0]) {
             mongo_disconnect(conn);
+            Rprintf("Authentication failed.\n");
+        }
     }
 
     return mongo_conn;
@@ -503,7 +504,7 @@ SEXP mongo_is_master(SEXP mongo_conn) {
 }
 
 
-SEXP mongo_add_user(SEXP mongo_conn, SEXP db, SEXP user, SEXP pass)
+SEXP mongo_add_user(SEXP mongo_conn, SEXP user, SEXP pass, SEXP db)
 {
     _checkMongo(mongo_conn);
     mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
@@ -518,12 +519,12 @@ SEXP mongo_add_user(SEXP mongo_conn, SEXP db, SEXP user, SEXP pass)
 }
 
 
-SEXP mongo_authenticate(SEXP mongo_conn, SEXP db, SEXP user, SEXP pass) {
+SEXP mongo_authenticate(SEXP mongo_conn, SEXP user, SEXP pass, SEXP db) {
     _checkMongo(mongo_conn);
     mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
-    const char* _db = CHAR(STRING_ELT(db, 0));
     const char* _user = CHAR(STRING_ELT(user, 0));
     const char* _pass = CHAR(STRING_ELT(pass, 0));
+    const char* _db = CHAR(STRING_ELT(db, 0));
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
     LOGICAL(ret)[0] = (mongo_cmd_authenticate(conn, _db, _user, _pass) == MONGO_OK);
@@ -531,3 +532,59 @@ SEXP mongo_authenticate(SEXP mongo_conn, SEXP db, SEXP user, SEXP pass) {
     return ret;
 }
 
+
+const char* _get_host_port(mongo_host_port* hp) {
+    static char _hp[sizeof(hp->host+12)];
+    sprintf(_hp, "%s:%d", hp->host, hp->port);
+    return _hp;
+}
+
+
+SEXP mongo_get_primary(SEXP mongo_conn) {
+    _checkMongo(mongo_conn);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    SEXP ret;
+    PROTECT(ret = allocVector(STRSXP, 1));
+    SET_STRING_ELT(ret, 0, mkChar(_get_host_port(conn->primary)));
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP mongo_get_hosts(SEXP mongo_conn) {
+    _checkMongo(mongo_conn);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo_replset* r = conn->replset;
+    if (!r) return R_NilValue;
+    int count = 0;
+    mongo_host_port* hp;
+    for (hp = r->hosts; hp; hp = hp->next)
+        ++count;
+    SEXP ret;
+    PROTECT(ret = allocVector(STRSXP, count));
+    int i = 0;
+    for (hp = r->hosts; hp; hp = hp->next, i++)
+        SET_STRING_ELT(ret, i, mkChar(_get_host_port(hp)));
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP mongo_set_timeout(SEXP mongo_conn, SEXP timeout) {
+    _checkMongo(mongo_conn);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    int _timeout = asInteger(timeout);
+    mongo_set_op_timeout(conn, _timeout);
+    return mongo_conn;
+}
+
+
+SEXP mongo_get_timeout(SEXP mongo_conn) {
+    _checkMongo(mongo_conn);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    SEXP ret;
+    PROTECT(ret = allocVector(INTSXP, 1));
+    INTEGER(ret)[0] = conn->op_timeout_ms;
+    UNPROTECT(1);
+    return ret;
+}

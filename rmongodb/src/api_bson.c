@@ -231,12 +231,9 @@ SEXP mongo_undefined_create()
 
 SEXP mongo_bson_empty() {
     bson b;
-    Rprintf("Empty 1\n");
     bson_empty(&b);
-    Rprintf("2\n");
-   SEXP ret = _mongo_bson_create(&b);
-    Rprintf("3\n");
-   UNPROTECT(3);
+    SEXP ret = _mongo_bson_create(&b);
+    UNPROTECT(3);
     return ret;
 }
 

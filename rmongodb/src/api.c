@@ -2,26 +2,30 @@
 #include <R_ext/Rdynload.h>
 #include <R_ext/Visibility.h>
 
-#include "symbols.h"
 #include "api_bson.h"
 #include "api_mongo.h"
+#include "symbols.h"
 
 int sock_init();
 
 static const R_CallMethodDef callMethods[] = {
     { ".mongo.create", (DL_FUNC) mongo_create, 0 },
     { ".mongo.connect", (DL_FUNC) rmongo_connect, 1 },
+    { ".mongo.is.connected", (DL_FUNC) mongo_is_connected, 1 },
+    { ".mongo.get.err", (DL_FUNC) mongo_get_err, 1 },
     { ".mongo.reconnect", (DL_FUNC) rmongo_reconnect, 1 },
     { ".mongo.disconnect", (DL_FUNC) rmongo_disconnect, 1 },
     { ".mongo.get.socket", (DL_FUNC) mongo_get_socket, 1 },
-    { ".mongo.is.connected", (DL_FUNC) mongo_is_connected, 1 },
+    { ".mongo.get.primary", (DL_FUNC) mongo_get_primary, 1 },
+    { ".mongo.get.hosts", (DL_FUNC) mongo_get_hosts, 1 },
+    { ".mongo.set.timeout", (DL_FUNC) mongo_set_timeout, 2 },
+    { ".mongo.get.timeout", (DL_FUNC) mongo_get_timeout, 1 },
     { ".mongo.get.last.error", (DL_FUNC) mongo_get_last_error, 2 },
     { ".mongo.get.prev.error", (DL_FUNC) mongo_get_prev_error, 2 },
     { ".mongo.reset.error", (DL_FUNC) mongo_reset_error, 2 },
     { ".mongo.is.master", (DL_FUNC) mongo_get_prev_error, 2 },
     { ".mongo.add.user", (DL_FUNC) mongo_add_user, 4 },
     { ".mongo.authenticate", (DL_FUNC) mongo_authenticate, 4 },
-    { ".mongo.get.err", (DL_FUNC) mongo_get_err, 1 },
     { ".mongo.get.server.err", (DL_FUNC) mongo_get_server_err, 1 },
     { ".mongo.get.server.err.string", (DL_FUNC) mongo_get_server_err_string, 1 },
     { ".mongo.insert", (DL_FUNC) rmongo_insert, 3 },
@@ -77,14 +81,14 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.bson.buffer.append.complex", (DL_FUNC) mongo_bson_buffer_append_complex, 3},
     { ".mongo.bson.buffer.append.null", (DL_FUNC) mongo_bson_buffer_append_null, 2},
     { ".mongo.bson.buffer.append.undefined", (DL_FUNC) mongo_bson_buffer_append_undefined, 2},
-    { ".mongo.bson.buffer.append.time", (DL_FUNC) mongo_bson_buffer_append_time, 3},
-    { ".mongo.bson.buffer.append.timestamp", (DL_FUNC) mongo_bson_buffer_append_timestamp, 3},
     { ".mongo.bson.buffer.append.string", (DL_FUNC) mongo_bson_buffer_append_string, 3},
+    { ".mongo.bson.buffer.append.symbol", (DL_FUNC) mongo_bson_buffer_append_symbol, 3},
     { ".mongo.bson.buffer.append.code", (DL_FUNC) mongo_bson_buffer_append_code, 3},
     { ".mongo.bson.buffer.append.code.w.scope", (DL_FUNC) mongo_bson_buffer_append_code_w_scope, 3},
-    { ".mongo.bson.buffer.append.symbol", (DL_FUNC) mongo_bson_buffer_append_symbol, 3},
-    { ".mongo.bson.buffer.append.regex", (DL_FUNC) mongo_bson_buffer_append_symbol, 3},
     { ".mongo.bson.buffer.append.binary", (DL_FUNC) mongo_bson_buffer_append_binary, 3},
+    { ".mongo.bson.buffer.append.time", (DL_FUNC) mongo_bson_buffer_append_time, 3},
+    { ".mongo.bson.buffer.append.timestamp", (DL_FUNC) mongo_bson_buffer_append_timestamp, 3},
+    { ".mongo.bson.buffer.append.regex", (DL_FUNC) mongo_bson_buffer_append_symbol, 3},
     { ".mongo.bson.buffer.append.oid", (DL_FUNC) mongo_bson_buffer_append_oid, 3},
     { ".mongo.bson.buffer.append.bson", (DL_FUNC) mongo_bson_buffer_append_bson, 3},
     { ".mongo.bson.buffer.append.element", (DL_FUNC) mongo_bson_buffer_append_element, 3},
@@ -129,5 +133,5 @@ void attribute_visible R_init_rmongodb(DllInfo *dll) {
     set_bson_err_handler(_err_handler);
 
     Rprintf("rmongodb package (mongo-r-driver) loaded\n"
-    "Use 'help(\"mongo\")' to get started.\n");
+    "Use 'help(\"mongo\")' to get started.\n\n");
 }

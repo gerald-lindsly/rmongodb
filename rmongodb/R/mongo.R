@@ -1,17 +1,17 @@
-mongo.create <- function(host="127.0.0.1", name="", username="", password="", db_name="admin", timeout=0L) {
+mongo.create <- function(host="127.0.0.1", name="", username="", password="", db="admin", timeout=0L) {
     mongo <- .Call(".mongo.create")
     attr(mongo, "host") <- host
     attr(mongo, "name") <- name
     attr(mongo, "username") <- username
     attr(mongo, "password") <- password
-    attr(mongo, "db_name") <- db_name
+    attr(mongo, "db") <- db
     attr(mongo, "timeout") <- timeout
-    mongo.connect(mongo)
-    mongo
+    .Call(".mongo.connect", mongo)
 }
 
-mongo.connect <- function(mongo)
-    .Call(".mongo.connect", mongo)
+
+mongo.get.err <- function(mongo)
+    .Call(".mongo.get.err", mongo)
 
 mongo.disconnect <- function(mongo)
     .Call(".mongo.disconnect", mongo)
@@ -25,14 +25,26 @@ mongo.is.connected <- function(mongo)
 mongo.get.socket <- function(mongo)
     .Call(".mongo.get.socket", mongo)
 
+mongo.get.primary <- function(mongo)
+    .Call(".mongo.get.primary", mongo)
+
+mongo.set.timeout <- function(mongo, timeout)
+    .Call(".mongo.set.timeout", mongo, timeout)
+
+mongo.get.timeout <- function(mongo)
+    .Call(".mongo.get.timeout", mongo)
+
+mongo.get.hosts <- function(mongo)
+    .Call(".mongo.get.hosts", mongo)
+
 mongo.is.master <- function(mongo, db)
     .Call(".mongo.is.master", mongo, db)
 
-mongo.authenticate <- function(mongo, db, user, pass)
-    .Call(".mongo.authenticate", mongo, db, user, pass)
+mongo.authenticate <- function(mongo, username, password, db="admin")
+    .Call(".mongo.authenticate", mongo, username, password, db)
 
-mongo.add.user <- function(mongo, db, user, pass)
-    .Call(".mongo.add.user", mongo, db, user, pass)
+mongo.add.user <- function(mongo, username, password, db="admin")
+    .Call(".mongo.add.user", mongo, username, password, db)
 
 mongo.get.last.error <- function(mongo, db)
     .Call(".mongo.get.last.error", mongo, db)
@@ -42,9 +54,6 @@ mongo.get.prev.error <- function(mongo, db)
 
 mongo.reset.error <- function(mongo, db)
     .Call(".mongo.reset.error", mongo, db)
-
-mongo.get.err <- function(mongo)
-    .Call(".mongo.get.err", mongo)
 
 mongo.get.server.err <- function(mongo)
     .Call(".mongo.get.server.err", mongo)

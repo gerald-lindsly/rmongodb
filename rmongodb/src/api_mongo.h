@@ -6,7 +6,12 @@ SEXP rmongo_reconnect(SEXP mongo_conn);
 SEXP rmongo_disconnect(SEXP mongo_conn);
 SEXP mongo_is_connected(SEXP connection);
 SEXP mongo_get_socket(SEXP connection);
+SEXP mongo_get_primary(SEXP connection);
+SEXP mongo_get_hosts(SEXP connection);
 SEXP mongo_get_err(SEXP connection);
+SEXP mongo_set_timeout(SEXP connection, SEXP timeout);
+SEXP mongo_get_timeout(SEXP connection);
+
 SEXP mongo_get_server_err(SEXP connection);
 SEXP mongo_get_server_err_string(SEXP connection);
 
