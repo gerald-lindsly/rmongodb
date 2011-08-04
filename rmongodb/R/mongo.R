@@ -28,14 +28,14 @@ mongo.get.socket <- function(mongo)
 mongo.get.primary <- function(mongo)
     .Call(".mongo.get.primary", mongo)
 
+mongo.get.hosts <- function(mongo)
+    .Call(".mongo.get.hosts", mongo)
+
 mongo.set.timeout <- function(mongo, timeout)
     .Call(".mongo.set.timeout", mongo, timeout)
 
 mongo.get.timeout <- function(mongo)
     .Call(".mongo.get.timeout", mongo)
-
-mongo.get.hosts <- function(mongo)
-    .Call(".mongo.get.hosts", mongo)
 
 mongo.is.master <- function(mongo, db)
     .Call(".mongo.is.master", mongo, db)

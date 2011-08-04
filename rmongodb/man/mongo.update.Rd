@@ -37,7 +37,7 @@ if (mongo.is.connected(mongo)) {
     mongo.bson.buffer.append(buf, "age", 27L)
     objNew <- mongo.bson.from.buffer(buf)
 
-    mongo.update(mongo, "test.people", criteria, objNew)
+    mongo.update(mongo, "test.people", criteria, objNew, mongo.update.upsert)
 
     buf <- mongo.bson.buffer.create()
     mongo.bson.buffer.append(buf, "name", "Joe")
