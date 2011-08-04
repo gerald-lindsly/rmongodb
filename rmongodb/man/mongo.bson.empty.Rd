@@ -16,6 +16,9 @@ mongo.bson.empty()
 \value{
 An empty mongo.bson object
 }
+\seealso{
+\code{\link{mongo.bson}}
+}
 \examples{
 # Use an empty mongo.bson for the query object which matches everything.
 # This happens to be the default value for the query parameter to mongo.count,

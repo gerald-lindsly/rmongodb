@@ -26,8 +26,8 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.create}}.
-\code{\link{mongo.is.connected}}.
-\code{\link{mongo.insert}}.
-\code{\link{mongo.find.one}}.
+\code{\link{mongo.create}},
+\code{\link{mongo.is.connected}},
+\code{\link{mongo.insert}},
+\code{\link{mongo.find.one}}
 }

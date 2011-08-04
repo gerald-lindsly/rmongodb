@@ -1,0 +1,28 @@
+% File rmongodb/man/mongo.disconnect.Rd
+\name{mongo.disconnect}
+\alias{mongo.disconnect}
+\title{Disconnect from a MongoDB server}
+\description{
+Disconnect from a MongoDB server.  No further communication is possible on the connection.
+However, mongo.reconnect() may be called on the mongo object to restablish the connection.
+}
+\usage{
+mongo.disconnect(mongo)
+}
+\arguments{
+\item{mongo}{(mongo) a mongo connection object.}
+}
+\value{
+The mongo object is returned.
+}
+\seealso{
+\code{\link{mongo.create}},
+\code{\link{mongo.reconnect}},
+\code{\link{mongo.is.connected}}
+}
+\examples{
+mongo <- mongo.create()
+if (mongo.is.connected(mongo)) {
+    n_people <- mongo.count(mongo, "test.people")
+    mongo.disconnect(mongo)
+}
