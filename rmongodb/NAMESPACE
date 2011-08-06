@@ -14,6 +14,9 @@ export(mongo.authenticate)
 export(mongo.add.user)
 export(mongo.get.server.err)
 export(mongo.get.server.err.string)
+export(mongo.reset.error)
+export(mongo.get.last.error)
+export(mongo.get.prev.error)
 
 export(mongo.insert)
 
@@ -48,7 +51,8 @@ export(mongo.command)
 export(mongo.simple.command)
 export(mongo.drop.database)
 export(mongo.drop.collection)
-
+export(mongo.get.databases)
+export(mongo.rename)
 
 export(mongo.bson.empty)
 export(mongo.bson.size)

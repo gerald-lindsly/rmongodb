@@ -10,7 +10,7 @@ mongo.bson.print <- function(b)
 mongo.bson.to.list <- function(b)
     .Call(".mongo.bson.to.list", b)
 
-print.mongo.bson <- function(b)
+print.mongo.bson <- function(b, digits)
     .Call(".mongo.bson.print", b)
 
 mongo.bson.iterator.create <- function(b)
