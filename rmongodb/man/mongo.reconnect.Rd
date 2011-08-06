@@ -9,11 +9,12 @@ Reconnect to a MongoDB server. Calls mongo.disconnect and then attempts to re-es
 mongo.reconnect(mongo)
 }
 \arguments{
-\item{mongo}{(mongo) a mongo connection object.}
+\item{mongo}{(\link{mongo}) a mongo connection object.}
 }
 \seealso{
 \code{\link{mongo.create}},
-\code{\link{mongo.disconnect}}
+\code{\link{mongo.disconnect}},
+\link{mongo}
 }
 \examples{
 mongo <- mongo.create()

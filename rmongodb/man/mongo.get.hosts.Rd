@@ -9,14 +9,15 @@ Get a lists of hosts & ports as reported by a replica set master upon connection
 mongo.get.hosts(mongo)
 }
 \arguments{
-\item{mongo}{(mongo) a mongo connection object.}
+\item{mongo}{(\link{mongo}) a mongo connection object.}
 }
 \value{
 NULL if a replica set was not connected to; otherwise, a
 list of host & port strings in the format "%s:%d".
 }
 \seealso{
-\code{\link{mongo.create}}
+\code{\link{mongo.create}},
+\link{mongo}
 }
 \examples{
 mongo <- mongo.create(c("127.0.0.1", "192.168.0.3"), name="Inventory")

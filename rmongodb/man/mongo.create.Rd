@@ -37,7 +37,7 @@ mongo.create(host="127.0.0.1:27017", name="", username="", password="", db_name=
     otherwise, mongo.get.err() may be called on the returned mongo object to see why it failed.
 }
 \seealso{
-\code{\link{mongo}},
+\link{mongo},
 \code{\link{mongo.is.connected}},
 \code{\link{mongo.disconnect}},
 \code{\link{mongo.reconnect}},

@@ -29,5 +29,8 @@ if (mongo.is.connected(mongo)) {
 \code{\link{mongo.create}},
 \code{\link{mongo.is.connected}},
 \code{\link{mongo.insert}},
-\code{\link{mongo.find.one}}
+\code{\link{mongo.find.one}},
+\code{\link{mongo.find}},
+\code{\link{mongo.update}},
+\code{\link{mongo.remove}},
 }

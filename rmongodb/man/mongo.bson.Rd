@@ -27,7 +27,7 @@ objects of class "mongo.bson.buffer" are used to build BSON documents.
 }
 \seealso{
 \code{\link{mongo.bson.iterator}},
-\code{\link{mongo.bson.buffer}},
+\link{mongo.bson.buffer},
 \code{\link{mongo.bson.from.buffer}},
 \code{\link{mongo.bson.empty}},
 \code{\link{mongo.bson.from.buffer}},

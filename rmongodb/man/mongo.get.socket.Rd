@@ -9,13 +9,14 @@ Get the the low-level socket number assigned to the given mongo object by mongo.
 mongo.get.socket(mongo)
 }
 \arguments{
-\item{mongo}{(mongo) a mongo connection object.}
+\item{mongo}{(\link{mongo}) a mongo connection object.}
 }
 \value{
 Integer socket number
 }
 \seealso{
-\code{\link{mongo.create}}
+\code{\link{mongo.create}},
+\link{mongo}
 }
 \examples{
 mongo <- mongo.create()

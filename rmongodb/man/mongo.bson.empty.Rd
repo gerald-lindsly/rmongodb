@@ -17,7 +17,7 @@ mongo.bson.empty()
 An empty mongo.bson object
 }
 \seealso{
-\code{\link{mongo.bson}}
+\link{mongo.bson}
 }
 \examples{
 # Use an empty mongo.bson for the query object which matches everything.

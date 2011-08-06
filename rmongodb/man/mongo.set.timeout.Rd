@@ -10,11 +10,13 @@ Subsequent network operations will timeout if they take longer than the given nu
 mongo.set.timeout(mongo, timeout)
 }
 \arguments{
-\item{mongo}{(mongo) a mongo connection object.}
+\item{mongo}{(\link{mongo}) a mongo connection object.}
 \item{timeout}{(as.integer) number of milliseconds to which to set the timeout value.}
 }
 \seealso{
-\code{\link{mongo.get.timeout}}
+\code{\link{mongo.get.timeout}},
+\code{\link{mongo.create}},
+\link{mongo}
 }
 \examples{
 mongo.set.timeout(mongo, 2000L)

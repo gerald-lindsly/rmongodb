@@ -10,13 +10,14 @@ otherwise, FALSE.
 mongo.is.connected(mongo)
 }
 \arguments{
-\item{mongo}{(mongo) a mongo connection object.}
+\item{mongo}{(\link{mongo}) a mongo connection object.}
 }
 \value{
-Logical TRUE if the mongo connection object is currently connected to a server; otherwise FALSE.
+Logical TRUE if the mongo connection object is currently connected to a server; otherwise, FALSE.
 }
 \seealso{
-\code{\link{mongo.create}}
+\code{\link{mongo.create}},
+\link{mongo},
 }
 \examples{
 mongo <- mongo.create()

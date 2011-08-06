@@ -3,21 +3,25 @@
 \alias{mongo.insert}
 \title{Add record to a collection}
 \description{
-Add record to a collection.  see \url{http://www.mongodb.org/display/DOCS/Inserting}.
+Add record to a collection.
+
+See \url{http://www.mongodb.org/display/DOCS/Inserting}.
 }
 \usage{
 mongo.insert(mongo, ns, b)
 }
 \arguments{
-\item{mongo}{(mongo) a mongo connection object.}
+\item{mongo}{(\link{mongo}) a mongo connection object.}
 \item{ns}{(string) namespace of the collection to which to add the record.}
-\item{b}{(mongo.bson) The record to add.}
+\item{b}{(\link{mongo.bson}) The record to add.}
 }
 \seealso{
-\code{\link{mongo.bson}}
-\code{\link{mongo.update}}
-\code{\link{mongo.find}}
-\code{\link{mongo.find.one}}
+\code{\link{mongo.update}},
+\code{\link{mongo.find}},
+\code{\link{mongo.find.one}},
+\code{\link{mongo.remove}},
+\link{mongo.bson},
+\link{mongo}
 }
 \examples{
 mongo <- mongo.create()

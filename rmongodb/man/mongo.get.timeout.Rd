@@ -9,7 +9,7 @@ get the timeout value for network operations on a mongo connection.
 mongo.get.timeout(mongo)
 }
 \arguments{
-\item{mongo}{(mongo) a mongo connection object.}
+\item{mongo}{(\link{mongo}) a mongo connection object.}
 }
 \value{
 (integer) timeout value in milliseconds.
@@ -18,5 +18,5 @@ mongo.get.timeout(mongo)
 \code{\link{mongo.set.timeout}}
 }
 \examples{
-mongo.get.timeout(mongo)
+timeout <- mongo.get.timeout(mongo)
 }

@@ -9,13 +9,14 @@ Get the host & port of the server to which a mongo object is connected.
 mongo.get.primary(mongo)
 }
 \arguments{
-\item{mongo}{(mongo) a mongo connection object.}
+\item{mongo}{(\link{mongo}) a mongo connection object.}
 }
 \value{
 String host & port in the format "%s:%d".
 }
 \seealso{
-\code{\link{mongo.create}}
+\code{\link{mongo.create}},
+\link{mongo}
 }
 \examples{
 mongo <- mongo.create(c("127.0.0.1", "192.168.0.3"))

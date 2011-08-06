@@ -8,14 +8,15 @@ Retrieve an connection error code from a mongo object indicating the failure cod
 mongo.get.err(mongo)
 }
 \arguments{
-\item{mongo}{(mongo) a mongo connection object.}
+\item{mongo}{(\link{mongo}) a mongo connection object.}
 }
 \value{
 Integer error code as follows: 0 - Success, 1 - Bad argument, 2 - No socket,
     3 - Fail, 4 - Not Master, 5 - Bad replica set name, 6 - Cannot find primary
 }
 \seealso{
-\code{\link{mongo.create}}
+\code{\link{mongo.create}},
+\link{mongo}
 }
 \examples{
 mongo <- mongo.create()
