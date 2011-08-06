@@ -158,7 +158,7 @@ SEXP mongo_get_server_err_string(SEXP connection) {
     SEXP ret;
     PROTECT(ret = allocVector(STRSXP, 1));
     mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(connection, sym_mongo));
-    SET_STRING_ELT(ret, 0, mkChar(conn->lasterrstr));
+    SET_STRING_ELT(ret, 0, mkChar(conn->lasterrstr ? conn->lasterrstr : ""));
     UNPROTECT(1);
     return ret;
 }
@@ -312,7 +312,7 @@ SEXP rmongo_cursor_next(SEXP cursor) {
 SEXP mongo_cursor_value(SEXP cursor) {
     _checkCursor(cursor);
     mongo_cursor* _cursor = (mongo_cursor*)R_ExternalPtrAddr(getAttrib(cursor, sym_mongo_cursor));
-    if (!_cursor)
+    if (!_cursor || !_cursor->current.data)
         return R_NilValue;
     SEXP ret = _mongo_bson_create(&_cursor->current);
     UNPROTECT(3);

@@ -70,7 +70,7 @@ mongo.update.multi  <- 2L
 mongo.update <- function(mongo, ns, criteria, objNew, flags=0L)
     .Call(".mongo.update", mongo, ns, criteria, objNew, flags)
 
-mongo.remove <- function(mongo, ns, criteria)
+mongo.remove <- function(mongo, ns, criteria=mongo.bson.empty())
     .Call(".mongo.remove", mongo, ns, criteria)
 
 
