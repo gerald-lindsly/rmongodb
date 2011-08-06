@@ -34,10 +34,10 @@ NULL if successful; otherwise, a \link{mongo.bson} object describing the error.
 \examples{
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
-    # Add a city index to collection people of database test
+    # Add a city index to collection people in database test
     b <- mongo.index.create(mongo, "test.people", "city")
 
-    # Add an index to collection people of database test which will speed up queries by age followed by name
+    # Add an index to collection people in database test which will speed up queries by age followed by name
     b <- mongo.index.create(mongo, "test.people", c("age", "name"))
 
     buf <- mongo.bson.buffer.create()
