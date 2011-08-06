@@ -243,9 +243,12 @@ SEXP rmongo_find_one(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields)
     bson* _query = (bson*)R_ExternalPtrAddr(getAttrib(query, sym_mongo_bson));
     bson* _fields = (bson*)R_ExternalPtrAddr(getAttrib(fields, sym_mongo_bson));
     bson out;
-    if (mongo_find_one(conn, _ns, _query, _fields, &out) != MONGO_OK)
+    if (mongo_find_one(conn, _ns, _query, _fields, &out) != MONGO_OK) {
+        bson_destroy(&out);
         return R_NilValue;
+    }
     SEXP ret = _mongo_bson_create(&out);
+    bson_destroy(&out);
     UNPROTECT(3);
     return ret;
 }
@@ -359,9 +362,12 @@ SEXP mongo_index_create(SEXP mongo_conn, SEXP ns, SEXP key, SEXP options) {
     int success = mongo_create_index(conn, _ns, _key, _options, &out);
     if (!keyIsBSON)
         bson_destroy(&b);
-    if (success == MONGO_OK)
+    if (success == MONGO_OK) {
+        bson_destroy(&out);
         return R_NilValue;
+    }
     SEXP ret = _mongo_bson_create(&out);
+    bson_destroy(&out);
     UNPROTECT(3);
     return ret;
 }
@@ -397,9 +403,12 @@ SEXP mongo_command(SEXP mongo_conn, SEXP db, SEXP command) {
     const char* _db = CHAR(STRING_ELT(db, 0));
     bson* _command = (bson*)R_ExternalPtrAddr(getAttrib(command, sym_mongo_bson));
     bson out;
-    if (mongo_run_command(conn, _db, _command, &out) != MONGO_OK)
+    if (mongo_run_command(conn, _db, _command, &out) != MONGO_OK) {
+        bson_destroy(&out);
         return R_NilValue;
+    }
     SEXP ret = _mongo_bson_create(&out);
+    bson_destroy(&out);
     UNPROTECT(3);
     return ret;
 }
@@ -413,12 +422,15 @@ SEXP mongo_simple_command(SEXP mongo_conn, SEXP db, SEXP cmdstr, SEXP arg) {
     bson out;
     int success;
     if (TYPEOF(arg) == STRSXP)
-        success = mongo_simple_str_command(conn, _db, _cmdstr, CHAR(STRING_ELT(arg, 0)), &out);
+        success = (mongo_simple_str_command(conn, _db, _cmdstr, CHAR(STRING_ELT(arg, 0)), &out) == MONGO_OK);
     else
-        success = mongo_simple_int_command(conn, _db, _cmdstr, asInteger(arg), &out);
-    if (!success)
+        success = (mongo_simple_int_command(conn, _db, _cmdstr, asInteger(arg), &out) == MONGO_OK);
+    if (!success) {
+        bson_destroy(&out);
         return R_NilValue;
+    }
     SEXP ret = _mongo_bson_create(&out);
+    bson_destroy(&out);
     UNPROTECT(3);
     return ret;
 }
@@ -447,10 +459,9 @@ SEXP mongo_drop_collection(SEXP mongo_conn, SEXP ns) {
     char* db = Calloc(len+1, char);
     strncpy(db, _ns, len);
     db[len] = '\0';
-    bson out;
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
-    LOGICAL(ret)[0] = (mongo_cmd_drop_collection(conn, db, p+1, &out) == MONGO_OK);
+    LOGICAL(ret)[0] = (mongo_cmd_drop_collection(conn, db, p+1, NULL) == MONGO_OK);
     Free(db);
     UNPROTECT(1);
     return ret;
@@ -471,9 +482,12 @@ SEXP mongo_get_last_error(SEXP mongo_conn, SEXP db) {
     mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
     const char* _db = CHAR(STRING_ELT(db, 0));
     bson out;
-    if (mongo_cmd_get_last_error(conn, _db, &out) == MONGO_OK)
+    if (mongo_cmd_get_last_error(conn, _db, &out) == MONGO_OK) {
+        bson_destroy(&out);
         return R_NilValue;
+    }
     SEXP ret = _mongo_bson_create(&out);
+    bson_destroy(&out);
     UNPROTECT(3);
     return ret;
 }
@@ -484,9 +498,12 @@ SEXP mongo_get_prev_error(SEXP mongo_conn, SEXP db) {
     mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
     const char* _db = CHAR(STRING_ELT(db, 0));
     bson out;
-    if (mongo_cmd_get_prev_error(conn, _db, &out) == MONGO_OK)
+    if (mongo_cmd_get_prev_error(conn, _db, &out) == MONGO_OK) {
+        bson_destroy(&out);
         return R_NilValue;
+    }
     SEXP ret = _mongo_bson_create(&out);
+    bson_destroy(&out);
     UNPROTECT(3);
     return ret;
 }
@@ -495,10 +512,9 @@ SEXP mongo_get_prev_error(SEXP mongo_conn, SEXP db) {
 SEXP mongo_is_master(SEXP mongo_conn) {
     _checkMongo(mongo_conn);
     mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
-    bson out;
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
-    LOGICAL(ret)[0] = mongo_cmd_ismaster(conn, &out);
+    LOGICAL(ret)[0] = mongo_cmd_ismaster(conn, NULL);
     UNPROTECT(1);
     return ret;
 }
@@ -585,6 +601,60 @@ SEXP mongo_get_timeout(SEXP mongo_conn) {
     SEXP ret;
     PROTECT(ret = allocVector(INTSXP, 1));
     INTEGER(ret)[0] = conn->op_timeout_ms;
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP mongo_rename(SEXP mongo_conn, SEXP from_ns, SEXP to_ns) {
+    _checkMongo(mongo_conn);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    const char* _from_ns = CHAR(STRING_ELT(from_ns, 0));
+    const char* _to_ns = CHAR(STRING_ELT(to_ns, 0));
+    bson cmd;
+    bson_init(&cmd);
+    bson_append_string(&cmd, "renameCollection", _from_ns);
+    bson_append_string(&cmd, "to", _to_ns);
+    bson_finish(&cmd);
+    bson out;
+    if (mongo_run_command(conn, "admin", &cmd, &out) == MONGO_OK) {
+        bson_destroy(&cmd);
+        bson_destroy(&out);
+        return R_NilValue;
+    }
+    bson_destroy(&cmd);
+    SEXP ret = _mongo_bson_create(&out);
+    bson_destroy(&out);
+    UNPROTECT(3);
+    return ret;
+}
+
+
+SEXP mongo_get_databases(SEXP mongo_conn) {
+    _checkMongo(mongo_conn);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    bson out;
+    if (mongo_simple_int_command(conn, "admin", "listDatabases", 1, &out) != MONGO_OK) {
+        bson_destroy(&out);
+        return R_NilValue;
+    }
+    bson_iterator it, databases, database;
+    bson_iterator_init(&it, &out);
+    bson_iterator_next(&it);
+    bson_iterator_subiterator(&it, &databases);
+    int count = 0;
+    while (bson_iterator_next(&databases))
+        count++;
+    SEXP ret;
+    PROTECT(ret = allocVector(STRSXP, count));
+    bson_iterator_subiterator(&it, &databases);
+    int i = 0;
+    while (bson_iterator_next(&databases)) {
+        bson_iterator_subiterator(&databases, &database);
+        bson_iterator_next(&database);
+        SET_STRING_ELT(ret, i++, mkChar(bson_iterator_string(&database)));
+    }
+    bson_destroy(&out);
     UNPROTECT(1);
     return ret;
 }

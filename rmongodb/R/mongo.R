@@ -123,11 +123,11 @@ mongo.drop.database <- function(mongo, db)
 mongo.drop.collection <- function(mongo, ns)
     .Call(".mongo.drop.collection", mongo, ns)
 
+mongo.rename <- function(mongo, from.ns, to.ns)
+    .Call(".mongo.rename", mongo, ns)
 
-
-mongo.database_names <- function(mongo) {
-
-}
+mongo.get.databases <- function(mongo)
+    .Call(".mongo.get.databases", mongo)
 
 
 mongo.send <- function(mongo, str) {

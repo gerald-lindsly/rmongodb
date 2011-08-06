@@ -29,6 +29,8 @@ SEXP mongo_command(SEXP mongo_conn, SEXP db, SEXP command);
 SEXP mongo_simple_command(SEXP mongo_conn, SEXP db, SEXP cmdstr, SEXP arg);
 SEXP mongo_drop_database(SEXP mongo_conn, SEXP db);
 SEXP mongo_drop_collection(SEXP mongo_conn, SEXP ns);
+SEXP mongo_rename(SEXP mongo_conn, SEXP from_ns, SEXP to_ns);
+SEXP mongo_get_databases(SEXP mongo_conn);
 
 SEXP mongo_reset_error(SEXP mongo_conn, SEXP db);
 SEXP mongo_get_last_error(SEXP mongo_conn, SEXP db);

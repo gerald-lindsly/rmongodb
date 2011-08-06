@@ -63,6 +63,8 @@
         mongo.set.timeout(mongo, 2000)
         print(mongo.get.timeout(mongo))
 
+        print(mongo.get.databases(mongo))
+        print(mongo.simple.command(mongo, "test", "top", 1L))
         db <- "test"
         ns <- paste(db, "test", sep=".")
         mongo.reset.error(mongo, db)
@@ -73,7 +75,7 @@
         print(mongo.drop.database(mongo, db))
 
         print("add user")
-        print(mongo.add.user(mongo, db, "Gerald", "PaSsWoRd"))
+        print(mongo.add.user(mongo, "Gerald", "PaSsWoRd"))
 
         mongo.simple.command(mongo, db, "badcommand", 0L)
         print("last error")
@@ -158,11 +160,19 @@
         b <- mongo.bson.from.buffer(buf)
         print("index create")
         print(mongo.index.create(mongo, ns, b))
+ 
+        print("rename")
+        buf <- mongo.bson.buffer.create()
+        mongo.bson.buffer.append(buf, "renameCollection", ns)
+        mongo.bson.buffer.append(buf, "to", "test.humans")
+        command <- mongo.bson.from.buffer(buf)
+        print(mongo.command(mongo, "admin", command))
+        ns <- "test.humans"
 
         print("count x2")
         print(mongo.count(mongo, ns))
         buf <- mongo.bson.buffer.create()
-        mongo.bson.buffer.append(buf, "count", "test")
+        mongo.bson.buffer.append(buf, "count", "humans")
         mongo.bson.buffer.append(buf, "query", mongo.bson.empty())
         command <- mongo.bson.from.buffer(buf)
         print(mongo.command(mongo, "test", command))

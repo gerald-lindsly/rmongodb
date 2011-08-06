@@ -42,6 +42,8 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.simple.command", (DL_FUNC) mongo_simple_command, 4 },
     { ".mongo.drop.database", (DL_FUNC) mongo_drop_database, 2 },
     { ".mongo.drop.collection", (DL_FUNC) mongo_drop_collection, 2 },
+    { ".mongo.rename", (DL_FUNC) mongo_rename, 3 },
+    { ".mongo.get.databases", (DL_FUNC) mongo_get_databases, 1 },
 
     { ".mongo.bson.empty", (DL_FUNC) mongo_bson_empty, 0},
     { ".mongo.bson.size", (DL_FUNC) mongo_bson_size, 1},
