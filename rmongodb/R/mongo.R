@@ -13,6 +13,9 @@ mongo.create <- function(host="127.0.0.1", name="", username="", password="", db
 mongo.get.err <- function(mongo)
     .Call(".mongo.get.err", mongo)
 
+mongo.clear.err <- function(mongo)
+    .Call(".mongo.clear.err", mongo)
+
 mongo.disconnect <- function(mongo)
     .Call(".mongo.disconnect", mongo)
 
@@ -37,8 +40,8 @@ mongo.set.timeout <- function(mongo, timeout)
 mongo.get.timeout <- function(mongo)
     .Call(".mongo.get.timeout", mongo)
 
-mongo.is.master <- function(mongo, db)
-    .Call(".mongo.is.master", mongo, db)
+mongo.is.master <- function(mongo)
+    .Call(".mongo.is.master", mongo)
 
 mongo.authenticate <- function(mongo, username, password, db="admin")
     .Call(".mongo.authenticate", mongo, username, password, db)
@@ -129,12 +132,3 @@ mongo.rename <- function(mongo, from.ns, to.ns)
 mongo.get.databases <- function(mongo)
     .Call(".mongo.get.databases", mongo)
 
-
-mongo.send <- function(mongo, str) {
-
-}
-
-
-mongo.recv <- function(mongo, info) {
-
-}

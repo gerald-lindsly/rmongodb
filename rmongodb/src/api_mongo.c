@@ -142,6 +142,14 @@ SEXP mongo_get_err(SEXP mongo_conn) {
 }
 
 
+SEXP mongo_clear_err(SEXP mongo_conn) {
+    _checkMongo(mongo_conn);
+    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    conn->err = MONGO_CONN_SUCCESS;
+    return mongo_conn;
+}
+
+
 SEXP mongo_get_server_err(SEXP connection) {
     _checkMongo(connection);
     SEXP ret;

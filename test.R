@@ -62,6 +62,7 @@ print(mongo.bson.to.list(b))
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
     print(mongo.get.primary(mongo))
+    print(sprintf("IsMaster (%s)", if (mongo.is.master(mongo)) "Yes" else "No"))
     mongo.set.timeout(mongo, 2000)
     print(mongo.get.timeout(mongo))
 
