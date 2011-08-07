@@ -1,4 +1,4 @@
-% File rmongodb/man/mongo.get.error.Rd
+% File rmongodb/man/mongo.get.err.Rd
 \name{mongo.get.err}
 \alias{mongo.get.err}
 \title{Retrieve an connection error code from a mongo object}
@@ -11,7 +11,7 @@ mongo.get.err(mongo)
 \item{mongo}{(\link{mongo}) a mongo connection object.}
 }
 \value{
-Integer error code as follows: 0 - Success, 1 - Bad argument, 2 - No socket,
+(integer) error code as follows: 0 - Success, 1 - Bad argument, 2 - No socket,
     3 - Fail, 4 - Not Master, 5 - Bad replica set name, 6 - Cannot find primary
 }
 \seealso{
