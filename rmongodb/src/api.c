@@ -16,6 +16,7 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.clear.err", (DL_FUNC) mongo_clear_err, 1 },
     { ".mongo.reconnect", (DL_FUNC) rmongo_reconnect, 1 },
     { ".mongo.disconnect", (DL_FUNC) rmongo_disconnect, 1 },
+    { ".mongo.destroy", (DL_FUNC) rmongo_destroy, 1 },
     { ".mongo.get.socket", (DL_FUNC) mongo_get_socket, 1 },
     { ".mongo.get.primary", (DL_FUNC) mongo_get_primary, 1 },
     { ".mongo.get.hosts", (DL_FUNC) mongo_get_hosts, 1 },
@@ -52,7 +53,7 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.bson.to.list", (DL_FUNC) mongo_bson_to_list, 1},
 
     { ".mongo.bson.iterator.create", (DL_FUNC) mongo_bson_iterator_create, 1},
-    { ".mongo.bson.find", (DL_FUNC) mongo_bson_find, 3},
+    { ".mongo.bson.find", (DL_FUNC) mongo_bson_find, 2},
     { ".mongo.bson.iterator.more", (DL_FUNC) mongo_bson_iterator_more, 1},
     { ".mongo.bson.iterator.next", (DL_FUNC) mongo_bson_iterator_next, 1},
     { ".mongo.bson.iterator.key", (DL_FUNC) mongo_bson_iterator_key, 1},

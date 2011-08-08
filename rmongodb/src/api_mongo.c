@@ -8,17 +8,27 @@
 static void mongoFinalizer(SEXP ptr) {
     if (!R_ExternalPtrAddr(ptr)) return;
     mongo_destroy((mongo*)R_ExternalPtrAddr(ptr));
-    R_ClearExternalPtr(ptr); /* not really needed */
+    R_ClearExternalPtr(ptr);
 }
 
 
-void _checkMongo(SEXP mongo_conn) {
+mongo* _checkMongo(SEXP mongo_conn) {
     _checkClass(mongo_conn, "mongo");
+    SEXP ptr = getAttrib(mongo_conn, sym_mongo);
+    if (ptr == R_NilValue)
+        error("Attribute \"mongo\" is missing from mongo class object\n");
+    mongo* conn = (mongo*)R_ExternalPtrAddr(ptr);
+    if (!conn)
+        error("mongo connection object appears to have been destroyed.\n");
+    return conn;
 }
 
 
-void _checkCursor(SEXP cursor) {
-    _checkClass(cursor, "mongo.cursor");
+SEXP rmongo_destroy(SEXP mongo_conn) {
+    mongo* conn = _checkMongo(mongo_conn);
+    mongo_destroy(conn);
+    R_ClearExternalPtr(getAttrib(mongo_conn, sym_mongo));
+    return R_NilValue;
 }
 
 
@@ -40,9 +50,8 @@ SEXP mongo_create() {
 
 
 SEXP rmongo_connect(SEXP mongo_conn) {
-    _checkMongo(mongo_conn);
+    mongo* conn = _checkMongo(mongo_conn);
     mongo_host_port hp;
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
     SEXP host = getAttrib(mongo_conn, sym_host);
     int len = LENGTH(host);
     int i;
@@ -93,26 +102,23 @@ SEXP rmongo_connect(SEXP mongo_conn) {
 
 
 SEXP rmongo_reconnect(SEXP mongo_conn) {
-    _checkMongo(mongo_conn);
-   mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
-   if (mongo_reconnect(conn) != MONGO_OK)
-       Rprintf("Unable to reconnect\n");
-   return mongo_conn;
+    mongo* conn = _checkMongo(mongo_conn);
+    if (mongo_reconnect(conn) != MONGO_OK)
+        Rprintf("Unable to reconnect\n");
+    return mongo_conn;
  }
 
 
 SEXP rmongo_disconnect(SEXP mongo_conn) {
-    _checkMongo(mongo_conn);
-   mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
-   mongo_disconnect(conn);
-   return R_NilValue;
+    mongo* conn = _checkMongo(mongo_conn);
+    mongo_disconnect(conn);
+    return mongo_conn;
  }
 
 
 SEXP mongo_get_socket(SEXP mongo_conn) {
-    _checkMongo(mongo_conn);
+    mongo* conn = _checkMongo(mongo_conn);
     SEXP ret;
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
     PROTECT(ret = allocVector(INTSXP, 1));
     INTEGER(ret)[0] = conn->sock;
     UNPROTECT(1);
@@ -121,9 +127,8 @@ SEXP mongo_get_socket(SEXP mongo_conn) {
 
 
 SEXP mongo_is_connected(SEXP mongo_conn) {
-    _checkMongo(mongo_conn);
+    mongo* conn = _checkMongo(mongo_conn);
     SEXP ret;
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
     PROTECT(ret = allocVector(LGLSXP, 1));
     LOGICAL(ret)[0] = conn->connected;
     UNPROTECT(1);
@@ -132,10 +137,9 @@ SEXP mongo_is_connected(SEXP mongo_conn) {
 
 
 SEXP mongo_get_err(SEXP mongo_conn) {
-    _checkMongo(mongo_conn);
+    mongo* conn = _checkMongo(mongo_conn);
     SEXP ret;
     PROTECT(ret = allocVector(INTSXP, 1));
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
     INTEGER(ret)[0] = conn->err;
     UNPROTECT(1);
     return ret;
@@ -143,29 +147,26 @@ SEXP mongo_get_err(SEXP mongo_conn) {
 
 
 SEXP mongo_clear_err(SEXP mongo_conn) {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     conn->err = MONGO_CONN_SUCCESS;
     return mongo_conn;
 }
 
 
-SEXP mongo_get_server_err(SEXP connection) {
-    _checkMongo(connection);
+SEXP mongo_get_server_err(SEXP mongo_conn) {
+    mongo* conn = _checkMongo(mongo_conn);
     SEXP ret;
     PROTECT(ret = allocVector(INTSXP, 1));
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(connection, sym_mongo));
     INTEGER(ret)[0] = conn->lasterrcode;
     UNPROTECT(1);
     return ret;
 }
 
 
-SEXP mongo_get_server_err_string(SEXP connection) {
-    _checkMongo(connection);
+SEXP mongo_get_server_err_string(SEXP mongo_conn) {
+    mongo* conn = _checkMongo(mongo_conn);
     SEXP ret;
     PROTECT(ret = allocVector(STRSXP, 1));
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(connection, sym_mongo));
     SET_STRING_ELT(ret, 0, mkChar(conn->lasterrstr ? conn->lasterrstr : ""));
     UNPROTECT(1);
     return ret;
@@ -173,8 +174,7 @@ SEXP mongo_get_server_err_string(SEXP connection) {
 
 
 SEXP rmongo_insert(SEXP mongo_conn, SEXP ns, SEXP b) {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     const char* _ns = CHAR(STRING_ELT(ns, 0));
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
@@ -188,7 +188,7 @@ SEXP rmongo_insert(SEXP mongo_conn, SEXP ns, SEXP b) {
             if (!_isBSON(_b))
                 success = 0;
             else
-                blist[i] = (bson*)R_ExternalPtrAddr(getAttrib(_b, sym_mongo_bson));
+                blist[i] = _checkBSON(_b);
         }
         if (success)
             LOGICAL(ret)[0] = (mongo_insert_batch(conn, _ns, blist, len) == MONGO_OK);
@@ -197,8 +197,8 @@ SEXP rmongo_insert(SEXP mongo_conn, SEXP ns, SEXP b) {
             error("Expected list of mongo.bson class objects");
     }
     else {
-        _checkBSON(b);
-        bson* _b = (bson*)R_ExternalPtrAddr(getAttrib(b, sym_mongo_bson));
+        ;
+        bson* _b = _checkBSON(b);
         LOGICAL(ret)[0] = (mongo_insert(conn, _ns, _b) == MONGO_OK);
     }
     UNPROTECT(1);
@@ -207,20 +207,17 @@ SEXP rmongo_insert(SEXP mongo_conn, SEXP ns, SEXP b) {
 
 
 SEXP rmongo_update(SEXP mongo_conn, SEXP ns, SEXP cond, SEXP op, SEXP flags) {
-    _checkMongo(mongo_conn);
-    _checkBSON(cond);
-    _checkBSON(op);
-    SEXP ret;
-    PROTECT(ret = allocVector(LGLSXP, 1));
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     const char* _ns = CHAR(STRING_ELT(ns, 0));
-    bson* _cond = (bson*)R_ExternalPtrAddr(getAttrib(cond, sym_mongo_bson));
-    bson* _op = (bson*)R_ExternalPtrAddr(getAttrib(op, sym_mongo_bson));
+    bson* _cond = _checkBSON(cond);
+    bson* _op = _checkBSON(op);
     int _flags = 0;
     int i;
     int len = LENGTH(flags);
     for (i = 0; i < len; i++)
         _flags |= INTEGER(flags)[i];
+    SEXP ret;
+    PROTECT(ret = allocVector(LGLSXP, 1));
     LOGICAL(ret)[0] = (mongo_update(conn, _ns, _cond, _op, _flags) == MONGO_OK);
     UNPROTECT(1);
     return ret;
@@ -228,13 +225,11 @@ SEXP rmongo_update(SEXP mongo_conn, SEXP ns, SEXP cond, SEXP op, SEXP flags) {
 
 
 SEXP rmongo_remove(SEXP mongo_conn, SEXP ns, SEXP cond) {
-    _checkMongo(mongo_conn);
-    _checkBSON(cond);
+    mongo* conn = _checkMongo(mongo_conn);
+    const char* _ns = CHAR(STRING_ELT(ns, 0));
+    bson* _cond = _checkBSON(cond);
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
-    const char* _ns = CHAR(STRING_ELT(ns, 0));
-    bson* _cond = (bson*)R_ExternalPtrAddr(getAttrib(cond, sym_mongo_bson));
     LOGICAL(ret)[0] = (mongo_remove(conn, _ns, _cond) == MONGO_OK);
     UNPROTECT(1);
     return ret;
@@ -243,13 +238,10 @@ SEXP rmongo_remove(SEXP mongo_conn, SEXP ns, SEXP cond) {
 
 SEXP rmongo_find_one(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields)
 {
-    _checkMongo(mongo_conn);
-    _checkBSON(query);
-    _checkBSON(fields);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     const char* _ns = CHAR(STRING_ELT(ns, 0));
-    bson* _query = (bson*)R_ExternalPtrAddr(getAttrib(query, sym_mongo_bson));
-    bson* _fields = (bson*)R_ExternalPtrAddr(getAttrib(fields, sym_mongo_bson));
+    bson* _query = _checkBSON(query);
+    bson* _fields = _checkBSON(fields);
     bson out;
     if (mongo_find_one(conn, _ns, _query, _fields, &out) != MONGO_OK) {
         bson_destroy(&out);
@@ -287,15 +279,26 @@ SEXP _mongo_cursor_create(mongo_cursor* cursor)
 }
 
 
+mongo_cursor* _checkCursor(SEXP cursor) {
+    _checkClass(cursor, "mongo.cursor");
+    SEXP ptr = getAttrib(cursor, sym_mongo_cursor);
+    if (ptr == R_NilValue)
+        error("Attribute \"mongo.cursor\" is missing from mongo.cursor class object\n");
+    mongo_cursor* _cursor = (mongo_cursor*)R_ExternalPtrAddr(ptr);
+ /* NULL cursor value indicates no records returned from find
+    if (!_cursor)
+        error("mongo.cursor object appears to have been destroyed.\n");
+*/
+    return _cursor;
+}
+
+
 SEXP rmongo_find(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields, SEXP limit, SEXP skip, SEXP options)
 {
-    _checkMongo(mongo_conn);
-    _checkBSON(query);
-    _checkBSON(fields);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     const char* _ns = CHAR(STRING_ELT(ns, 0));
-    bson* _query = (bson*)R_ExternalPtrAddr(getAttrib(query, sym_mongo_bson));
-    bson* _fields = (bson*)R_ExternalPtrAddr(getAttrib(fields, sym_mongo_bson));
+    bson* _query = _checkBSON(query);
+    bson* _fields = _checkBSON(fields);
     int _limit = asInteger(limit);
     int _skip = asInteger(skip);
     int _options = 0;
@@ -310,10 +313,9 @@ SEXP rmongo_find(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields, SEXP limit, 
 
 
 SEXP rmongo_cursor_next(SEXP cursor) {
-    _checkCursor(cursor);
+    mongo_cursor* _cursor = _checkCursor(cursor);
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
-    mongo_cursor* _cursor = (mongo_cursor*)R_ExternalPtrAddr(getAttrib(cursor, sym_mongo_cursor));
     LOGICAL(ret)[0] = !_cursor ? FALSE : (mongo_cursor_next(_cursor) == MONGO_OK);
     UNPROTECT(1);
     return ret;
@@ -321,8 +323,7 @@ SEXP rmongo_cursor_next(SEXP cursor) {
 
 
 SEXP mongo_cursor_value(SEXP cursor) {
-    _checkCursor(cursor);
-    mongo_cursor* _cursor = (mongo_cursor*)R_ExternalPtrAddr(getAttrib(cursor, sym_mongo_cursor));
+    mongo_cursor* _cursor = _checkCursor(cursor);
     if (!_cursor || !_cursor->current.data)
         return R_NilValue;
     SEXP ret = _mongo_bson_create(&_cursor->current);
@@ -332,12 +333,11 @@ SEXP mongo_cursor_value(SEXP cursor) {
 
 
 SEXP rmongo_cursor_destroy(SEXP cursor) {
-    _checkCursor(cursor);
-    SEXP ptr = getAttrib(cursor, sym_mongo_cursor);
-    mongo_cursor* _cursor = (mongo_cursor*)R_ExternalPtrAddr(ptr);
+    mongo_cursor* _cursor = _checkCursor(cursor);
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
     LOGICAL(ret)[0] = mongo_cursor_destroy(_cursor);
+    SEXP ptr = getAttrib(cursor, sym_mongo_cursor);
     R_ClearExternalPtr(ptr);
     UNPROTECT(1);
     return ret;
@@ -345,8 +345,7 @@ SEXP rmongo_cursor_destroy(SEXP cursor) {
 
 
 SEXP mongo_index_create(SEXP mongo_conn, SEXP ns, SEXP key, SEXP options) {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     const char* _ns = CHAR(STRING_ELT(ns, 0));
     int _options = 0;
     int i;
@@ -357,7 +356,7 @@ SEXP mongo_index_create(SEXP mongo_conn, SEXP ns, SEXP key, SEXP options) {
     bson b;
     int keyIsBSON = _isBSON(key);
     if (keyIsBSON)
-        _key = (bson*)R_ExternalPtrAddr(getAttrib(key, sym_mongo_bson));
+        _key = _checkBSON(key);
     else {
         _key = &b;
         len = LENGTH(key);
@@ -382,9 +381,7 @@ SEXP mongo_index_create(SEXP mongo_conn, SEXP ns, SEXP key, SEXP options) {
 
 
 SEXP rmongo_count(SEXP mongo_conn, SEXP ns, SEXP query) {
-    _checkMongo(mongo_conn);
-    _checkBSON(query);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     const char* _ns = CHAR(STRING_ELT(ns, 0));
     char* p = strchr((char*)_ns, '.');
     if (!p)
@@ -393,23 +390,20 @@ SEXP rmongo_count(SEXP mongo_conn, SEXP ns, SEXP query) {
     char* db = Calloc(len+1, char);
     strncpy(db, _ns, len);
     db[len] = '\0';
-    bson* _query = (bson*)R_ExternalPtrAddr(getAttrib(query, sym_mongo_bson));
-    int64_t count = mongo_count(conn, db, p+1, _query);
-    Free(db);
+    bson* _query = _checkBSON(query);
     SEXP ret;
     PROTECT(ret = allocVector(REALSXP, 1));
-    REAL(ret)[0] = count;
+    REAL(ret)[0] = mongo_count(conn, db, p+1, _query);
+    Free(db);
     UNPROTECT(1);
     return ret;
 }
 
 
 SEXP mongo_command(SEXP mongo_conn, SEXP db, SEXP command) {
-    _checkMongo(mongo_conn);
-    _checkBSON(command);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     const char* _db = CHAR(STRING_ELT(db, 0));
-    bson* _command = (bson*)R_ExternalPtrAddr(getAttrib(command, sym_mongo_bson));
+    bson* _command = _checkBSON(command);
     bson out;
     if (mongo_run_command(conn, _db, _command, &out) != MONGO_OK) {
         bson_destroy(&out);
@@ -423,8 +417,7 @@ SEXP mongo_command(SEXP mongo_conn, SEXP db, SEXP command) {
 
 
 SEXP mongo_simple_command(SEXP mongo_conn, SEXP db, SEXP cmdstr, SEXP arg) {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     const char* _db = CHAR(STRING_ELT(db, 0));
     const char* _cmdstr = CHAR(STRING_ELT(cmdstr, 0));
     bson out;
@@ -445,8 +438,7 @@ SEXP mongo_simple_command(SEXP mongo_conn, SEXP db, SEXP cmdstr, SEXP arg) {
 
 
 SEXP mongo_drop_database(SEXP mongo_conn, SEXP db) {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     const char* _db = CHAR(STRING_ELT(db, 0));
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
@@ -457,8 +449,7 @@ SEXP mongo_drop_database(SEXP mongo_conn, SEXP db) {
 
 
 SEXP mongo_drop_collection(SEXP mongo_conn, SEXP ns) {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     const char* _ns = CHAR(STRING_ELT(ns, 0));
     char* p = strchr((char*)_ns, '.');
     if (!p)
@@ -477,8 +468,7 @@ SEXP mongo_drop_collection(SEXP mongo_conn, SEXP ns) {
 
 
 SEXP mongo_reset_error(SEXP mongo_conn, SEXP db) {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     const char* _db = CHAR(STRING_ELT(db, 0));
     mongo_cmd_reset_error(conn, _db);
     return R_NilValue;
@@ -486,8 +476,7 @@ SEXP mongo_reset_error(SEXP mongo_conn, SEXP db) {
 
 
 SEXP mongo_get_last_error(SEXP mongo_conn, SEXP db) {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     const char* _db = CHAR(STRING_ELT(db, 0));
     bson out;
     if (mongo_cmd_get_last_error(conn, _db, &out) == MONGO_OK) {
@@ -502,8 +491,7 @@ SEXP mongo_get_last_error(SEXP mongo_conn, SEXP db) {
 
 
 SEXP mongo_get_prev_error(SEXP mongo_conn, SEXP db) {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     const char* _db = CHAR(STRING_ELT(db, 0));
     bson out;
     if (mongo_cmd_get_prev_error(conn, _db, &out) == MONGO_OK) {
@@ -518,8 +506,7 @@ SEXP mongo_get_prev_error(SEXP mongo_conn, SEXP db) {
 
 
 SEXP mongo_is_master(SEXP mongo_conn) {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
     LOGICAL(ret)[0] = mongo_cmd_ismaster(conn, NULL);
@@ -530,8 +517,7 @@ SEXP mongo_is_master(SEXP mongo_conn) {
 
 SEXP mongo_add_user(SEXP mongo_conn, SEXP user, SEXP pass, SEXP db)
 {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     const char* _db = CHAR(STRING_ELT(db, 0));
     const char* _user = CHAR(STRING_ELT(user, 0));
     const char* _pass = CHAR(STRING_ELT(pass, 0));
@@ -544,8 +530,7 @@ SEXP mongo_add_user(SEXP mongo_conn, SEXP user, SEXP pass, SEXP db)
 
 
 SEXP mongo_authenticate(SEXP mongo_conn, SEXP user, SEXP pass, SEXP db) {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     const char* _user = CHAR(STRING_ELT(user, 0));
     const char* _pass = CHAR(STRING_ELT(pass, 0));
     const char* _db = CHAR(STRING_ELT(db, 0));
@@ -565,8 +550,7 @@ const char* _get_host_port(mongo_host_port* hp) {
 
 
 SEXP mongo_get_primary(SEXP mongo_conn) {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     SEXP ret;
     PROTECT(ret = allocVector(STRSXP, 1));
     SET_STRING_ELT(ret, 0, mkChar(_get_host_port(conn->primary)));
@@ -576,8 +560,7 @@ SEXP mongo_get_primary(SEXP mongo_conn) {
 
 
 SEXP mongo_get_hosts(SEXP mongo_conn) {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     mongo_replset* r = conn->replset;
     if (!r) return R_NilValue;
     int count = 0;
@@ -595,8 +578,7 @@ SEXP mongo_get_hosts(SEXP mongo_conn) {
 
 
 SEXP mongo_set_timeout(SEXP mongo_conn, SEXP timeout) {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     int _timeout = asInteger(timeout);
     mongo_set_op_timeout(conn, _timeout);
     return mongo_conn;
@@ -604,8 +586,7 @@ SEXP mongo_set_timeout(SEXP mongo_conn, SEXP timeout) {
 
 
 SEXP mongo_get_timeout(SEXP mongo_conn) {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     SEXP ret;
     PROTECT(ret = allocVector(INTSXP, 1));
     INTEGER(ret)[0] = conn->op_timeout_ms;
@@ -615,8 +596,7 @@ SEXP mongo_get_timeout(SEXP mongo_conn) {
 
 
 SEXP mongo_rename(SEXP mongo_conn, SEXP from_ns, SEXP to_ns) {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     const char* _from_ns = CHAR(STRING_ELT(from_ns, 0));
     const char* _to_ns = CHAR(STRING_ELT(to_ns, 0));
     bson cmd;
@@ -639,8 +619,7 @@ SEXP mongo_rename(SEXP mongo_conn, SEXP from_ns, SEXP to_ns) {
 
 
 SEXP mongo_get_databases(SEXP mongo_conn) {
-    _checkMongo(mongo_conn);
-    mongo* conn = (mongo*)R_ExternalPtrAddr(getAttrib(mongo_conn, sym_mongo));
+    mongo* conn = _checkMongo(mongo_conn);
     bson out;
     if (mongo_simple_int_command(conn, "admin", "listDatabases", 1, &out) != MONGO_OK) {
         bson_destroy(&out);

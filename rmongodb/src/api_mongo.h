@@ -1,23 +1,24 @@
 #include <Rinternals.h>
 
 SEXP mongo_create();
-SEXP rmongo_connect(SEXP connection);
+SEXP rmongo_connect(SEXP mongo_conn);
 SEXP rmongo_reconnect(SEXP mongo_conn);
 SEXP rmongo_disconnect(SEXP mongo_conn);
-SEXP mongo_is_connected(SEXP connection);
-SEXP mongo_get_socket(SEXP connection);
-SEXP mongo_get_primary(SEXP connection);
-SEXP mongo_get_hosts(SEXP connection);
-SEXP mongo_get_err(SEXP connection);
+SEXP rmongo_destroy(SEXP mongo_conn);
+SEXP mongo_is_connected(SEXP mongo_conn);
+SEXP mongo_get_socket(SEXP mongo_conn);
+SEXP mongo_get_primary(SEXP mongo_conn);
+SEXP mongo_get_hosts(SEXP mongo_conn);
+SEXP mongo_get_err(SEXP mongo_conn);
 SEXP mongo_clear_err(SEXP mongo_conn);
-SEXP mongo_set_timeout(SEXP connection, SEXP timeout);
-SEXP mongo_get_timeout(SEXP connection);
+SEXP mongo_set_timeout(SEXP mongo_conn, SEXP timeout);
+SEXP mongo_get_timeout(SEXP mongo_conn);
 
-SEXP mongo_get_server_err(SEXP connection);
-SEXP mongo_get_server_err_string(SEXP connection);
+SEXP mongo_get_server_err(SEXP mongo_conn);
+SEXP mongo_get_server_err_string(SEXP mongo_conn);
 
-SEXP rmongo_insert(SEXP connection, SEXP ns, SEXP bson);
-SEXP rmongo_update(SEXP connection, SEXP ns, SEXP cond, SEXP op, SEXP flags);
+SEXP rmongo_insert(SEXP mongo_conn, SEXP ns, SEXP bson);
+SEXP rmongo_update(SEXP mongo_conn, SEXP ns, SEXP cond, SEXP op, SEXP flags);
 SEXP rmongo_remove(SEXP mongo_conn, SEXP ns, SEXP cond);
 SEXP rmongo_find_one(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields);
 SEXP rmongo_find(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields, SEXP limit, SEXP skip, SEXP options);

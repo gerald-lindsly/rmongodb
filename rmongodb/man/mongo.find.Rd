@@ -22,7 +22,7 @@ mongo.find(mongo, ns, query=mongo.bson.empty(), fields=mongo.bson.empty(), limit
 \item{skip}{(as.integer) The number of matching records to skip before returning subsequent matching records.}
 \item{options}{(integer vector) Flags governing the requested operation as follows: mongo.find.cursor.tailable, 
     mongo.find.slave.ok, mongo.find.oplog.replay, mongo.find.no.cursor.timeout, mongo.find.await.data, 
-    mongo.find.exhaust, or mongo.find.partial.results
+    mongo.find.exhaust, or mongo.find.partial.results.}
 }
 \value{
 (\link{mongo.cursor}) An object of class "mongo.cursor" which is used to step through the matching records.

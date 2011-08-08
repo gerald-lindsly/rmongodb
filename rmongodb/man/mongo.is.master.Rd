@@ -6,6 +6,7 @@
 Determine if a mongo connection object is connected to a master.  Normally, this is only used
 with replsets to see if we are currently connected to the master of the replset.
 However, when connected to a singleton, this function reports TRUE also.
+}
 \usage{
 mongo.is.master(mongo)
 }
@@ -22,6 +23,7 @@ mongo.is.master(mongo)
 \examples{
 mongo <- mongo.create(c("127.0.0.1", "192.168.0.3"), name="Accounts")
 if (mongo.is.connected(mongo)) {
-    print(sprintf("IsMaster (%s)", if (mongo.is.master(mongo)) "Yes" else "No"))
+    print("isMaster")
+    print(if (mongo.is.master(mongo)) "Yes" else "No")
 }
 }

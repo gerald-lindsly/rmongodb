@@ -9,7 +9,7 @@ SEXP mongo_bson_size(SEXP b);
 SEXP mongo_bson_print(SEXP b);
 
 SEXP mongo_bson_iterator_create(SEXP b);
-SEXP mongo_bson_find(SEXP b, SEXP name, SEXP iter);
+SEXP mongo_bson_find(SEXP b, SEXP name);
 SEXP mongo_bson_iterator_more(SEXP b);
 SEXP mongo_bson_iterator_next(SEXP b);
 SEXP mongo_bson_iterator_key(SEXP b);

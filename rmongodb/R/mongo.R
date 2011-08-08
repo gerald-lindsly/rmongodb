@@ -22,6 +22,9 @@ mongo.disconnect <- function(mongo)
 mongo.reconnect <- function(mongo)
     .Call(".mongo.reconnect", mongo)
 
+mongo.destroy <- function(mongo)
+    .Call(".mongo.destroy", mongo)
+
 mongo.is.connected <- function(mongo)
     .Call(".mongo.is.connected", mongo)
 

@@ -15,7 +15,7 @@ mongo.command(mongo, db, command)
 \arguments{
 \item{mongo}{(\link{mongo}) A mongo connection object.}
 \item{db}{(string) The names of the database upon which to perform the command.}
-\item{command}{\link{mongo.bson} An object describing the command.
+\item{command}{\link{mongo.bson} An object describing the command.}
 }
 \value{
 NULL if the command failed.  Use \code{\link{mongo.get.last.err}()} to determine the cause.

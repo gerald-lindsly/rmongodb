@@ -130,7 +130,8 @@ if (mongo.is.connected(mongo)) {
     result <- mongo.find.one(mongo, ns, query)
 
     print("bson.find")
-    if (mongo.bson.find(result, "city", iter)) {
+    iter <- mongo.bson.find(result, "city")
+    if (!is.null(iter)) {
         city <- mongo.bson.iterator.value(iter)
         buf <- mongo.bson.buffer.create()
         mongo.bson.buffer.append(buf, "city", city)
@@ -180,4 +181,11 @@ if (mongo.is.connected(mongo)) {
     command <- mongo.bson.from.buffer(buf)
     print(mongo.command(mongo, "test", command))
 
+    cursor <- mongo.find(mongo, "test.system.namespaces", limit=100L)
+    while (mongo.cursor.next(cursor))
+        print(mongo.cursor.value(cursor))
+    mongo.cursor.destroy(cursor)
+
+    mongo.disconnect(mongo)
+    mongo.destroy(mongo)
 }

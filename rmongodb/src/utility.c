@@ -1,5 +1,6 @@
 #include "utility.h"
-
+#include "symbols.h"
+#include <Rinternals.h>
 #include <string.h>
 
 
@@ -25,8 +26,15 @@ void _checkClass(SEXP b, const char* name) {
 }
 
 
-void _checkBSON(SEXP b) {
+bson* _checkBSON(SEXP b) {
     _checkClass(b, "mongo.bson");
+    SEXP ptr = getAttrib(b, sym_mongo_bson);
+    if (ptr == R_NilValue)
+        error("Expected a \"mongo.bson\" attribute in object\n");
+    bson* _b = (bson*)R_ExternalPtrAddr(ptr);
+    if (!_b)
+        error("mongo.bson object appears to have been destroyed.\n");
+    return _b;
 }
 
 

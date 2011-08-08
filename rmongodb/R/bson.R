@@ -16,8 +16,8 @@ print.mongo.bson <- function(b, digits)
 mongo.bson.iterator.create <- function(b)
     .Call(".mongo.bson.iterator.create", b)
 
-mongo.bson.find <- function(b, name, iter)
-    .Call(".mongo.bson.find", b, name, iter)
+mongo.bson.find <- function(b, name)
+    .Call(".mongo.bson.find", b, name)
 
 
 mongo.bson.iterator.more <- function(iter)
