@@ -154,7 +154,5 @@ mongo.bson.buffer.start.array <- function(buf, name)
 mongo.bson.buffer.finish.object <- function(buf)
     .Call(".mongo.bson.buffer.finish.object", buf)
 
-
-
 mongo.sys.time <- function()
     .Call(".mongo.sys.time")

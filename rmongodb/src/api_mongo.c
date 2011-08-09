@@ -448,7 +448,7 @@ SEXP mongo_drop_database(SEXP mongo_conn, SEXP db) {
 }
 
 
-SEXP mongo_drop_collection(SEXP mongo_conn, SEXP ns) {
+SEXP mongo_drop(SEXP mongo_conn, SEXP ns) {
     mongo* conn = _checkMongo(mongo_conn);
     const char* _ns = CHAR(STRING_ELT(ns, 0));
     char* p = strchr((char*)_ns, '.');
