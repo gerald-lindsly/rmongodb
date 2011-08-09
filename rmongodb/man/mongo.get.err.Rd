@@ -11,8 +11,27 @@ mongo.get.err(mongo)
 \item{mongo}{(\link{mongo}) a mongo connection object.}
 }
 \value{
-(integer) error code as follows: 0 - Success, 1 - Bad argument, 2 - No socket,
-    3 - Fail, 4 - Not Master, 5 - Bad replica set name, 6 - Cannot find primary
+(integer) error code as follows:
+\item{0}{No Error}
+
+
+mongo.create() errors:
+
+\item{1}{No socket - Could not create socket.}
+\item{2}{Fail - An error occurred attempting to connect to socket}
+\item{3}{Address fail - An error occured calling getaddrinfo().}
+\item{4}{Not Master - Warning: connected to a non-master node (read-only).}
+\item{5}{Bad set name - given name doesn't match the replica set.}
+\item{6}{No Primary - Cannot find primary in replica set - connection closed.}
+
+
+Other errors:
+
+\item{7}{I/O error - An error occured reading or writing on the socket.}
+\item{8}{Read size error - The response is not the expected length.}
+\item{9}{Command failed - The command returned with 'ok' value of 0.}
+\item{10}{BSON invalid - Not valid for the specified operation.}
+\item{11}{BSON not finished - should not occur with R driver. }
 }
 \seealso{
 \code{\link{mongo.create}},

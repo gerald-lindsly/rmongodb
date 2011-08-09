@@ -66,6 +66,8 @@ if (mongo.is.connected(mongo)) {
     mongo.set.timeout(mongo, 2000)
     print(mongo.get.timeout(mongo))
 
+    print(mongo.simple.command(mongo, "admin", "buildInfo", 1))
+
     print(mongo.get.databases(mongo))
     print(mongo.simple.command(mongo, "test", "top", 1L))
     db <- "test"
@@ -95,20 +97,40 @@ if (mongo.is.connected(mongo)) {
 
     buf <- mongo.bson.buffer.create()
     mongo.bson.buffer.append(buf, "name", "Dave")
-    mongo.bson.buffer.append(buf, "city", "Cinci")
-    b <- mongo.bson.from.buffer(buf)
-    mongo.insert(mongo, ns, b)
+    mongo.bson.buffer.append(buf, "city", "Cincinnati")
+    x <- mongo.bson.from.buffer(buf)
 
     buf <- mongo.bson.buffer.create()
     mongo.bson.buffer.append(buf, "name", "Fred")
     mongo.bson.buffer.append(buf, "city", "Dayton")
-    b <- mongo.bson.from.buffer(buf)
-    mongo.insert(mongo, ns, b)
+    y <- mongo.bson.from.buffer(buf)
+
+    buf <- mongo.bson.buffer.create()
+    mongo.bson.buffer.append(buf, "name", "Silvia")
+    mongo.bson.buffer.append(buf, "city", "Cincinnati")
+    z <- mongo.bson.from.buffer(buf)
+    mongo.insert(mongo, ns, list(x, y, z))
 
     print("index create x2")
     print(mongo.index.create(mongo, ns, "city"))
 
     print(mongo.index.create(mongo, ns, c("name", "city")))
+
+    print("bad command")
+    buf <- mongo.bson.buffer.create()
+    mongo.bson.buffer.append(buf, "getlasterror", 1L)
+    command <- mongo.bson.from.buffer(buf)
+
+    result <- mongo.command(mongo, "test", command)
+    if (is.null(result)) {
+        mongo.get.last.err(mongo)
+        print(mongo.get.server.err(mongo))
+        print(mongo.get.server.err.string(mongo))
+    } else {
+        print(result)
+        print(mongo.get.server.err(mongo))
+        print(mongo.get.server.err.string(mongo))
+    }
 
     buf <- mongo.bson.buffer.create()
     mongo.bson.buffer.start.object(buf, "age")
@@ -168,10 +190,10 @@ if (mongo.is.connected(mongo)) {
     print("rename")
     buf <- mongo.bson.buffer.create()
     mongo.bson.buffer.append(buf, "renameCollection", ns)
-    mongo.bson.buffer.append(buf, "to", "test.humans")
+    mongo.bson.buffer.append(buf, "to", "foo.humans")
     command <- mongo.bson.from.buffer(buf)
     print(mongo.command(mongo, "admin", command))
-    ns <- "test.humans"
+    ns <- "foo.humans"
 
     print("count x2")
     print(mongo.count(mongo, ns))
@@ -179,13 +201,13 @@ if (mongo.is.connected(mongo)) {
     mongo.bson.buffer.append(buf, "count", "humans")
     mongo.bson.buffer.append(buf, "query", mongo.bson.empty())
     command <- mongo.bson.from.buffer(buf)
-    print(mongo.command(mongo, "test", command))
+    print(mongo.command(mongo, "foo", command))
 
-    cursor <- mongo.find(mongo, "test.system.namespaces", limit=100L)
+    cursor <- mongo.find(mongo, "foo.system.namespaces", limit=100L)
     while (mongo.cursor.next(cursor))
         print(mongo.cursor.value(cursor))
     mongo.cursor.destroy(cursor)
 
-    mongo.disconnect(mongo)
-    mongo.destroy(mongo)
+    ##mongo.disconnect(mongo)
+    ##mongo.destroy(mongo)
 }

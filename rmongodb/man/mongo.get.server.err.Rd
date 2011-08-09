@@ -5,11 +5,11 @@
 \description{
 Retrieve an server error code from a mongo connection object.
 
-The following functions set this error code if the server reports an error during their operation: \code{\link{mongo.find}()}, \code{\link{mongo.find.one}().}
+\code{\link{mongo.find}()}, \code{\link{mongo.find.one}()}, \code{\link{mongo.index.create}()}
+set or clear this error code depending on whether they are successful or not.
 
-\code{\link{mongo.index.create}()} sets or clears this error code depending on whether it is successful or not.
-
-\code{\link{mongo.get.last.error}()} and \code{\link{mongo.get.prev.error}()} both set or clear this error code according to what the server reports.
+\code{\link{mongo.get.last.error}()} and \code{\link{mongo.get.prev.error}()}
+both set or clear this error code according to what the server reports.
 }
 \usage{
 mongo.get.server.err(mongo)
@@ -26,6 +26,8 @@ mongo.get.server.err(mongo)
 \code{\link{mongo.get.prev.err}},
 \code{\link{mongo.find}},
 \code{\link{mongo.find.one}},
+\code{\link{mongo.index.create}},
+
 \link{mongo}
 }
 \examples{
@@ -38,7 +40,7 @@ if (mongo.is.connected(mongo)) {
     mongo.bson.buffer.finish.object(buf)
     query <- mongo.bson.from.buffer(buf)
 
-    result <- mongo.find.one(mongo, ns, query)
+    result <- mongo.find.one(mongo, "test.people", query)
     if (is.null(result)) {
         print(mongo.get.server.err.string(mongo))
         print(mongo.get.server.err(mongo))
