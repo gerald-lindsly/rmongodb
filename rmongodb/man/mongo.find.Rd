@@ -18,7 +18,7 @@ mongo.find(mongo, ns, query=mongo.bson.empty(), fields=mongo.bson.empty(), limit
 \item{fields}{(\link{mongo.bson}) The desired fields which are to be returned frtom the matching record.
     The default of mongo.bson.empty() will cause all fields of the matching record to be returned; 
     however, specific fields may be specified to cut down on network traffic and memory overhead.}
-\item{limit}{(as.integer) The maximum number of records to be returned.}
+\item{limit}{(as.integer) The maximum number of records to be returned. A limit of 0L will return all matching records not skipped.}
 \item{skip}{(as.integer) The number of matching records to skip before returning subsequent matching records.}
 \item{options}{(integer vector) Flags governing the requested operation as follows: mongo.find.cursor.tailable, 
     mongo.find.slave.ok, mongo.find.oplog.replay, mongo.find.no.cursor.timeout, mongo.find.await.data, 

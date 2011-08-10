@@ -11,8 +11,6 @@ This pointer is stored in the "mongo.bson" attribute of the object.
 \usage{
 mongo.bson.empty()
 }
-\arguments{
-}
 \value{
 An empty mongo.bson object
 }

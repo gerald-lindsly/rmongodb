@@ -28,26 +28,27 @@ NULL if no error was reported; otherwise,
 }
 \examples{
 mongo <- mongo.create()
-if (mongo.is.connected(mongo)) {
-    # construct a command with an invalid operator:
-    # { "count" : "people", "query" : { "age" : { "$bad" : 1 } } }
+if (mongo.is.connected(mongo)) {\
+
+    # try adding a duplcate record when index doesn't allow this
+
+    ns <- "test.people"
+    mongo.index.create(mongo, ns, "name", mongo.index.unique)
+
     buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append("count", "people")
-    mongo.bson.buffer.start.object(buf, "query")
-    mongo.bson.buffer.start.object(buf, "age")
-    mongo.bson.buffer.append(buf, "$bad", 1L)
-    mongo.bson.buffer.finish.object(buf)
-    mongo.bson.buffer.finish.object(buf)
-    command <- mongo.bson.from.buffer(buf)
+    mongo.bson.buffer.append(buf, "name", "John")
+    mongo.bson.buffer.append(buf, "age", 22L)
+    b <- mongo.bson.from.buffer(buf)
+    mongo.insert(mongo, ns, b);
 
-    result <- mongo.command(mongo, "test", command)
-    if (is.null(result)) {
-        err <- mongo.get.last.err(mongo)
-        print(mongo.get.server.err(mongo))
-        print(mongo.get.server.err.string(mongo))
+    buf <- mongo.bson.buffer.create()
+    mongo.bson.buffer.append(buf, "name", "John")
+    mongo.bson.buffer.append(buf, "age", 27L)
+    b <- mongo.bson.from.buffer(buf)
+    mongo.insert(mongo, ns, b);
 
-        iter <- mongo.bson.find(err, "err")
-        print(mongo.bson.iterator.value(iter)
-    }
+    err <- mongo.get.last.err(mongo)
+    print(mongo.get.server.err(mongo))
+    print(mongo.get.server.err.string(mongo))
 }
 }

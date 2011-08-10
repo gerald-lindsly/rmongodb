@@ -17,7 +17,7 @@ mongo.simple.command(mongo, db, cmdstr, arg)
 \item{mongo}{(\link{mongo}) A mongo connection object.}
 \item{db}{(string) The name of the database upon which to perform the command.}
 \item{cmdstr}{The name of the command.}
-\Item{arg}{An argument to the command, may be a string or numeric (as.integer).}
+\item{arg}{An argument to the command, may be a string or numeric (as.integer).}
 }
 \value{
 NULL if the command failed.  Use \code{\link{mongo.get.last.err}()} to determine the cause.

@@ -18,11 +18,12 @@ mongo.command(mongo, db, command)
 \item{command}{\link{mongo.bson} An object describing the command.}
 }
 \value{
-NULL if the command failed.  Use \code{\link{mongo.get.last.err}()} to determine the cause.
+NULL if the command failed.  \code{\link{mongo.get.err}()} may be set to MONGO_COMMAND_FAILED.
 
 (\link{mongo.bson} The server's response if successful.
 }
 \seealso{
+\code{\link{mongo.get.err}},
 \code{\link{mongo.simple.command}},
 \code{\link{mongo.rename}},
 \code{\link{mongo.count}},

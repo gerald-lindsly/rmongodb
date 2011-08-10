@@ -12,9 +12,10 @@ mongo.get.databases(mongo)
 \item{mongo}{(\link{mongo}) A mongo connection object.}
 }
 \value{
-(string vector) List of databases.  Note this will include the system databases "admin" and "local".
+(string vector) List of databases.  Note this will not include the system databases "admin" and "local".
 }
 \seealso{
+\code{\link{mongo.get.database.collections}},
 \code{\link{mongo.drop.database}},
 \code{\link{mongo.command}},
 \code{\link{mongo.rename}},

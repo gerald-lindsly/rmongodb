@@ -6,7 +6,7 @@
 Retrieve an server error string from a mongo connection object.
 
 \code{\link{mongo.find}()}, \code{\link{mongo.find.one}()}, \code{\link{mongo.index.create}()}
- set or clear this error string depending on whether they aresuccessful or not.
+ set or clear this error string depending on whether they are successful or not.
 
 \code{\link{mongo.get.last.error}()} and \code{\link{mongo.get.prev.error}()}
 both set or clear this error string according to what the server reports.
