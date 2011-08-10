@@ -33,10 +33,10 @@ SEXP mongo_drop_database(SEXP mongo_conn, SEXP db);
 SEXP mongo_drop(SEXP mongo_conn, SEXP ns);
 SEXP mongo_rename(SEXP mongo_conn, SEXP from_ns, SEXP to_ns);
 SEXP mongo_get_databases(SEXP mongo_conn);
-
-SEXP mongo_reset_error(SEXP mongo_conn, SEXP db);
-SEXP mongo_get_last_error(SEXP mongo_conn, SEXP db);
-SEXP mongo_get_prev_error(SEXP mongo_conn, SEXP db);
+SEXP mongo_get_database_collections(SEXP mongo_conn, SEXP db);
+SEXP mongo_reset_err(SEXP mongo_conn, SEXP db);
+SEXP mongo_get_last_err(SEXP mongo_conn, SEXP db);
+SEXP mongo_get_prev_err(SEXP mongo_conn, SEXP db);
 SEXP mongo_is_master(SEXP mongo_conn);
 SEXP mongo_add_user(SEXP mongo_conn, SEXP db, SEXP user, SEXP pass);
 SEXP mongo_authenticate(SEXP mongo_conn, SEXP db, SEXP user, SEXP pass);

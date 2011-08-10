@@ -52,14 +52,14 @@ mongo.authenticate <- function(mongo, username, password, db="admin")
 mongo.add.user <- function(mongo, username, password, db="admin")
     .Call(".mongo.add.user", mongo, username, password, db)
 
-mongo.get.last.error <- function(mongo, db)
-    .Call(".mongo.get.last.error", mongo, db)
+mongo.get.last.err <- function(mongo, db)
+    .Call(".mongo.get.last.err", mongo, db)
 
-mongo.get.prev.error <- function(mongo, db)
-    .Call(".mongo.get.prev.error", mongo, db)
+mongo.get.prev.err <- function(mongo, db)
+    .Call(".mongo.get.prev.err", mongo, db)
 
-mongo.reset.error <- function(mongo, db)
-    .Call(".mongo.reset.error", mongo, db)
+mongo.reset.err <- function(mongo, db)
+    .Call(".mongo.reset.err", mongo, db)
 
 mongo.get.server.err <- function(mongo)
     .Call(".mongo.get.server.err", mongo)
@@ -126,7 +126,7 @@ mongo.simple.command <- function(mongo, db, cmdstr, arg)
 mongo.drop.database <- function(mongo, db)
     .Call(".mongo.drop.database", mongo, db)
 
-mongo.drop.collection <- function(mongo, ns)
+mongo.drop <- function(mongo, ns)
     .Call(".mongo.drop", mongo, ns)
 
 mongo.rename <- function(mongo, from.ns, to.ns)
@@ -134,4 +134,7 @@ mongo.rename <- function(mongo, from.ns, to.ns)
 
 mongo.get.databases <- function(mongo)
     .Call(".mongo.get.databases", mongo)
+
+mongo.get.database.collections <- function(mongo, db)
+    .Call(".mongo.get.database.collections", mongo, db)
 

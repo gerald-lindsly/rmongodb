@@ -57,7 +57,6 @@ SEXP _mongo_bson_create(bson* b) {
     INTEGER(ret)[0] = 0;
     bson* obj = Calloc(1, bson);
     bson_copy(obj, b);
-    b->finished = 1;
     ptr = R_MakeExternalPtr(obj, sym_mongo_bson, R_NilValue);
     PROTECT(ptr);
     R_RegisterCFinalizerEx(ptr, bsonFinalizer, TRUE);
@@ -315,12 +314,8 @@ SEXP mongo_bson_size(SEXP b) {
 
 SEXP mongo_bson_print(SEXP b) {
     bson* _b = _checkBSON(b);
-    SEXP ret;
-    PROTECT(ret = allocVector(INTSXP, 1));
     bson_print(_b);
-    INTEGER(ret)[0] = 0;
-    UNPROTECT(1);
-    return ret;
+    return b;
 }
 
 
@@ -753,13 +748,11 @@ SEXP _mongo_bson_to_list(bson_iterator* _iter)
         switch (common_type) {
         case BSON_EOO:
         case BSON_INT:
-            printf("5");
             PROTECT(ret = allocVector(INTSXP, count));
             while (bson_iterator_next(&iter)) {
                 SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
                 INTEGER(ret)[i++] = bson_iterator_int(&iter);
             }
-            printf("6");
             break;
         case BSON_DOUBLE:
             PROTECT(ret = allocVector(REALSXP, count));
@@ -1359,6 +1352,7 @@ SEXP mongo_bson_buffer_start_object(SEXP buf, SEXP name) {
     return ret;
 }
 
+
 SEXP mongo_bson_buffer_finish_object(SEXP buf) {
     bson_buffer* _buf = _checkBuffer(buf);
     SEXP ret;
@@ -1368,6 +1362,15 @@ SEXP mongo_bson_buffer_finish_object(SEXP buf) {
     return ret;
 }
 
+
+SEXP mongo_bson_buffer_size(SEXP buf) {
+    bson_buffer* _buf = _checkBuffer(buf);
+    SEXP ret;
+    PROTECT(ret = allocVector(INTSXP, 1));
+    INTEGER(ret)[0] = _buf->cur - _buf->data + 1;
+    UNPROTECT(1);
+    return ret;
+}
 
 SEXP mongo_sys_time() {
     time_t t;

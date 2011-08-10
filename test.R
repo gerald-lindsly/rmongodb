@@ -69,22 +69,49 @@ if (mongo.is.connected(mongo)) {
     print(mongo.simple.command(mongo, "admin", "buildInfo", 1))
 
     print(mongo.get.databases(mongo))
-    print(mongo.simple.command(mongo, "test", "top", 1L))
+    #print(mongo.simple.command(mongo, "admin", "top", 1L))
+
     db <- "test"
     ns <- paste(db, "test", sep=".")
-    mongo.reset.error(mongo, db)
     print("drop collection x2")
-    print(mongo.drop.collection(mongo, ns))
-    print(mongo.drop.collection(mongo, "foo.bar"))
+    print(mongo.drop(mongo, ns))
+    print(mongo.drop(mongo, "foo.bar"))
     print("drop database")
     print(mongo.drop.database(mongo, db))
+
+    print("test add dup key")
+    ns <- paste(db, "people", sep=".")
+    mongo.index.create(mongo, ns, "name", mongo.index.unique)
+
+    buf <- mongo.bson.buffer.create()
+    mongo.bson.buffer.append(buf, "name", "John")
+    mongo.bson.buffer.append(buf, "age", 22L)
+    x <- mongo.bson.from.buffer(buf)
+    mongo.insert(mongo, ns, x);
+
+    buf <- mongo.bson.buffer.create()
+    mongo.bson.buffer.append(buf, "name", "John")
+    mongo.bson.buffer.append(buf, "age", 27L)
+    x <- mongo.bson.from.buffer(buf)
+    mongo.insert(mongo, ns, x);
+
+    err <- mongo.get.last.err(mongo, db)
+    print(mongo.get.server.err(mongo))
+    iter = mongo.bson.find(err, "code")
+    print(mongo.bson.iterator.value(iter))
+    print(mongo.get.server.err.string(mongo))
+    iter = mongo.bson.find(err, "err")
+    print(mongo.bson.iterator.value(iter))
+
+    mongo.reset.err(mongo, db)
+
+    # test various other database ops
 
     print("add user")
     print(mongo.add.user(mongo, "Gerald", "PaSsWoRd"))
 
     mongo.simple.command(mongo, db, "badcommand", 0L)
-    print("last error")
-    print(mongo.get.last.error(mongo, db))
+    print(mongo.get.err(mongo))
 
     print("insert")
     print(mongo.insert(mongo, ns, b))
@@ -103,7 +130,17 @@ if (mongo.is.connected(mongo)) {
     buf <- mongo.bson.buffer.create()
     mongo.bson.buffer.append(buf, "name", "Fred")
     mongo.bson.buffer.append(buf, "city", "Dayton")
+    mongo.bson.buffer.append(buf, "age", 21L)
+    print(mongo.bson.buffer.size(buf))
+
     y <- mongo.bson.from.buffer(buf)
+    print(mongo.bson.size(y))
+
+    l <- mongo.bson.to.list(y)
+    print(l$name)
+    print(l$city)
+    l$city <- "Detroit"
+    print(l)
 
     buf <- mongo.bson.buffer.create()
     mongo.bson.buffer.append(buf, "name", "Silvia")
@@ -115,22 +152,6 @@ if (mongo.is.connected(mongo)) {
     print(mongo.index.create(mongo, ns, "city"))
 
     print(mongo.index.create(mongo, ns, c("name", "city")))
-
-    print("bad command")
-    buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "getlasterror", 1L)
-    command <- mongo.bson.from.buffer(buf)
-
-    result <- mongo.command(mongo, "test", command)
-    if (is.null(result)) {
-        mongo.get.last.err(mongo)
-        print(mongo.get.server.err(mongo))
-        print(mongo.get.server.err.string(mongo))
-    } else {
-        print(result)
-        print(mongo.get.server.err(mongo))
-        print(mongo.get.server.err.string(mongo))
-    }
 
     buf <- mongo.bson.buffer.create()
     mongo.bson.buffer.start.object(buf, "age")
@@ -203,10 +224,13 @@ if (mongo.is.connected(mongo)) {
     command <- mongo.bson.from.buffer(buf)
     print(mongo.command(mongo, "foo", command))
 
-    cursor <- mongo.find(mongo, "foo.system.namespaces", limit=100L)
-    while (mongo.cursor.next(cursor))
-        print(mongo.cursor.value(cursor))
-    mongo.cursor.destroy(cursor)
+    buf <- mongo.bson.buffer.create()
+    mongo.bson.buffer.append(buf, "name", "Ford")
+    mongo.bson.buffer.append(buf, "engine", "Vv8")
+    z <- mongo.bson.from.buffer(buf)
+    mongo.insert(mongo, "foo.cars", z)
+
+    print(mongo.get.database.collections(mongo, "foo"))
 
     ##mongo.disconnect(mongo)
     ##mongo.destroy(mongo)

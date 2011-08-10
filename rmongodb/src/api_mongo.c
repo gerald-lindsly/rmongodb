@@ -467,7 +467,7 @@ SEXP mongo_drop(SEXP mongo_conn, SEXP ns) {
 }
 
 
-SEXP mongo_reset_error(SEXP mongo_conn, SEXP db) {
+SEXP mongo_reset_err(SEXP mongo_conn, SEXP db) {
     mongo* conn = _checkMongo(mongo_conn);
     const char* _db = CHAR(STRING_ELT(db, 0));
     mongo_cmd_reset_error(conn, _db);
@@ -475,7 +475,7 @@ SEXP mongo_reset_error(SEXP mongo_conn, SEXP db) {
 }
 
 
-SEXP mongo_get_last_error(SEXP mongo_conn, SEXP db) {
+SEXP mongo_get_last_err(SEXP mongo_conn, SEXP db) {
     mongo* conn = _checkMongo(mongo_conn);
     const char* _db = CHAR(STRING_ELT(db, 0));
     bson out;
@@ -490,7 +490,7 @@ SEXP mongo_get_last_error(SEXP mongo_conn, SEXP db) {
 }
 
 
-SEXP mongo_get_prev_error(SEXP mongo_conn, SEXP db) {
+SEXP mongo_get_prev_err(SEXP mongo_conn, SEXP db) {
     mongo* conn = _checkMongo(mongo_conn);
     const char* _db = CHAR(STRING_ELT(db, 0));
     bson out;
@@ -630,8 +630,13 @@ SEXP mongo_get_databases(SEXP mongo_conn) {
     bson_iterator_next(&it);
     bson_iterator_subiterator(&it, &databases);
     int count = 0;
-    while (bson_iterator_next(&databases))
-        count++;
+    while (bson_iterator_next(&databases)) {
+        bson_iterator_subiterator(&databases, &database);
+        bson_iterator_next(&database);
+        const char* name = bson_iterator_string(&database);
+        if (strcmp(name, "admin") != 0 && strcmp(name, "local") != 0)
+            count++;
+    }
     SEXP ret;
     PROTECT(ret = allocVector(STRSXP, count));
     bson_iterator_subiterator(&it, &databases);
@@ -639,9 +644,51 @@ SEXP mongo_get_databases(SEXP mongo_conn) {
     while (bson_iterator_next(&databases)) {
         bson_iterator_subiterator(&databases, &database);
         bson_iterator_next(&database);
-        SET_STRING_ELT(ret, i++, mkChar(bson_iterator_string(&database)));
+        const char* name = bson_iterator_string(&database);
+        if (strcmp(name, "admin") != 0 && strcmp(name, "local") != 0)
+            SET_STRING_ELT(ret, i++, mkChar(name));
     }
     bson_destroy(&out);
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP mongo_get_database_collections(SEXP mongo_conn, SEXP db) {
+    mongo* conn = _checkMongo(mongo_conn);
+    const char* _db = CHAR(STRING_ELT(db, 0));
+    int len = strlen(_db);
+    char ns[512];
+    strcpy(ns, _db);
+    strcpy(ns+len, ".system.namespaces");
+    bson empty;
+    bson_empty(&empty);
+    mongo_cursor* cursor = mongo_find(conn, ns, &empty, &empty, 0, 0, 0);
+    int count = 0;
+    while (cursor && mongo_cursor_next(cursor) == MONGO_OK) {
+        bson_iterator iter;
+        if (bson_find(&iter, &cursor->current, "name")) {
+            const char* name = bson_iterator_string(&iter);
+            if (strstr(name, ".system.") || strchr(name, '$'))
+                continue;
+            ++count;
+        }
+    }
+    mongo_cursor_destroy(cursor);
+    cursor = mongo_find(conn, ns, &empty, &empty, 0, 0, 0);
+    SEXP ret;
+    PROTECT(ret = allocVector(STRSXP, count));
+    int i = 0;
+    while (cursor && mongo_cursor_next(cursor) == MONGO_OK) {
+        bson_iterator iter;
+        if (bson_find(&iter, &cursor->current, "name")) {
+            const char* name = bson_iterator_string(&iter);
+            if (strstr(name, ".system.") || strchr(name, '$'))
+                continue;
+            SET_STRING_ELT(ret, i++, mkChar(name));
+        }
+    }
+    mongo_cursor_destroy(cursor);
     UNPROTECT(1);
     return ret;
 }

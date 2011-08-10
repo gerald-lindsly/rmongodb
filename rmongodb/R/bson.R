@@ -145,6 +145,9 @@ mongo.bson.buffer.append.element <- function(buf, name, value)
 mongo.bson.buffer.append <- function(buf, name, value)
     .Call(".mongo.bson.buffer.append", buf, name, value)
 
+mongo.bson.buffer.append.list <- function(buf, name, value)
+    .Call(".mongo.bson.buffer.append.list", buf, name, value)
+
 mongo.bson.buffer.start.object <- function(buf, name)
     .Call(".mongo.bson.buffer.start.object", buf, name)
 
@@ -153,6 +156,9 @@ mongo.bson.buffer.start.array <- function(buf, name)
 
 mongo.bson.buffer.finish.object <- function(buf)
     .Call(".mongo.bson.buffer.finish.object", buf)
+
+mongo.bson.buffer.size <- function(buf)
+    .Call(".mongo.bson.buffer.size", buf)
 
 mongo.sys.time <- function()
     .Call(".mongo.sys.time")

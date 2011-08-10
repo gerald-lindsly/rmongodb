@@ -22,9 +22,9 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.get.hosts", (DL_FUNC) mongo_get_hosts, 1 },
     { ".mongo.set.timeout", (DL_FUNC) mongo_set_timeout, 2 },
     { ".mongo.get.timeout", (DL_FUNC) mongo_get_timeout, 1 },
-    { ".mongo.get.last.error", (DL_FUNC) mongo_get_last_error, 2 },
-    { ".mongo.get.prev.error", (DL_FUNC) mongo_get_prev_error, 2 },
-    { ".mongo.reset.error", (DL_FUNC) mongo_reset_error, 2 },
+    { ".mongo.get.last.err", (DL_FUNC) mongo_get_last_err, 2 },
+    { ".mongo.get.prev.err", (DL_FUNC) mongo_get_prev_err, 2 },
+    { ".mongo.reset.err", (DL_FUNC) mongo_reset_err, 2 },
     { ".mongo.is.master", (DL_FUNC) mongo_is_master, 1 },
     { ".mongo.add.user", (DL_FUNC) mongo_add_user, 4 },
     { ".mongo.authenticate", (DL_FUNC) mongo_authenticate, 4 },
@@ -46,6 +46,7 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.drop", (DL_FUNC) mongo_drop, 2 },
     { ".mongo.rename", (DL_FUNC) mongo_rename, 3 },
     { ".mongo.get.databases", (DL_FUNC) mongo_get_databases, 1 },
+    { ".mongo.get.database.collections", (DL_FUNC) mongo_get_database_collections, 2 },
 
     { ".mongo.bson.empty", (DL_FUNC) mongo_bson_empty, 0},
     { ".mongo.bson.size", (DL_FUNC) mongo_bson_size, 1},
@@ -97,9 +98,11 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.bson.buffer.append.bson", (DL_FUNC) mongo_bson_buffer_append_bson, 3},
     { ".mongo.bson.buffer.append.element", (DL_FUNC) mongo_bson_buffer_append_element, 3},
     { ".mongo.bson.buffer.append", (DL_FUNC) mongo_bson_buffer_append, 3},
+    { ".mongo.bson.buffer.append.list", (DL_FUNC) mongo_bson_buffer_append_list, 3},
     { ".mongo.bson.buffer.start.object", (DL_FUNC) mongo_bson_buffer_start_object, 2},
     { ".mongo.bson.buffer.start.array", (DL_FUNC) mongo_bson_buffer_start_array, 2},
     { ".mongo.bson.buffer.finish.object", (DL_FUNC) mongo_bson_buffer_finish_object, 1},
+    { ".mongo.bson.buffer.size", (DL_FUNC) mongo_bson_buffer_size, 1},
 
     { NULL, NULL, 0 }
 };
