@@ -17,8 +17,7 @@ If value has a names attribute, a subobject is appended and the subfields are gi
 
 Othersize, if more than one element is present in value, the values are appended as a subarray.
 
-In the last case, a single double is appended as the value of the field.
-
+In the last case, a single double is appended as the value of the field.}
 }
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.

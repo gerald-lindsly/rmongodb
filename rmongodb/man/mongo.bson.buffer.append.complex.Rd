@@ -20,8 +20,7 @@ If value has a names attribute, a subobject is appended and the subfields are gi
 
 Othersize, if more than one element is present in value, the values are appended as a subarray.
 
-In the last case, a single complex is appended as the value of the field.
-
+In the last case, a single complex is appended as the value of the field.}
 }
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
@@ -42,7 +41,7 @@ buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append.complex(buf, "complexi", c(1.7 + 2.1i, 97.2))
 b <- mongo.bson.from.buffer(buf)
 
-# The above produces a BSON object of the form { "complexi" : [{ "r": 1.7, i : 2.1}, { "r": 97.2, "i" : 0} ] }
+# The above produces a BSON object of the form { "complexi" : [ { "r": 1.7, i : 2.1}, { "r": 97.2, "i" : 0} ] }
 
 buf <- mongo.bson.buffer.create()
 values <- c(0.5 + 0.1i, 0.25)
