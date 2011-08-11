@@ -1,0 +1,56 @@
+% File rmongodb/man/mongo.bson.buffer.append.complex.Rd
+\name{mongo.bson.buffer.append.complex}
+\alias{mongo.bson.buffer.append.complex}
+\title{Append a double field onto a mongo.bson.buffer}
+\description{
+Append a double or vector of doubles onto a mongo.bson.buffer.
+
+Note that since BSON has no built-in complex type, R's complex values are appended as subobjects with two fields:
+"r" : the real part and "i" : the imaginary part.
+}
+\usage{
+mongo.bson.buffer.append.complex(buf, name, value)
+}
+\arguments{
+\item{buf}{(\link{mongo.bson}) The mongo.bson.buffer object to which to append. }
+\item{name}{(string) the name (key) of the field appended to the buffer. }
+\item{value}{(complex vector) the values(s) to append to the buffer.
+
+If value has a names attribute, a subobject is appended and the subfields are given the indicated names.
+
+Othersize, if more than one element is present in value, the values are appended as a subarray.
+
+In the last case, a single complex is appended as the value of the field.
+
+}
+\value{
+TRUE if successful; otherwise, FALSE if an error occured appending the data.
+}
+\seealso{
+\link{mongo.bson}
+\link{mongo.bson.buffer}
+\code{\link{mongo.bson.buffer.append}}
+}
+\examples{
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append.complex(buf, "Alpha", 3.14159 + 2i)
+b <- mongo.bson.from.buffer(buf)
+
+# The above produces a BSON object of the form { "Alpha" : { "r" : 3.14159, "i" : 2 } }
+
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append.complex(buf, "complexi", c(1.7 + 2.1i, 97.2))
+b <- mongo.bson.from.buffer(buf)
+
+# The above produces a BSON object of the form { "complexi" : [{ "r": 1.7, i : 2.1}, { "r": 97.2, "i" : 0} ] }
+
+buf <- mongo.bson.buffer.create()
+values <- c(0.5 + 0.1i, 0.25)
+names(Values) <- c("Theta", "Epsilon")
+mongo.bson.buffer.append.complex(buf, "Values", distances)
+b <- mongo.bson.from.buffer(buf)
+
+# The above produces a BSON object of the form:
+# { "Values" : { "Theta" : { "r" : 0.5, "i" : 0.1 }, "Epsilon" : { " r" : 0.25, "i" : 0 } } }
+
+}
