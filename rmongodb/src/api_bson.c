@@ -1182,16 +1182,27 @@ SEXP mongo_bson_buffer_append_string(SEXP buf, SEXP name, SEXP value) {
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
     int len = LENGTH(value);
-    if (len == 1)
-        LOGICAL(ret)[0] = (bson_append_string(_buf, _name, CHAR(STRING_ELT(value, 0))) == BSON_OK);
+    SEXP names = getAttrib(value, R_NamesSymbol);
+    if (names == R_NilValue)
+        if (len == 1)
+            LOGICAL(ret)[0] = (bson_append_string(_buf, _name, CHAR(STRING_ELT(value, 0))) == BSON_OK);
+        else {
+            int success = (bson_append_start_array(_buf, _name) == BSON_OK);
+            int i;
+            for (i = 0; i < len && success; i++)
+                success &= (bson_append_string(_buf, numstr(i), CHAR(STRING_ELT(value, i))) == BSON_OK);
+            success &= (bson_append_finish_object(_buf) == BSON_OK);
+            LOGICAL(ret)[0] = success;
+        }
     else {
-        int success = (bson_append_start_array(_buf, _name) == BSON_OK);
+        int success = (bson_append_start_object(_buf, _name) == BSON_OK);
         int i;
         for (i = 0; i < len && success; i++)
-            success &= (bson_append_string(_buf, numstr(i), CHAR(STRING_ELT(value, i))) == BSON_OK);
+            success &= (bson_append_string(_buf, CHAR(STRING_ELT(names, i)), CHAR(STRING_ELT(value,i))) == BSON_OK);
         success &= (bson_append_finish_object(_buf) == BSON_OK);
         LOGICAL(ret)[0] = success;
     }
+
     UNPROTECT(1);
     return ret;
 }
