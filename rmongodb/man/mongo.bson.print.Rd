@@ -1,7 +1,7 @@
 % File rmongodb/man/mongo.bson.print.Rd
 \name{mongo.bson.print}
 \alias{mongo.bson.print}
-\title{Display a  mongo.bson object}
+\title{Display a mongo.bson object}
 \description{
 Display formatted output of a mongo.bson object.
 
@@ -11,7 +11,7 @@ Output is tabbed (indented to show the nesting level of subobjects and arrays).
 mongo.bson.print(b)
 }
 \arguments{
-\item{(\link{mongo.bson}}{ The mongo.bson object to display. }
+\item{b}{(\link{mongo.bson}) The mongo.bson object to display. }
 }
 \value{
 The parameter is returned unchanged.
