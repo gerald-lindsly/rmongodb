@@ -23,9 +23,9 @@ TRUE if successful; otherwise, FALSE if an error occured appending the data.
 }
 \examples{
 buf <- mongo.bson.buffer.create()
-mongo.bson.buffer.append.null(buf, "Null", NULL)
+mongo.bson.buffer.append.null(buf, "Nil")
 b <- mongo.bson.from.buffer(buf)
 
-# The above produces a BSON object of the form { "Null" : NULL }
+# The above produces a BSON object of the form { "Nil" : NULL }
 
 }
