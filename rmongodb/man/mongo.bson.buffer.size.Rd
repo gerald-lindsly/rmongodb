@@ -3,11 +3,11 @@
 \alias{mongo.bson.buffer.size}
 \title{Get the size of a mongo.bson.buffer object}
 \description{
-Get the number of bytes which would be taken up by the BSON data with the buffer is converted
+Get the number of bytes which would be taken up by the BSON data when the buffer is converted
 to a mongo.bson object with \code{\link{mongo.bson.from.buffer}()}.
 }
 \usage{
-mongo..bson.buffer.size(buf)
+mongo.bson.buffer.size(buf)
 }
 \arguments{
 \item{buf}{(\link{mongo.bson.buffer}) the mongo.bson.buffer object to examine.}
@@ -22,7 +22,7 @@ to a mongo.bson object with \code{\link{mongo.bson.from.buffer}()}.
 }
 \examples{
 # should report 5
-print(mongo..bson.buffer.size(mongo.bson.empty());
+print(mongo.bson.buffer.size(mongo.bson.empty());
 
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append(buf, "name", "Fred")
