@@ -1317,8 +1317,13 @@ SEXP mongo_bson_buffer_append_list(SEXP buf, SEXP name, SEXP value) {
     int i;
     SEXP names = getAttrib(value, R_NamesSymbol);
     if (names != R_NilValue)
-        for (i = 0; i < len && success; i++)
-            success &= LOGICAL(mongo_bson_buffer_append(buf, STRING_ELT(names, i), VECTOR_ELT(value, i)))[0];
+        for (i = 0; i < len && success; i++) {
+            SEXP fname;
+            PROTECT(fname = allocVector(STRSXP, 1));
+            SET_STRING_ELT(fname, 0, STRING_ELT(names, i));
+            success &= LOGICAL(mongo_bson_buffer_append(buf, fname, VECTOR_ELT(value, i)))[0];
+            UNPROTECT(1);
+        }
     else
         for (i = 0; i < len && success; i++)
             success &= LOGICAL(mongo_bson_buffer_append(buf, mkChar(numstr(i+1)), VECTOR_ELT(value, i)))[0];
