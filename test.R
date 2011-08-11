@@ -60,178 +60,185 @@ print(attr(ts, "increment"))
 
 print(mongo.bson.to.list(b))
 mongo <- mongo.create()
-if (mongo.is.connected(mongo)) {
-    print(mongo.get.primary(mongo))
-    print(sprintf("IsMaster (%s)", if (mongo.is.master(mongo)) "Yes" else "No"))
-    mongo.set.timeout(mongo, 2000)
-    print(mongo.get.timeout(mongo))
+if (!mongo.is.connected(mongo))
+    stop("No connnection")
 
-    print(mongo.simple.command(mongo, "admin", "buildInfo", 1))
+print(mongo.get.primary(mongo))
+print(sprintf("IsMaster (%s)", if (mongo.is.master(mongo)) "Yes" else "No"))
+mongo.set.timeout(mongo, 2000)
+print(mongo.get.timeout(mongo))
 
-    print(mongo.get.databases(mongo))
-    #print(mongo.simple.command(mongo, "admin", "top", 1L))
+print(mongo.simple.command(mongo, "admin", "buildInfo", 1))
 
-    db <- "test"
-    ns <- paste(db, "test", sep=".")
-    print("drop collection x2")
-    print(mongo.drop(mongo, ns))
-    print(mongo.drop(mongo, "foo.bar"))
-    print("drop database")
-    print(mongo.drop.database(mongo, db))
+print(mongo.get.databases(mongo))
+#print(mongo.simple.command(mongo, "admin", "top", 1L))
 
-    print("test add dup key")
-    ns <- paste(db, "people", sep=".")
-    mongo.index.create(mongo, ns, "name", mongo.index.unique)
+db <- "test"
+ns <- paste(db, "test", sep=".")
+print("drop collection x2")
+print(mongo.drop(mongo, ns))
+print(mongo.drop(mongo, "foo.bar"))
+print("drop database")
+print(mongo.drop.database(mongo, db))
 
-    buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "name", "John")
-    mongo.bson.buffer.append(buf, "age", 22L)
-    x <- mongo.bson.from.buffer(buf)
-    mongo.insert(mongo, ns, x);
+print("test add dup key")
+ns <- paste(db, "people", sep=".")
+mongo.index.create(mongo, ns, "name", mongo.index.unique)
 
-    buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "name", "John")
-    mongo.bson.buffer.append(buf, "age", 27L)
-    x <- mongo.bson.from.buffer(buf)
-    mongo.insert(mongo, ns, x);
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append(buf, "name", "John")
+mongo.bson.buffer.append(buf, "age", 22L)
+x <- mongo.bson.from.buffer(buf)
+mongo.insert(mongo, ns, x);
 
-    err <- mongo.get.last.err(mongo, db)
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append(buf, "name", "John")
+mongo.bson.buffer.append(buf, "age", 27L)
+x <- mongo.bson.from.buffer(buf)
+mongo.insert(mongo, ns, x);
+
+err <- mongo.get.last.err(mongo, db)
+print(mongo.get.server.err(mongo))
+iter = mongo.bson.find(err, "code")
+print(mongo.bson.iterator.value(iter))
+print(mongo.get.server.err.string(mongo))
+iter = mongo.bson.find(err, "err")
+print(mongo.bson.iterator.value(iter))
+
+mongo.reset.err(mongo, db)
+
+# test various other database ops
+
+print("add user")
+print(mongo.add.user(mongo, "Gerald", "PaSsWoRd"))
+
+mongo.simple.command(mongo, db, "badcommand", 0L)
+print(mongo.get.err(mongo))
+
+print("insert")
+print(mongo.insert(mongo, ns, b))
+
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append(buf, "name", "Dwight")
+mongo.bson.buffer.append(buf, "city", "NY")
+b <- mongo.bson.from.buffer(buf)
+mongo.insert(mongo, ns, b)
+
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append(buf, "name", "Dave")
+mongo.bson.buffer.append(buf, "city", "Cincinnati")
+x <- mongo.bson.from.buffer(buf)
+
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append(buf, "name", "Fred")
+mongo.bson.buffer.append(buf, "city", "Dayton")
+mongo.bson.buffer.append(buf, "age", 21L)
+print(mongo.bson.buffer.size(buf))
+
+y <- mongo.bson.from.buffer(buf)
+print(mongo.bson.size(y))
+
+l <- mongo.bson.to.list(y)
+print(l$name)
+print(l$city)
+l$city <- "Detroit"
+print(l)
+
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append(buf, "name", "Silvia")
+mongo.bson.buffer.append(buf, "city", "Cincinnati")
+z <- mongo.bson.from.buffer(buf)
+mongo.insert(mongo, ns, list(x, y, z))
+
+print("index create x2")
+print(mongo.index.create(mongo, ns, "city"))
+
+print(mongo.index.create(mongo, ns, c("name", "city")))
+
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.start.object(buf, "age")
+mongo.bson.buffer.append(buf, "$bad", 1L)
+mongo.bson.buffer.finish.object(buf)
+query  <- mongo.bson.from.buffer(buf)
+print("bad find.one")
+result <- mongo.find.one(mongo, ns, query)
+if (is.null(result)) {
     print(mongo.get.server.err(mongo))
-    iter = mongo.bson.find(err, "code")
-    print(mongo.bson.iterator.value(iter))
     print(mongo.get.server.err.string(mongo))
-    iter = mongo.bson.find(err, "err")
-    print(mongo.bson.iterator.value(iter))
+} else
+    print(result)
 
-    mongo.reset.err(mongo, db)
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append(buf, "name", "Dave")
+query  <- mongo.bson.from.buffer(buf)
+print("find.one")
+result <- mongo.find.one(mongo, ns, query)
 
-    # test various other database ops
-
-    print("add user")
-    print(mongo.add.user(mongo, "Gerald", "PaSsWoRd"))
-
-    mongo.simple.command(mongo, db, "badcommand", 0L)
-    print(mongo.get.err(mongo))
-
-    print("insert")
-    print(mongo.insert(mongo, ns, b))
-
+print("bson.find")
+iter <- mongo.bson.find(result, "city")
+if (!is.null(iter)) {
+    city <- mongo.bson.iterator.value(iter)
     buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "name", "Dwight")
-    mongo.bson.buffer.append(buf, "city", "NY")
-    b <- mongo.bson.from.buffer(buf)
-    mongo.insert(mongo, ns, b)
-
-    buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "name", "Dave")
-    mongo.bson.buffer.append(buf, "city", "Cincinnati")
-    x <- mongo.bson.from.buffer(buf)
-
-    buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "name", "Fred")
-    mongo.bson.buffer.append(buf, "city", "Dayton")
-    mongo.bson.buffer.append(buf, "age", 21L)
-    print(mongo.bson.buffer.size(buf))
-
-    y <- mongo.bson.from.buffer(buf)
-    print(mongo.bson.size(y))
-
-    l <- mongo.bson.to.list(y)
-    print(l$name)
-    print(l$city)
-    l$city <- "Detroit"
-    print(l)
-
-    buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "name", "Silvia")
-    mongo.bson.buffer.append(buf, "city", "Cincinnati")
-    z <- mongo.bson.from.buffer(buf)
-    mongo.insert(mongo, ns, list(x, y, z))
-
-    print("index create x2")
-    print(mongo.index.create(mongo, ns, "city"))
-
-    print(mongo.index.create(mongo, ns, c("name", "city")))
-
-    buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.start.object(buf, "age")
-    mongo.bson.buffer.append(buf, "$bad", 1L)
-    mongo.bson.buffer.finish.object(buf)
-    query  <- mongo.bson.from.buffer(buf)
-    print("bad find.one")
-    result <- mongo.find.one(mongo, ns, query)
-    if (is.null(result)) {
-        print(mongo.get.server.err(mongo))
-        print(mongo.get.server.err.string(mongo))
-    } else
-        print(result)
-
-    buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "name", "Dave")
-    query  <- mongo.bson.from.buffer(buf)
-    print("find.one")
-    result <- mongo.find.one(mongo, ns, query)
-
-    print("bson.find")
-    iter <- mongo.bson.find(result, "city")
-    if (!is.null(iter)) {
-        city <- mongo.bson.iterator.value(iter)
-        buf <- mongo.bson.buffer.create()
-        mongo.bson.buffer.append(buf, "city", city)
-        query <- mongo.bson.from.buffer(buf)
-        print(paste("find city: ", city, sep=""))
-        print(mongo.find.one(mongo, ns, query))
-    }
-
-    buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "_id", oid)
+    mongo.bson.buffer.append(buf, "city", city)
     query <- mongo.bson.from.buffer(buf)
-
-    buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.start.object(buf, "$inc")
-    mongo.bson.buffer.append(buf, "age", 1L)
-    mongo.bson.buffer.finish.object(buf)
-    op  <- mongo.bson.from.buffer(buf)
-
-    mongo.update(mongo, ns, query, op)
-
-    cursor <- mongo.find(mongo, ns, limit=100L)
-    print(mongo.cursor.value(cursor))
-    while (mongo.cursor.next(cursor))
-        print(mongo.cursor.value(cursor))
-    mongo.cursor.destroy(cursor)
-
-    buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "name", "")
-    mongo.bson.buffer.append(buf, "age", 1L)
-    b <- mongo.bson.from.buffer(buf)
-    print("index create")
-    print(mongo.index.create(mongo, ns, b))
- 
-    print("rename")
-    buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "renameCollection", ns)
-    mongo.bson.buffer.append(buf, "to", "foo.humans")
-    command <- mongo.bson.from.buffer(buf)
-    print(mongo.command(mongo, "admin", command))
-    ns <- "foo.humans"
-
-    print("count x2")
-    print(mongo.count(mongo, ns))
-    buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "count", "humans")
-    mongo.bson.buffer.append(buf, "query", mongo.bson.empty())
-    command <- mongo.bson.from.buffer(buf)
-    print(mongo.command(mongo, "foo", command))
-
-    buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "name", "Ford")
-    mongo.bson.buffer.append(buf, "engine", "Vv8")
-    z <- mongo.bson.from.buffer(buf)
-    mongo.insert(mongo, "foo.cars", z)
-
-    print(mongo.get.database.collections(mongo, "foo"))
-
-    ##mongo.disconnect(mongo)
-    ##mongo.destroy(mongo)
+    print(paste("find city: ", city, sep=""))
+    print(mongo.find.one(mongo, ns, query))
 }
+
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append(buf, "_id", oid)
+query <- mongo.bson.from.buffer(buf)
+
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.start.object(buf, "$inc")
+mongo.bson.buffer.append(buf, "age", 1L)
+mongo.bson.buffer.finish.object(buf)
+op  <- mongo.bson.from.buffer(buf)
+
+mongo.update(mongo, ns, query, op)
+
+cursor <- mongo.find(mongo, ns, limit=100L)
+print(mongo.cursor.value(cursor))
+while (mongo.cursor.next(cursor))
+    print(mongo.cursor.value(cursor))
+mongo.cursor.destroy(cursor)
+
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append(buf, "name", "")
+mongo.bson.buffer.append(buf, "age", 1L)
+b <- mongo.bson.from.buffer(buf)
+print("index create")
+print(mongo.index.create(mongo, ns, b))
+ 
+print("rename")
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append(buf, "renameCollection", ns)
+mongo.bson.buffer.append(buf, "to", "foo.humans")
+command <- mongo.bson.from.buffer(buf)
+print(mongo.command(mongo, "admin", command))
+ns <- "foo.humans"
+
+print("count x2")
+print(mongo.count(mongo, ns))
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append(buf, "count", "humans")
+mongo.bson.buffer.append(buf, "query", mongo.bson.empty())
+command <- mongo.bson.from.buffer(buf)
+print(mongo.command(mongo, "foo", command))
+
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append(buf, "name", "Ford")
+mongo.bson.buffer.append(buf, "engine", "Vv8")
+z <- mongo.bson.from.buffer(buf)
+mongo.insert(mongo, "foo.cars", z)
+
+print(mongo.get.database.collections(mongo, "foo"))
+
+buf <- mongo.bson.buffer.create()
+l <- list(fruit = "apple", hasSeeds = TRUE)
+mongo.bson.buffer.append.list(buf, "item", l)
+b <- mongo.bson.from.buffer(buf)
+print(b)
+
+##mongo.disconnect(mongo)
+##mongo.destroy(mongo)

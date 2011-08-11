@@ -5,13 +5,13 @@ mongo.bson.size <- function(b)
     .Call(".mongo.bson.size", b)
 
 mongo.bson.print <- function(b)
-    .Call(".mongo.bson.print", b)
+    invisible(.Call(".mongo.bson.print", b))
+
+print.mongo.bson <- function(b, digits)
+    invisible(.Call(".mongo.bson.print", b))
 
 mongo.bson.to.list <- function(b)
     .Call(".mongo.bson.to.list", b)
-
-print.mongo.bson <- function(b, digits)
-    .Call(".mongo.bson.print", b)
 
 mongo.bson.iterator.create <- function(b)
     .Call(".mongo.bson.iterator.create", b)
