@@ -186,7 +186,7 @@ SEXP mongo_binary_set(SEXP bin, SEXP index, SEXP value) {
     int i = asInteger(index);
     int len = INTEGER(getAttrib(bin, sym_length))[0];
     if (i >= len)
-        error("index (%d) must be less than length (%d) of binary object", i, len);
+        error("index (%d) must be less than the length (%d) of the binary object", i, len);
     char* data = (char*)R_ExternalPtrAddr(getAttrib(bin, sym_mongo_binary));
     data[i] = (char)asInteger(value);
     return R_NilValue;
@@ -198,7 +198,7 @@ SEXP mongo_binary_get(SEXP bin, SEXP index) {
     int i = asInteger(index);
     int len = INTEGER(getAttrib(bin, sym_length))[0];
     if (i >= len)
-        error("index (%d) must be less than length (%d) of binary object", i, len);
+        error("index (%d) must be less than the length (%d) of the binary object", i, len);
     char* data = (char*)R_ExternalPtrAddr(getAttrib(bin, sym_mongo_binary));
     SEXP ret;
     PROTECT(ret = allocVector(INTSXP, 1));
@@ -416,8 +416,8 @@ SEXP _createPOSIXct(int t) {
 
 SEXP _mongo_timestamp_create(int t, int i) {
     SEXP ret, cls, inc;
-    PROTECT(ret = allocVector(REALSXP, 1));
-    REAL(ret)[0] = t;
+    PROTECT(ret = allocVector(INTSXP, 1));
+    INTEGER(ret)[0] = t;
     PROTECT(inc = allocVector(INTSXP, 1));
     INTEGER(inc)[0] = i;
     setAttrib(ret, sym_increment, inc);
