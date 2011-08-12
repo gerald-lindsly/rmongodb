@@ -48,10 +48,10 @@ mongo.oid.time <- function(oid)
     .Call(".mongo.oid.time", oid)
 
 mongo.oid.print <- function(oid)
-    .Call(".mongo.oid.print", oid)
+    invisible(.Call(".mongo.oid.print", oid))
 
 print.mongo.oid <- function(oid)
-    .Call(".mongo.oid.print", oid)
+    invisible(.Call(".mongo.oid.print", oid))
 
 
 mongo.timestamp.create <- function(t, i)
