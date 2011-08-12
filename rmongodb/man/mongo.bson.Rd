@@ -20,10 +20,10 @@ mongo.bson object to enumerate its keys and values.
 objects of class "mongo.bson.buffer" are used to build BSON documents.
 }
 \examples{
-    b <- mongo.bson.from.buffer(buf)
-    iter <- mongo.bson.iterator.create(b)  # b is of class "mongo.bson"
-    while (mongo.bson.iterator.next(iter))
-        print(mongo.bson.iterator.value(iter))
+b <- mongo.bson.from.buffer(buf)
+iter <- mongo.bson.iterator.create(b)  # b is of class "mongo.bson"
+while (mongo.bson.iterator.next(iter))
+    print(mongo.bson.iterator.value(iter))
 }
 \seealso{
 \code{\link{mongo.bson.iterator}},

@@ -14,20 +14,20 @@ may detect them and append the appropriate BSON undefined value to a buffer.
 These mongo.undefined values may also be present in a list and will be handled properly by \code{\link{mongo.bson.buffer.append.list}()}
 }
 \examples{
-    buf <- mongo.bson.buffer.create()
-    undef <- mongo.undefined.create()
-    mongo.bson.buffer.append(buf, "Undef", undef)
-    l <- list(u1 = undef, One = 1)
-    mongo.bson.buffer.append.list(buf, "listWundef", l)
-    b <- mongo.bson.from.buffer(buf)
+buf <- mongo.bson.buffer.create()
+undef <- mongo.undefined.create()
+mongo.bson.buffer.append(buf, "Undef", undef)
+l <- list(u1 = undef, One = 1)
+mongo.bson.buffer.append.list(buf, "listWundef", l)
+b <- mongo.bson.from.buffer(buf)
 
-    # the above will create a mongo.bson object of the following form:
-    # { "Undef": UNDEFINED, "listWundef" : { "u1" : UNDEFINED, one : 1 } }
-
+# the above will create a mongo.bson object of the following form:
+# { "Undef": UNDEFINED, "listWundef" : { "u1" : UNDEFINED, "One" : 1 } }
 }
 \seealso{
+\code{\link{mongo.undefined.create}},
 \code{\link{mongo.bson.buffer.append}},
 \code{\link{mongo.bson.buffer.append.list}},
 \link{mongo.bson.buffer},
-\link{mongo.bson}}
+\link{mongo.bson}
 }

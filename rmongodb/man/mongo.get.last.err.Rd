@@ -28,7 +28,7 @@ NULL if no error was reported; otherwise,
 }
 \examples{
 mongo <- mongo.create()
-if (mongo.is.connected(mongo)) {\
+if (mongo.is.connected(mongo)) {
 
     # try adding a duplcate record when index doesn't allow this
 
