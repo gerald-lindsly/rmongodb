@@ -28,7 +28,7 @@ SEXP mongo_binary_set(SEXP bin, SEXP index, SEXP value);
 SEXP mongo_binary_get(SEXP bin, SEXP index);
 
 SEXP mongo_oid_from_string(SEXP s);
-SEXP mongo_string_from_oid(SEXP oid);
+SEXP mongo_oid_to_string(SEXP oid);
 SEXP mongo_oid_create();
 SEXP mongo_oid_time(SEXP oid);
 SEXP mongo_oid_print(SEXP oid);

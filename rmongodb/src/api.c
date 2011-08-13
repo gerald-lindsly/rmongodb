@@ -64,7 +64,7 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.oid.create", (DL_FUNC) mongo_oid_create, 0},
     { ".mongo.oid.time", (DL_FUNC) mongo_oid_time, 1},
     { ".mongo.oid.from.string", (DL_FUNC) mongo_oid_from_string, 1},
-    { ".mongo.string.from.oid", (DL_FUNC) mongo_string_from_oid, 1},
+    { ".mongo.oid.to.string", (DL_FUNC) mongo_oid_to_string, 1},
     { ".mongo.oid.print", (DL_FUNC) mongo_oid_print, 1},
 
     { ".mongo.timestamp.create", (DL_FUNC) mongo_timestamp_create, 2},

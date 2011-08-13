@@ -489,7 +489,7 @@ SEXP mongo_oid_from_string(SEXP s) {
 }
 
 
-SEXP mongo_string_from_oid(SEXP oid) {
+SEXP mongo_oid_to_string(SEXP oid) {
     _checkOID(oid);
     SEXP ret;
     PROTECT(ret = allocVector(STRSXP, 1));
