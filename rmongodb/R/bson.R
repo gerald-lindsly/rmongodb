@@ -38,8 +38,11 @@ mongo.bson.iterator.value <- function(iter)
 mongo.oid.from.string <- function(str)
     .Call(".mongo.oid.from.string", str)
 
-mongo.string.from.oid <- function(oid)
-    .Call(".mongo.string.from.oid", oid)
+mongo.oid.to.string <- function(oid)
+    .Call(".mongo.oid.to.string", oid)
+
+as.character.mongo.oid <- function(oid)
+    .Call(".mongo.oid.to.string", oid)
 
 mongo.oid.create <- function()
     .Call(".mongo.oid.create")
@@ -54,8 +57,11 @@ print.mongo.oid <- function(oid)
     invisible(.Call(".mongo.oid.print", oid))
 
 
-mongo.timestamp.create <- function(t, i)
-    .Call(".mongo.timestamp.create", t, i)
+mongo.timestamp.create <- function(time, increment) {
+    if (inherits(time, "POSIXlt"))
+        time <- as.POSIXct(time)
+    .Call(".mongo.timestamp.create", time, increment)
+}
 
 mongo.code.create <- function(str)
     .Call(".mongo.code.create", str)
@@ -69,7 +75,7 @@ mongo.symbol.create <- function(str)
 mongo.undefined.create <- function()
     .Call(".mongo.undefined.create")
 
-mongo.regex.create <- function(pattern, options)
+mongo.regex.create <- function(pattern, options="")
     .Call(".mongo.regex.create", pattern, options)
 
 mongo.binary.create <- function(type, length)
@@ -112,8 +118,11 @@ mongo.bson.buffer.append.undefined <- function(buf, name)
 mongo.bson.buffer.append.string <- function(buf, name, value)
     .Call(".mongo.bson.buffer.append.string", buf, name, value)
 
-mongo.bson.buffer.append.time <- function(buf, name, value)
-    .Call(".mongo.bson.buffer.append.time", buf, name, value)
+mongo.bson.buffer.append.time <- function(buf, name, time) {
+    if (inherits(time, "POSIXlt"))
+        time <- as.POSIXct(time)
+    .Call(".mongo.bson.buffer.append.time", buf, name, time)
+}
 
 mongo.bson.buffer.append.timestamp <- function(buf, name, value)
     .Call(".mongo.bson.buffer.append.timestamp", buf, name, value)
