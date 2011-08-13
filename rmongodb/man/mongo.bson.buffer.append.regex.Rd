@@ -1,0 +1,31 @@
+% File rmongodb/man/mongo.bson.buffer.append.regex.Rd
+\name{mongo.bson.buffer.append.regex}
+\alias{mongo.bson.buffer.append.regex}
+\title{Append a timestamp value into a mongo.bson.buffer}
+\description{
+Append a regular expression value into a mongo.bson.buffer.
+}
+\usage{
+mongo.bson.buffer.append.regex(buf, name, value)
+}
+\arguments{
+\item{buf}{(\link{mongo.bson}) The mongo.bson.buffer object to which to append.}
+\item{name}{(string) the name (key) of the field appended to the buffer.}
+\item{value}{(\link{mongo.regex}) a regular expression as created by \code{\link{mongo.regex.create}()}.}
+}
+\value{
+TRUE if successful; otherwise, FALSE if an error occured appending the data.
+}
+\examples{
+buf <- mongo.bson.buffer.create()
+regex <- mongo.regex.create("acme.*corp", options="i")
+mongo.bson.buffer.append.regex(buf, "MatchAcme", regex)
+b <- mongo.bson.from.buffer(buf)
+}
+\seealso{
+\link{mongo.regex.create},
+\code{\link{mongo.bson.buffer.append.regex}},
+\code{\link{mongo.bson.buffer.append}},
+\link{mongo.bson},
+\link{mongo.bson.buffer}
+}

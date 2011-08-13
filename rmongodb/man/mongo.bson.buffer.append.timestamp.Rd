@@ -3,7 +3,7 @@
 \alias{mongo.bson.buffer.append.timestamp}
 \title{Append a timestamp value into a mongo.bson.buffer}
 \description{
-Append a timetamp value into a mongo.bson.buffer.
+Append a timestamp value into a mongo.bson.buffer.
 
 \link{mongo.timestamp} objects extend the "POSIXct" class to include an attrubute "increment".
 
@@ -20,16 +20,15 @@ mongo.bson.buffer.append.timestamp(buf, name, value)
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
 }
-\seealso{
-\link{mongo.bson},
-\link{mongo.bson.buffer},
-\link{mongo.timestamp.create},
-\code{\link{mongo.bson.buffer.append.time}},
-\code{\link{mongo.bson.buffer.append}}
-}
 \examples{
 buf <- mongo.bson.buffer.create()
-mongo.bson.buffer.append.timestamp(buf, "Now", Sys.timestamp())
+mongo.bson.buffer.append.timestamp(buf, "Now-27", mongo.timestamp.create(Sys.time(), 27))
 b <- mongo.bson.from.buffer(buf)
-
+}
+\seealso{
+\link{mongo.timestamp.create},
+\code{\link{mongo.bson.buffer.append.time}},
+\code{\link{mongo.bson.buffer.append}},
+\link{mongo.bson},
+\link{mongo.bson.buffer}
 }
