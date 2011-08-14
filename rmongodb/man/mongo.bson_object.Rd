@@ -1,0 +1,19 @@
+% File rmongodb/man/mongo.bson_object.Rd
+\name{mongo.bson_object}
+\alias{mongo.bson_object}
+\title{BSON data type constant for a subobject value}
+\description{
+\code{\link{mongo.bson.iterator.type}()} and \code{\link{mongo.bson.iterator.next}()} will return this constant
+(3L) to indicate that the value pointer to by an iterator is a subobject.
+}
+\usage{
+mongo.bson_object
+}
+\value{
+3L
+}
+\seealso{
+\code{\link{mongo.bson.iterator.type}}
+\code{\link{mongo.bson.iterator.next}}
+\link{mongo.bson}
+}

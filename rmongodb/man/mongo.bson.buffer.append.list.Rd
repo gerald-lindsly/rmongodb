@@ -13,7 +13,7 @@ Also note that this function is recursive and will append items that are lists t
 mongo.bson.buffer.append.list(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson}) The mongo.bson.buffer object to which to append. }
+\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append. }
 \item{name}{(string) the name (key) of the field appended to the buffer. }
 \item{value}{(list) the list to append to the buffer as a subobject. }
 }

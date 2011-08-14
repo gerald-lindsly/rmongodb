@@ -26,10 +26,11 @@ while (mongo.bson.iterator.next(iter))
     print(mongo.bson.iterator.value(iter))
 }
 \seealso{
+\code{\link{mongo.bson.from.list}},
+\code{\link{mongo.bson.to.list}},
 \code{\link{mongo.bson.iterator}},
 \link{mongo.bson.buffer},
 \code{\link{mongo.bson.from.buffer}},
 \code{\link{mongo.bson.empty}},
-\code{\link{mongo.bson.from.buffer}},
 \code{\link{mongo.find.one}}.
 }

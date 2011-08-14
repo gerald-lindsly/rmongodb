@@ -6,6 +6,8 @@
 Convert a \link{mongo.bson.buffer} object to a \link{mongo.bson} object.
 
 Use this after appending data to a buffer to turn it into a mongo.bson object for network transport.
+
+No futher data may be appended to the buffer after calling this function.
 }
 \usage{
 mongo.bson.from.buffer(buf)

@@ -9,7 +9,7 @@ Append an string or vector of strings onto a mongo.bson.buffer.
 mongo.bson.buffer.append.string(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson}) The mongo.bson.buffer object to which to append. }
+\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append. }
 \item{name}{(string) the name (key) of the field appended to the buffer. }
 \item{value}{(string vector) the strings(s) to append to the buffer.
 

@@ -9,7 +9,7 @@ Append a OID (Object ID) value into a mongo.bson.buffer.
 mongo.bson.buffer.append.oid(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson}) The mongo.bson.buffer object to which to append.}
+\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append.}
 \item{name}{(string) the name (key) of the field appended to the buffer.}
 \item{value}{(\link{mongo.oid}) a OID value.}
 }
@@ -25,6 +25,5 @@ b <- mongo.bson.from.buffer(buf)
 \link{mongo.bson},
 \link{mongo.bson.buffer},
 \link{mongo.oid.create},
-\code{\link{mongo.bson.buffer.append.time}},
 \code{\link{mongo.bson.buffer.append}}
 }

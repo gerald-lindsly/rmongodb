@@ -28,6 +28,7 @@ b <- mongo.bson.from.buffer(buf)
 \code{\link{mongo.oid.from.string}}
 \code{\link{as.character.mongo.oid}}
 \code{\link{mongo.oid.to.string}}
+\code{\link{mongo.oid.time}}
 \code{\link{mongo.bson.buffer.append}},
 \code{\link{mongo.bson.buffer.append.oid}},
 \code{\link{mongo.bson.buffer.append.list}},

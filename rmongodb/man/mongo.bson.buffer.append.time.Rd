@@ -18,7 +18,7 @@ including R and this driver, will need to address that issue.
 mongo.bson.buffer.append.time(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson}) The mongo.bson.buffer object to which to append.}
+\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append.}
 \item{name}{(string) the name (key) of the field appended to the buffer.}
 \item{value}{(integer) time value.  This may be an object of class "POSIXct", "POSIXlt" or "mongo.timestamp" also.}
 }

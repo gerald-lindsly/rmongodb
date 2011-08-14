@@ -12,7 +12,7 @@ This function appends such an indicator as the type of a field with its value.
 mongo.bson.buffer.append.code.w.scope(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson}) The mongo.bson.buffer object to which to append.}
+\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append.}
 \item{name}{(string) the name (key) of the field appended to the buffer.}
 \item{value}{\link{mongo.code.w.scope} the scoped javascript code.}
 }

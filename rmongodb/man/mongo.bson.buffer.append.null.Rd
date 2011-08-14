@@ -10,7 +10,7 @@ Append a NULL value onto a mongo.bson.buffer.
 mongo.bson.buffer.append.null(buf, name)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson}) The mongo.bson.buffer object to which to append.}
+\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append.}
 \item{name}{(string) the name (key) of the field appended to the buffer.}
 }
 \value{

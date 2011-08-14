@@ -12,7 +12,7 @@ This function appends such an indicator as the value of a field.
 mongo.bson.buffer.append.undefined(buf, name)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson}) The mongo.bson.buffer object to which to append.}
+\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append.}
 \item{name}{(string) the name (key) of the field appended to the buffer.}
 }
 \value{

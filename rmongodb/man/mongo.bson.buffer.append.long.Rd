@@ -16,7 +16,7 @@ You must call \code{mongo.bson.buffer.append.long()} explicitly; otherwise, doub
 mongo.bson.buffer.append.long(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson}) The mongo.bson.buffer object to which to append. }
+\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append. }
 \item{name}{(string) the name (key) of the field appended to the buffer. }
 \item{value}{(double vector) the values(s) to append to the buffer.
 

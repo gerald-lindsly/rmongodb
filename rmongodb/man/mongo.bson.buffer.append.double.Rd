@@ -9,7 +9,7 @@ Append a double or vector of doubles onto a mongo.bson.buffer.
 mongo.bson.buffer.append.double(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson}) The mongo.bson.buffer object to which to append. }
+\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append. }
 \item{name}{(string) the name (key) of the field appended to the buffer. }
 \item{value}{(double vector) the values(s) to append to the buffer.
 

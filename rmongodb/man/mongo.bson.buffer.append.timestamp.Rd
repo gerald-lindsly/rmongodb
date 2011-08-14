@@ -13,7 +13,7 @@ See \code{\link{mongo.bson.buffer.append.time}()}.
 mongo.bson.buffer.append.timestamp(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson}) The mongo.bson.buffer object to which to append.}
+\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append.}
 \item{name}{(string) the name (key) of the field appended to the buffer.}
 \item{value}{(\link{mongo.timestamp}) a timestamp value as created by \code{\link{mongo.timestamp.create}()}.}
 }
