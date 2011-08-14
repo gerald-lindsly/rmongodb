@@ -16,6 +16,7 @@ SEXP mongo_bson_iterator_key(SEXP b);
 SEXP mongo_bson_iterator_type(SEXP b);
 SEXP mongo_bson_iterator_value(SEXP iter);
 SEXP mongo_bson_to_list(SEXP b);
+SEXP mongo_bson_from_list(SEXP lst);
 
 SEXP mongo_timestamp_create(SEXP t, SEXP i);
 SEXP mongo_code_create(SEXP code);
@@ -27,7 +28,7 @@ SEXP mongo_binary_create(SEXP type, SEXP length);
 SEXP mongo_binary_set(SEXP bin, SEXP index, SEXP value);
 SEXP mongo_binary_get(SEXP bin, SEXP index);
 
-SEXP mongo_oid_from_string(SEXP s);
+SEXP mongo_oid_from_string(SEXP hexstr);
 SEXP mongo_oid_to_string(SEXP oid);
 SEXP mongo_oid_create();
 SEXP mongo_oid_time(SEXP oid);

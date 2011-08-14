@@ -13,6 +13,9 @@ print.mongo.bson <- function(b, digits)
 mongo.bson.to.list <- function(b)
     .Call(".mongo.bson.to.list", b)
 
+mongo.bson.from.list <- function(lst)
+    .Call(".mongo.bson.from.list", lst)
+
 mongo.bson.iterator.create <- function(b)
     .Call(".mongo.bson.iterator.create", b)
 
@@ -32,11 +35,31 @@ mongo.bson.iterator.key <- function(iter)
 mongo.bson.iterator.type <- function(iter)
     .Call(".mongo.bson.iterator.type", iter)
 
+mongo.bson_eoo       <- 0L # end of object
+mongo.bson_double    <- 1L
+mongo.bson_string    <- 2L
+mongo.bson_object    <- 3L
+mongo.bson_array     <- 4L
+mongo.bson_binary    <- 5L
+mongo.bson_undefined <- 6L
+mongo.bson_oid       <- 7L
+mongo.bson_bool      <- 8L
+mongo.bson_date      <- 9L
+mongo.bson_null      <- 10L
+mongo.bson_regex     <- 11L
+mongo.bson_dbref     <- 12L # deprecated
+mongo.bson_code      <- 13L
+mongo.bson_symbol    <- 14L
+mongo.bson_code.w.scope <- 15L
+mongo.bson_int       <- 16L
+mongo.bson_timestamp <- 17L
+mongo.bson_long      <- 18L
+
 mongo.bson.iterator.value <- function(iter)
     .Call(".mongo.bson.iterator.value", iter)
 
-mongo.oid.from.string <- function(str)
-    .Call(".mongo.oid.from.string", str)
+mongo.oid.from.string <- function(hexstr)
+    .Call(".mongo.oid.from.string", hexstr)
 
 mongo.oid.to.string <- function(oid)
     .Call(".mongo.oid.to.string", oid)

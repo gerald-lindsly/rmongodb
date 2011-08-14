@@ -15,7 +15,7 @@ bson_buffer* _checkBuffer(SEXP buf) {
         error("Expected a \"mongo.bson.buffer\" attribute in object\n");
     bson_buffer* _buf = (bson_buffer*)R_ExternalPtrAddr(ptr);
     if (!_buf)
-        error("mongo.bson.buffer object appears to have been destroyed.\n");
+        error("mongo.bson.buffer object seems to have been destroyed or converted to a mongo.bson object.\n");
     return _buf;
 }
 
@@ -271,11 +271,11 @@ static void bson_bufferFinalizer(SEXP ptr) {
     bson_buffer* b = (bson_buffer*)R_ExternalPtrAddr(ptr);
     bson_destroy(b);
     Free(b);
-    R_ClearExternalPtr(ptr); /* not really needed */
+    R_ClearExternalPtr(ptr);
 }
 
 
-SEXP mongo_bson_buffer_create() {
+SEXP _mongo_bson_buffer_create() {
     SEXP ret, ptr, cls;
     PROTECT(ret = allocVector(INTSXP, 1));
     INTEGER(ret)[0] = 0;
@@ -288,15 +288,21 @@ SEXP mongo_bson_buffer_create() {
     PROTECT(cls = allocVector(STRSXP, 1));
     SET_STRING_ELT(cls, 0, mkChar("mongo.bson.buffer"));
     classgets(ret, cls);
-    UNPROTECT(3);
     return ret;
 }
 
+SEXP mongo_bson_buffer_create() {
+    SEXP ret = _mongo_bson_buffer_create();
+    UNPROTECT(3);
+    return ret;
+}
 
 SEXP mongo_bson_from_buffer(SEXP buf) {
     bson_buffer* _buf = _checkBuffer(buf);
     bson_finish(_buf);
     SEXP ret = _mongo_bson_create(_buf);
+    SEXP ptr = getAttrib(buf, sym_mongo_bson_buffer);
+    bson_bufferFinalizer(ptr);
     UNPROTECT(3);
     return ret;
 }
@@ -345,9 +351,21 @@ SEXP _mongo_bson_iterator_create(bson_iterator* iter) {
 
 
 SEXP mongo_bson_iterator_create(SEXP b) {
-    bson* _b = _checkBSON(b);
     bson_iterator iter;
-    bson_iterator_init(&iter, _b);
+    if (_objHasClass(b, "mongo.bson.iterator")) {
+        SEXP ptr = getAttrib(b, sym_mongo_bson_iterator);
+        if (ptr == R_NilValue)
+            error("Expected a \"mongo.bson.iterator\" attribute in object\n");
+        bson_iterator* _iter = (bson_iterator*)R_ExternalPtrAddr(ptr);
+        bson_type t = bson_iterator_type(_iter);
+        if (t == BSON_ARRAY || t == BSON_OBJECT)
+            bson_iterator_subiterator(_iter, &iter);
+        else
+            error("Iterator expected to point to an array or subobject");
+    } else {
+        bson* _b = _checkBSON(b);
+        bson_iterator_init(&iter, _b);
+    }
     return _mongo_bson_iterator_create(&iter);
 }
 
@@ -477,12 +495,12 @@ SEXP mongo_oid_time(SEXP oid) {
 }
 
 
-SEXP mongo_oid_from_string(SEXP s) {
-    const char* _s = CHAR(STRING_ELT(s, 0));
-    if (strlen(_s) != 24)
+SEXP mongo_oid_from_string(SEXP hexstr) {
+    const char* _hexstr = CHAR(STRING_ELT(hexstr, 0));
+    if (strlen(_hexstr) != 24)
         error("OID string length must be 24");
     bson_oid_t* oid = Calloc(1, bson_oid_t);
-    bson_oid_from_string(oid, _s);
+    bson_oid_from_string(oid, _hexstr);
     SEXP ret = _mongo_oid_create(oid);
     UNPROTECT(3);
     return ret;
@@ -916,6 +934,8 @@ returnSubObject: {
 
 
 SEXP mongo_bson_to_list(SEXP b) {
+    if (b == R_NilValue)
+        return R_NilValue;
     bson* _b = _checkBSON(b);
     bson_iterator iter;
     bson_iterator_init(&iter, _b);
@@ -1288,9 +1308,9 @@ SEXP mongo_bson_buffer_append(SEXP buf, SEXP name, SEXP value) {
             return mongo_bson_buffer_append_bson(buf, name, value);
         if (_hasClass(cls, "mongo.bson.iterator"))
             return mongo_bson_buffer_append_element(buf, name, value);
-        if (_hasClass(cls, "mongo.timestamp"))
+        if (_hasClass(cls, "mongo.timestamp")) /* extends POSIXct */
             return mongo_bson_buffer_append_timestamp(buf, name, value);
-        if (_hasClass(cls, "POSIXct"))
+        if (_hasClass(cls, "POSIXct")) /* must follow timestamp */
             return mongo_bson_buffer_append_time(buf, name, value);
         if (_hasClass(cls, "mongo.code.w.scope"))
             return mongo_bson_buffer_append_code_w_scope(buf, name, value);
@@ -1327,17 +1347,21 @@ SEXP mongo_bson_buffer_append_list(SEXP buf, SEXP name, SEXP value) {
     int len = LENGTH(value);
     int i;
     SEXP names = getAttrib(value, R_NamesSymbol);
+    SEXP fname;
     if (names != R_NilValue)
         for (i = 0; i < len && success; i++) {
-            SEXP fname;
             PROTECT(fname = allocVector(STRSXP, 1));
             SET_STRING_ELT(fname, 0, STRING_ELT(names, i));
             success &= LOGICAL(mongo_bson_buffer_append(buf, fname, VECTOR_ELT(value, i)))[0];
             UNPROTECT(1);
         }
     else
-        for (i = 0; i < len && success; i++)
-            success &= LOGICAL(mongo_bson_buffer_append(buf, mkChar(numstr(i+1)), VECTOR_ELT(value, i)))[0];
+        for (i = 0; i < len && success; i++) {
+            PROTECT(fname = allocVector(STRSXP, 1));
+            SET_STRING_ELT(fname, 0, mkChar(numstr(i+1)));
+            success &= LOGICAL(mongo_bson_buffer_append(buf, fname, VECTOR_ELT(value, i)))[0];
+            UNPROTECT(1);
+        }
     success &= (bson_append_finish_object(_buf) == BSON_OK);
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
@@ -1345,6 +1369,43 @@ SEXP mongo_bson_buffer_append_list(SEXP buf, SEXP name, SEXP value) {
     UNPROTECT(1);
     return ret;
 }
+
+
+SEXP mongo_bson_from_list(SEXP lst) {
+    int len = LENGTH(lst);
+    if (len == 0)
+        return R_NilValue;
+    SEXP names = getAttrib(lst, R_NamesSymbol);
+    if (TYPEOF(lst) != VECSXP)
+        error("object is not a list");
+    SEXP buf = _mongo_bson_buffer_create();
+    int success = 1;
+    int i;
+        SEXP fname;
+    if (names != R_NilValue)
+        for (i = 0; i < len && success; i++) {
+            PROTECT(fname = allocVector(STRSXP, 1));
+            SET_STRING_ELT(fname, 0, STRING_ELT(names, i));
+            success &= LOGICAL(mongo_bson_buffer_append(buf, fname, VECTOR_ELT(lst, i)))[0];
+            UNPROTECT(1);
+        }
+    else
+        for (i = 0; i < len && success; i++) {
+            PROTECT(fname = allocVector(STRSXP, 1));
+            SET_STRING_ELT(fname, 0, mkChar(numstr(i+1)));
+            success &= LOGICAL(mongo_bson_buffer_append(buf, fname, VECTOR_ELT(lst, i)))[0];
+            UNPROTECT(1);
+        }
+    if (!success) {
+        UNPROTECT(3);
+        return R_NilValue;
+    }
+    SEXP ret;
+    ret = mongo_bson_from_buffer(buf);
+    UNPROTECT(3);
+    return ret;
+}
+
 
 
 SEXP mongo_bson_buffer_start_array(SEXP buf, SEXP name) {

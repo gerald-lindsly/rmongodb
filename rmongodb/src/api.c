@@ -52,6 +52,7 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.bson.size", (DL_FUNC) mongo_bson_size, 1},
     { ".mongo.bson.print", (DL_FUNC) mongo_bson_print, 1},
     { ".mongo.bson.to.list", (DL_FUNC) mongo_bson_to_list, 1},
+    { ".mongo.bson.from.list", (DL_FUNC) mongo_bson_from_list, 1},
 
     { ".mongo.bson.iterator.create", (DL_FUNC) mongo_bson_iterator_create, 1},
     { ".mongo.bson.find", (DL_FUNC) mongo_bson_find, 2},

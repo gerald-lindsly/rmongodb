@@ -63,14 +63,20 @@ export(mongo.bson.size)
 export(mongo.bson.print)
 export(print.mongo.bson)
 export(mongo.bson.to.list)
+export(mongo.bson.from.list)
 export(mongo.bson.find)
 
 export(mongo.bson.iterator.create)
 export(mongo.bson.iterator.more)
 export(mongo.bson.iterator.next)
-export(mongo.bson.iterator.type)
 export(mongo.bson.iterator.key)
 export(mongo.bson.iterator.value)
+export(mongo.bson.iterator.type)
+export(mongo.bson_eoo,   mongo.bson_double,    mongo.bson_string,    mongo.bson_object,
+       mongo.bson_array, mongo.bson_binary,    mongo.bson_undefined, mongo.bson_oid,
+       mongo.bson_bool,  mongo.bson_date,      mongo.bson_null,      mongo.bson_regex,
+       mongo.bson_dbref, mongo.bson_code,      mongo.bson_symbol,    mongo.bson_code.w.scope,
+       mongo.bson_int,   mongo.bson_timestamp, mongo.bson_long)
 
 export(mongo.oid.create)
 export(mongo.oid.time)
@@ -92,7 +98,6 @@ export(mongo.binary.get)
 
 export(mongo.bson.buffer.create)
 export(mongo.bson.from.buffer)
-export(mongo.bson.buffer.append.list)
 export(mongo.bson.buffer.append.int)
 export(mongo.bson.buffer.append.string)
 export(mongo.bson.buffer.append.bool)
@@ -111,6 +116,7 @@ export(mongo.bson.buffer.append.regex)
 export(mongo.bson.buffer.append.oid)
 export(mongo.bson.buffer.append.bson)
 export(mongo.bson.buffer.append.element)
+export(mongo.bson.buffer.append.list)
 export(mongo.bson.buffer.append)
 export(mongo.bson.buffer.start.object)
 export(mongo.bson.buffer.start.array)
