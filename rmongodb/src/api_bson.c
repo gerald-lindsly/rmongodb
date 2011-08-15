@@ -923,7 +923,7 @@ returnSubObject: {
 
         default:
             error("Unhandled BSON type %d\n", sub_type);
-            el = R_NilValue;  // uninitialized ret avoid warning
+            el = R_NilValue;  // uninitialized el avoid warning
         }
         SET_VECTOR_ELT(ret, i, el);
     }
@@ -963,9 +963,13 @@ SEXP mongo_bson_buffer_append_int(SEXP buf, SEXP name, SEXP value) {
         }
     else {
         int success = (bson_append_start_object(_buf, _name) == BSON_OK);
-        int i;
-        for (i = 0; i < len && success; i++)
-            success &= (bson_append_int(_buf, CHAR(STRING_ELT(names, i)), INTEGER(value)[i]) == BSON_OK);
+        if (len == 1)
+            success &= (bson_append_int(_buf, _name, asInteger(value)) == BSON_OK);
+        else {
+            int i;
+            for (i = 0; i < len && success; i++)
+                success &= (bson_append_int(_buf, CHAR(STRING_ELT(names, i)), INTEGER(value)[i]) == BSON_OK);
+        }
         success &= (bson_append_finish_object(_buf) == BSON_OK);
         LOGICAL(ret)[0] = success;
     }
@@ -994,9 +998,13 @@ SEXP mongo_bson_buffer_append_bool(SEXP buf, SEXP name, SEXP value) {
         }
     else {
         int success = (bson_append_start_object(_buf, _name) == BSON_OK);
-        int i;
-        for (i = 0; i < len && success; i++)
-            success &= (bson_append_bool(_buf, CHAR(STRING_ELT(names, i)), LOGICAL(value)[i]) == BSON_OK);
+        if (len == 1)
+            success &= (bson_append_bool(_buf, _name, asLogical(value)) == BSON_OK);
+        else {
+            int i;
+            for (i = 0; i < len && success; i++)
+                success &= (bson_append_bool(_buf, CHAR(STRING_ELT(names, i)), LOGICAL(value)[i]) == BSON_OK);
+        }
         success &= (bson_append_finish_object(_buf) == BSON_OK);
         LOGICAL(ret)[0] = success;
     }
@@ -1025,10 +1033,14 @@ SEXP mongo_bson_buffer_append_double(SEXP buf, SEXP name, SEXP value) {
         }
     else {
         int success = (bson_append_start_object(_buf, _name) == BSON_OK);
-        int i;
-        for (i = 0; i < len && success; i++)
-            success &= (bson_append_double(_buf, CHAR(STRING_ELT(names, i)), REAL(value)[i]) == BSON_OK);
-        success &= (bson_append_finish_object(_buf) == BSON_OK);
+        if (len == 1)
+            success &= (bson_append_double(_buf, _name, asReal(value)) == BSON_OK);
+        else {
+            int i;
+            for (i = 0; i < len && success; i++)
+                success &= (bson_append_double(_buf, CHAR(STRING_ELT(names, i)), REAL(value)[i]) == BSON_OK);
+            success &= (bson_append_finish_object(_buf) == BSON_OK);
+        }
         LOGICAL(ret)[0] = success;
     }
     UNPROTECT(1);
@@ -1095,10 +1107,14 @@ SEXP mongo_bson_buffer_append_long(SEXP buf, SEXP name, SEXP value) {
         }
     else {
         int success = (bson_append_start_object(_buf, _name) == BSON_OK);
-        int i;
-        for (i = 0; i < len && success; i++)
-            success &= (bson_append_long(_buf, CHAR(STRING_ELT(names, i)), REAL(value)[i]) == BSON_OK);
-        success &= (bson_append_finish_object(_buf) == BSON_OK);
+        if (len == 1)
+            success &= (bson_append_long(_buf, _name, asReal(value)) == BSON_OK);
+        else {
+            int i;
+            for (i = 0; i < len && success; i++)
+                success &= (bson_append_long(_buf, CHAR(STRING_ELT(names, i)), REAL(value)[i]) == BSON_OK);
+            success &= (bson_append_finish_object(_buf) == BSON_OK);
+        }
         LOGICAL(ret)[0] = success;
     }
     UNPROTECT(1);
