@@ -3,15 +3,15 @@
 \alias{mongo.bson.buffer.append.int}
 \title{Append an integer field onto a mongo.bson.buffer}
 \description{
-Append an integer or vector of integers onto a mongo.bson.buffer.
+Append an integer or vector of integers onto a \link{mongo.bson.buffer}.
 }
 \usage{
 mongo.bson.buffer.append.int(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append. }
-\item{name}{(string) the name (key) of the field appended to the buffer. }
-\item{value}{(integer vector) the integer(s) to append to the buffer.
+\item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
+\item{name}{(string) The name (key) of the field appended to the buffer. }
+\item{value}{(integer vector) The integer(s) to append to the buffer.
 
 If value has a names attribute, a subobject is appended and the subfields are given the indicated names.
 

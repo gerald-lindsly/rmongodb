@@ -3,15 +3,15 @@
 \alias{mongo.bson.buffer.append.regex}
 \title{Append a timestamp value into a mongo.bson.buffer}
 \description{
-Append a regular expression value into a mongo.bson.buffer.
+Append a regular expression value into a \link{mongo.bson.buffer}.
 }
 \usage{
 mongo.bson.buffer.append.regex(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append.}
-\item{name}{(string) the name (key) of the field appended to the buffer.}
-\item{value}{(\link{mongo.regex}) a regular expression as created by \code{\link{mongo.regex.create}()}.}
+\item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
+\item{name}{(string) The name (key) of the field appended to the buffer.}
+\item{value}{(\link{mongo.regex}) A regular expression as created by \code{\link{mongo.regex.create}()}.}
 }
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.

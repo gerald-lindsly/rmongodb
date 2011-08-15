@@ -18,7 +18,7 @@ mongo.get.last.err(mongo)
 \value{
 NULL if no error was reported; otherwise,
 
-(\link{mongo.bson}) This BSON object has the form { err : "\emph{error message string}", code : \emph{error code integer} }
+(\link{mongo.bson}) This BSON object has the form \{ err : "\emph{error message string}", code : \emph{error code integer} \}
 }
 \seealso{
 \code{\link{mongo.get.server.err}},
@@ -30,7 +30,7 @@ NULL if no error was reported; otherwise,
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
 
-    # try adding a duplcate record when index doesn't allow this
+    # try adding a duplicate record when index doesn't allow this
 
     ns <- "test.people"
     mongo.index.create(mongo, ns, "name", mongo.index.unique)

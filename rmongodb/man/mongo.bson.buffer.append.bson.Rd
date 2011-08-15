@@ -12,8 +12,8 @@ perform the same action as this function.
 mongo.bson.buffer.append.bson(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append.}
-\item{name}{(string) the name (key) of the subobject field appended to the buffer.}
+\item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
+\item{name}{(string) The name (key) of the subobject field appended to the buffer.}
 \item{value}{(\link{mongo.bson}) a mongo.bson object.}
 }
 \value{

@@ -3,15 +3,15 @@
 \alias{mongo.bson.buffer.append.null}
 \title{Append a double field onto a mongo.bson.buffer}
 \description{
-Append a NULL value onto a mongo.bson.buffer.
+Append a NULL value onto a \link{mongo.bson.buffer}.
 
 }
 \usage{
 mongo.bson.buffer.append.null(buf, name)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append.}
-\item{name}{(string) the name (key) of the field appended to the buffer.}
+\item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
+\item{name}{(string) The name (key) of the field appended to the buffer.}
 }
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.

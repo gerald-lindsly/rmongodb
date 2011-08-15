@@ -3,7 +3,7 @@
 \alias{mongo.bson.buffer.append.binary}
 \title{Append a code field onto a mongo.bson.buffer}
 \description{
-Append binary data onto a mongo.bson.buffer.
+Append binary data onto a \link{mongo.bson.buffer}.
 
 BSON has a special field type to indicate binary data.
 This function appends such an indicator as the type of a field with its value.
@@ -12,8 +12,8 @@ This function appends such an indicator as the type of a field with its value.
 mongo.bson.buffer.append.binary(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append.}
-\item{name}{(string) the name (key) of the field appended to the buffer.}
+\item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
+\item{name}{(string) The name (key) of the field appended to the buffer.}
 \item{value}{\link{mongo.binary} the binary data.}
 }
 \value{

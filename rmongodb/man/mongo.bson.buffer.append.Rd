@@ -5,7 +5,7 @@
 \description{
 Append a name/value pair into a \link{mongo.bson.buffer}.
 
-This function is a generic version of many 'append' functions.  It will detect the type of value parameter
+This function is a generic version of many 'append' functions.  It will detect the type of the \emph{value} parameter
 and perform the same action as the specific functions.  These functions are:
 \itemize{
 \item \code{\link{mongo.bson.buffer.append.int}()}
@@ -36,8 +36,8 @@ you must explicity call that function.
 mongo.bson.buffer.append(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append.}
-\item{name}{(string) the name (key) of the field appended to the buffer.}
+\item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
+\item{name}{(string) The name (key) of the field appended to the buffer.}
 \item{value}{The value of the field.}
 }
 \value{
@@ -52,5 +52,5 @@ b <- mongo.bson.from.buffer(buf)
 }
 \seealso{
 \link{mongo.bson},
-\link{mongo.bson.buffer},
+\link{mongo.bson.buffer}
 }

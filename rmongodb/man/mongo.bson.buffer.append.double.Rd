@@ -3,21 +3,21 @@
 \alias{mongo.bson.buffer.append.double}
 \title{Append a double field onto a mongo.bson.buffer}
 \description{
-Append a double or vector of doubles onto a mongo.bson.buffer.
+Append a double or vector of doubles onto a \link{mongo.bson.buffer}.
 }
 \usage{
 mongo.bson.buffer.append.double(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append. }
-\item{name}{(string) the name (key) of the field appended to the buffer. }
-\item{value}{(double vector) the values(s) to append to the buffer.
+\item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
+\item{name}{(string) The name (key) of the field appended to the buffer. }
+\item{value}{(double vector) The values(s) to append to the buffer.
 
 If value has a names attribute, a subobject is appended and the subfields are given the indicated names.
 
 Othersize, if more than one element is present in value, the values are appended as a subarray.
 
-In the last case, a single double is appended as the value of the field.}
+In the last case, a single as.double is appended as the value of the field.}
 }
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.

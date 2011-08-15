@@ -19,10 +19,11 @@ mongo.create(host="127.0.0.1:27017", name="", username="", password="", db_name=
     If a port is not given, 27017 is used.
 }
 \item{name}{(string) The name of the replset to which to connect. if name == "" (the default),
-    the hosts are tried one by one until a connection is made.  Othersize, name must be the name of the replset 
+    the hosts are tried one by one until a connection is made.  Otherwize, name must be the name of the replset 
     and the given hosts are assumed to be seeds of the replset.
-    Each of these os connected to and queried in turn until one reports that it is a master.
-    This master is then queried for a list of hosts and these are in turn connected to and verified as belonging to the given replset name.
+    Each of these is connected to and queried in turn until one reports that it is a master.
+    This master is then queried for a list of hosts and these are in turn connected to and verified as belonging
+    to the given replset name.
     When one of these reports that it is a master, that connection is used to form the actual connection as returned.}
 \item{username}{(string) The username to be used for authentication purposes.
     The default username of "" indicates that no user authentication is to be performed by the initial connect.}

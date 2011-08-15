@@ -12,11 +12,11 @@ is a mongo.bson.iterator object and perform the same action as this function.
 mongo.bson.buffer.append.element(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append.}
-\item{name}{(string) the name (key) of the subobject field appended to the buffer.
+\item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
+\item{name}{(string) The name (key) of the subobject field appended to the buffer.
 
 If NULL, the name appended will come from the element pointed to by the iterator.}
-\item{value}{(\link{mongo.bson.iterator}) a mongo.bson.iterator object.}
+\item{value}{A (\link{mongo.bson.iterator}) object.}
 }
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.

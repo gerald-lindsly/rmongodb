@@ -1,16 +1,16 @@
-% File rmongodb/man/mongo.bson_eoo.Rd
-\name{mongo.bson_eoo}
-\alias{mongo.bson_eoo}
-\title{BSON data type constant for 'End Of Object'}
+% File rmongodb/man/mongo.bson.timestamp.Rd
+\name{mongo.bson.timestamp}
+\alias{mongo.bson.timestamp}
+\title{BSON data type constant for a timestamp value}
 \description{
 \code{\link{mongo.bson.iterator.type}()} and \code{\link{mongo.bson.iterator.next}()} will return this constant
-(0L) at the end of the object when there are no more fields through which to iterate.
+(17L) to indicate that the value pointer to by an iterator is a timestamp.
 }
 \usage{
-mongo.bson_eoo
+mongo.bson.timestamp
 }
 \value{
-0L
+17L
 }
 \seealso{
 \code{\link{mongo.bson.iterator.type}}

@@ -3,7 +3,7 @@
 \alias{mongo.bson.buffer.append.symbol}
 \title{Append a symbol field onto a mongo.bson.buffer}
 \description{
-Append a symbol value onto a mongo.bson.buffer.
+Append a symbol value onto a \link{mongo.bson.buffer}.
 
 BSON has a special field type to indicate a symbol.
 This function appends such an indicator as the type of a field with its value.
@@ -12,9 +12,9 @@ This function appends such an indicator as the type of a field with its value.
 mongo.bson.buffer.append.symbol(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append.}
-\item{name}{(string) the name (key) of the field appended to the buffer.}
-\item{value}{string} the value of the symbol.
+\item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
+\item{name}{(string) The name (key) of the field appended to the buffer.}
+\item{value}{(string) The value of the symbol.
 
 Note that the value may simply be a string representing the symbol's value
 and not necessarily a \link{mongo.symbol} object.}

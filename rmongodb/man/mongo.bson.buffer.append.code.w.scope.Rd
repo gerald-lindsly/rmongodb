@@ -3,7 +3,7 @@
 \alias{mongo.bson.buffer.append.code.w.scope}
 \title{Append a code field with a scope onto a mongo.bson.buffer}
 \description{
-Append a javascript code value with a scope object onto a mongo.bson.buffer.
+Append a javascript code value with a scope object onto a \link{mongo.bson.buffer}.
 
 BSON has a special field type to indicate javascript code with a scope.
 This function appends such an indicator as the type of a field with its value.
@@ -12,9 +12,9 @@ This function appends such an indicator as the type of a field with its value.
 mongo.bson.buffer.append.code.w.scope(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append.}
-\item{name}{(string) the name (key) of the field appended to the buffer.}
-\item{value}{\link{mongo.code.w.scope} the scoped javascript code.}
+\item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
+\item{name}{(string) The name (key) of the field appended to the buffer.}
+\item{value}{\link{mongo.code.w.scope} The scoped javascript code.}
 }
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.

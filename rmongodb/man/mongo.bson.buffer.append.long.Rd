@@ -3,7 +3,7 @@
 \alias{mongo.bson.buffer.append.long}
 \title{Append a long valued field onto a mongo.bson.buffer}
 \description{
-Append a long value or vector of longs onto a mongo.bson.buffer.
+Append a long value or vector of longs onto a \link{mongo.bson.buffer}.
 
 Note that since R has no long (64-bit integer) type, doubles are used in R, but are converted to 64-bit values
 when stored in the buffer; some loss of precision may occur.
@@ -16,9 +16,9 @@ You must call \code{mongo.bson.buffer.append.long()} explicitly; otherwise, doub
 mongo.bson.buffer.append.long(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append. }
-\item{name}{(string) the name (key) of the field appended to the buffer. }
-\item{value}{(double vector) the values(s) to append to the buffer.
+\item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
+\item{name}{(string) The name (key) of the field appended to the buffer. }
+\item{value}{(double vector) The values(s) to append to the buffer.
 
 If value has a names attribute, a subobject is appended and the subfields are given the indicated names.
 

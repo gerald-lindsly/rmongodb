@@ -3,21 +3,21 @@
 \alias{mongo.bson.buffer.append.bool}
 \title{Append a boolean field onto a mongo.bson.buffer}
 \description{
-Append an logical (boolean) or vector of logical values onto a mongo.bson.buffer.
+Append an logical (boolean) or vector of logical values onto a \link{mongo.bson.buffer}.
 }
 \usage{
 mongo.bson.buffer.append.bool(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append. }
-\item{name}{(string) the name (key) of the field appended to the buffer. }
+\item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
+\item{name}{(string) The name (key) of the field appended to the buffer. }
 \item{value}{(logical vector) the booleans(s) to append to the buffer.
 
 If value has a names attribute, a subobject is appended and the subfields are given the indicated names.
 
 Othersize, if more than one element is present in value, the booleans are appended as a subarray.
 
-In the last case, a single boolean is appended as the value of the field.}
+In the last case, a single as.boolean is appended as the value of the field.}
 }
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.

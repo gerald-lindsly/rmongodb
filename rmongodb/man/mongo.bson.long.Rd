@@ -1,16 +1,16 @@
-% File rmongodb/man/mongo.bson_arrsy.Rd
-\name{mongo.bson_arrsy}
-\alias{mongo.bson_arsry}
-\title{BSON data type constant for an array}
+% File rmongodb/man/mongo.bson.long.Rd
+\name{mongo.bson.long}
+\alias{mongo.bson.long}
+\title{BSON data type constant for a long value}
 \description{
 \code{\link{mongo.bson.iterator.type}()} and \code{\link{mongo.bson.iterator.next}()} will return this constant
-(4L) to indicate that the value pointer to by an iterator is an array (containing child values).
+(18L) to indicate that the value pointer to by an iterator is a long integer (64 bits).
 }
 \usage{
-mongo.bson_array
+mongo.bson.long
 }
 \value{
-3L
+18L
 }
 \seealso{
 \code{\link{mongo.bson.iterator.type}}

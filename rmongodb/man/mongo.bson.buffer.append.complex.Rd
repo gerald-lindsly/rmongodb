@@ -3,7 +3,7 @@
 \alias{mongo.bson.buffer.append.complex}
 \title{Append a double field onto a mongo.bson.buffer}
 \description{
-Append a double or vector of doubles onto a mongo.bson.buffer.
+Append a double or vector of doubles onto a \link{mongo.bson.buffer}.
 
 Note that since BSON has no built-in complex type, R's complex values are appended as subobjects with two fields:
 "r" : the real part and "i" : the imaginary part.
@@ -12,9 +12,9 @@ Note that since BSON has no built-in complex type, R's complex values are append
 mongo.bson.buffer.append.complex(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append. }
-\item{name}{(string) the name (key) of the field appended to the buffer. }
-\item{value}{(complex vector) the values(s) to append to the buffer.
+\item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
+\item{name}{(string) The name (key) of the field appended to the buffer. }
+\item{value}{(complex vector) The values(s) to append to the buffer.
 
 If value has a names attribute, a subobject is appended and the subfields are given the indicated names.
 

@@ -13,10 +13,10 @@ No futher data may be appended to the buffer after calling this function.
 mongo.bson.from.buffer(buf)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson}) The mongo.bson.buffer object to convert. }
+\item{buf}{(\link{mongo.bson.buffer}) The buffer to convert. }
 }
 \value{
-A \link{mongo.bson} A mongo.bson object as converted from the buffer parameter.
+A \link{mongo.bson} object as converted from the buffer parameter.
 }
 \seealso{
 \link{mongo.bson}

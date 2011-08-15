@@ -11,7 +11,7 @@ mongo objects have "mongo" as their class and
 contain an externally managed pointer to the connection data.
 This pointer is stored in the "mongo" attribute of the object.
 
-Note that the members of the mongo object only reflect the initial parameters of \code{\link{mongo.create}}.
+Note that the members of the mongo object only reflect the initial parameters of \code{\link{mongo.create}()}.
 Only the external data actually changes if, for example,
 mongo.timeout is called after the initial call to \code{mongo.create}.
 }

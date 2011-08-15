@@ -17,9 +17,10 @@ mongo.update(mongo, ns, criteria, objNew, flags=0L)
 \item{objNew}{(\link{mongo.bson}) The replacement object.}
 \item{flags}{(integer vector) A list of optional flags governing the operation:
 
-mongo.update.upsert: insert ObjNew into the database if no record matching criteria is found.
+\link{mongo.update.upsert}: insert ObjNew into the database if no record matching criteria is found.
 
-mongo.update.multi: update multiple records rather than just the first one matched by criteria.}
+\link{mongo.update.multi}: update multiple records rather than just the first one matched by criteria.
+\link{mongo.update.basic}: Perform a basic update.}
 }
 \seealso{
 \link{mongo},

@@ -60,7 +60,7 @@ Perhaps the best way to see what you are going to get for your particular applic
 mongo.bson.to.list(b)
 }
 \arguments{
-\item{(\link{mongo.bson}}{ The mongo.bson object to convert.}
+\item{b}{(\link{mongo.bson}) The mongo.bson object to convert.}
 }
 \value{
 Best guess at an appropriate R object representing the mongo.bson object.

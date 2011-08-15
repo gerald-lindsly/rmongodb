@@ -3,7 +3,7 @@
 \alias{mongo.bson.buffer.append.null}
 \title{Append a undefined field onto a mongo.bson.buffer}
 \description{
-Append a undefined value onto a mongo.bson.buffer.
+Append a undefined value onto a \link{mongo.bson.buffer}.
 
 BSON has a special field type to indicate an undefined value.
 This function appends such an indicator as the value of a field.
@@ -12,8 +12,8 @@ This function appends such an indicator as the value of a field.
 mongo.bson.buffer.append.undefined(buf, name)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append.}
-\item{name}{(string) the name (key) of the field appended to the buffer.}
+\item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
+\item{name}{(string) The name (key) of the field appended to the buffer.}
 }
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.

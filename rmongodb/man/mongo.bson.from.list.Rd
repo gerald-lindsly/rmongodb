@@ -16,7 +16,7 @@ conversions since mongo.bson.to.list() will convert objects and subobjects to at
 mongo.bson.from.list(lst)
 }
 \arguments{
-\item{(lst)}{The list to convert. 
+\item{lst}{(list) The list to convert. 
 
 This \emph{must} be a list, \emph{not} a vector of atomic types; otherwsie an error is thrown, 
 use \code{as.list()} as necessary.}

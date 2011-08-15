@@ -3,7 +3,7 @@
 \alias{mongo.bson.buffer.append.time}
 \title{Append a time value into a mongo.bson.buffer}
 \description{
-Append a time value into a mongo.bson.buffer.
+Append a date/time value into a \link{mongo.bson.buffer}.
 
 BSON has a special field type to indicate a date/time; these are 64-bit values.
 
@@ -18,9 +18,9 @@ including R and this driver, will need to address that issue.
 mongo.bson.buffer.append.time(buf, name, value)
 }
 \arguments{
-\item{buf}{(\link{mongo.bson.buffer}) The mongo.bson.buffer object to which to append.}
-\item{name}{(string) the name (key) of the field appended to the buffer.}
-\item{value}{(integer) time value.  This may be an object of class "POSIXct", "POSIXlt" or "mongo.timestamp" also.}
+\item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
+\item{name}{(string) The name (key) of the field appended to the buffer.}
+\item{value}{(integer) A time value.  This may also be an object of class "POSIXct", "POSIXlt" or "mongo.timestamp".}
 }
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
@@ -36,5 +36,4 @@ TRUE if successful; otherwise, FALSE if an error occured appending the data.
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append.time(buf, "Now", Sys.time())
 b <- mongo.bson.from.buffer(buf)
-
 }

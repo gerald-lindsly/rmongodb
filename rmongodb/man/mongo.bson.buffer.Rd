@@ -4,7 +4,7 @@
 \alias{mongo.bson.buffer}
 \title{The mongo.bson.buffer class}
 \description{
-Objects of class "mongo.bson.buffer" are used to build BSON documents (\\link{mongo.bson} objects).
+Objects of class "mongo.bson.buffer" are used to build BSON documents (\link{mongo.bson} objects).
 
 There are many functions for appending data into a mongo.bson.buffer object.
 See \code{\link{mongo.bson.buffer.append}()} for a list of those functions.

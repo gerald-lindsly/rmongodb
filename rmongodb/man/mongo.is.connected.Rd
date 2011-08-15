@@ -17,7 +17,7 @@ Logical TRUE if the mongo connection object is currently connected to a server; 
 }
 \seealso{
 \code{\link{mongo.create}},
-\link{mongo},
+\link{mongo}
 }
 \examples{
 mongo <- mongo.create()

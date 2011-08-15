@@ -1,16 +1,16 @@
-% File rmongodb/man/mongo.bson_string.Rd
-\name{mongo.bson_string}
-\alias{mongo.bson_string}
-\title{BSON data type constant for a string value}
+% File rmongodb/man/mongo.bson.int.Rd
+\name{mongo.bson.int}
+\alias{mongo.bson.int}
+\title{BSON data type constant for a integer value}
 \description{
 \code{\link{mongo.bson.iterator.type}()} and \code{\link{mongo.bson.iterator.next}()} will return this constant
-(2L) to indicate that the value pointer to by an iterator is a string.
+(16L) to indicate that the value pointer to by an iterator is a integer (32-bit).
 }
 \usage{
-mongo.bson_string
+mongo.bson.int
 }
 \value{
-2L
+16L
 }
 \seealso{
 \code{\link{mongo.bson.iterator.type}}
