@@ -72,6 +72,7 @@ mongo.insert <- function(mongo, ns, b)
 
 mongo.update.upsert <- 1L
 mongo.update.multi  <- 2L
+mongo.update.basic  <- 4L
 
 mongo.update <- function(mongo, ns, criteria, objNew, flags=0L)
     .Call(".mongo.update", mongo, ns, criteria, objNew, flags)

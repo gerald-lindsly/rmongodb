@@ -35,25 +35,25 @@ mongo.bson.iterator.key <- function(iter)
 mongo.bson.iterator.type <- function(iter)
     .Call(".mongo.bson.iterator.type", iter)
 
-mongo.bson_eoo       <- 0L # end of object
-mongo.bson_double    <- 1L
-mongo.bson_string    <- 2L
-mongo.bson_object    <- 3L
-mongo.bson_array     <- 4L
-mongo.bson_binary    <- 5L
-mongo.bson_undefined <- 6L
-mongo.bson_oid       <- 7L
-mongo.bson_bool      <- 8L
-mongo.bson_date      <- 9L
-mongo.bson_null      <- 10L
-mongo.bson_regex     <- 11L
-mongo.bson_dbref     <- 12L # deprecated
-mongo.bson_code      <- 13L
-mongo.bson_symbol    <- 14L
-mongo.bson_code.w.scope <- 15L
-mongo.bson_int       <- 16L
-mongo.bson_timestamp <- 17L
-mongo.bson_long      <- 18L
+mongo.bson.eoo       <- 0L # end of object
+mongo.bson.double    <- 1L
+mongo.bson.string    <- 2L
+mongo.bson.object    <- 3L
+mongo.bson.array     <- 4L
+mongo.bson.binary    <- 5L
+mongo.bson.undefined <- 6L
+mongo.bson.oid       <- 7L
+mongo.bson.bool      <- 8L
+mongo.bson.date      <- 9L
+mongo.bson.null      <- 10L
+mongo.bson.regex     <- 11L
+mongo.bson.dbref     <- 12L # deprecated
+mongo.bson.code      <- 13L
+mongo.bson.symbol    <- 14L
+mongo.bson.code.w.scope <- 15L
+mongo.bson.int       <- 16L
+mongo.bson.timestamp <- 17L
+mongo.bson.long      <- 18L
 
 mongo.bson.iterator.value <- function(iter)
     .Call(".mongo.bson.iterator.value", iter)
