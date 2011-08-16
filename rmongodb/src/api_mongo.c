@@ -543,7 +543,7 @@ SEXP mongo_authenticate(SEXP mongo_conn, SEXP user, SEXP pass, SEXP db) {
 
 
 const char* _get_host_port(mongo_host_port* hp) {
-    static char _hp[sizeof(hp->host+12)];
+    static char _hp[sizeof(hp->host)+12];
     sprintf(_hp, "%s:%d", hp->host, hp->port);
     return _hp;
 }
