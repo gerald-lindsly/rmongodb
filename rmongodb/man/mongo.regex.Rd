@@ -12,8 +12,9 @@ See \url{http://www.mongodb.org/display/DOCS/Advanced+Queries#AdvancedQueries-Re
 mongo.regex objects have "mongo.regex" as their class so that \code{\link{mongo.bson.buffer.append}()} 
 may detect them and append the appropriate BSON regex-typed value to a buffer.
 
-mongo.regex values may also be present in a list and will be handled properly
-by \code{\link{mongo.bson.buffer.append.list}().}
+These mongo.regex values may also be present in a list and will be handled properly
+by \code{\link{mongo.bson.buffer.append.list}().} and \code{\link{mongo.bson.from.list}()}.
+
 }
 \examples{
 buf <- mongo.bson.buffer.create()

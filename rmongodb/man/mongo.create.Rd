@@ -18,8 +18,8 @@ mongo.create(host="127.0.0.1:27017", name="", username="", password="", db_name=
 \item{host}{(string vector) A list of hosts/ports to which to connect.
     If a port is not given, 27017 is used.
 }
-\item{name}{(string) The name of the replset to which to connect. if name == "" (the default),
-    the hosts are tried one by one until a connection is made.  Otherwize, name must be the name of the replset 
+\item{name}{(string) The name of the replset to which to connect. If name == "" (the default),
+    the hosts are tried one by one until a connection is made.  Otherwise, name must be the name of the replset 
     and the given hosts are assumed to be seeds of the replset.
     Each of these is connected to and queried in turn until one reports that it is a master.
     This master is then queried for a list of hosts and these are in turn connected to and verified as belonging

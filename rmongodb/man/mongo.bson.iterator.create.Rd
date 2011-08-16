@@ -42,7 +42,6 @@ print(mongo.bson.iterator.value(iter))
 \link{mongo.bson.iterator},
 \code{\link{mongo.bson.find}},
 \code{\link{mongo.bson.iterator.next}},
-\code{\link{mongo.bson.iterator.more}},
 \code{\link{mongo.bson.iterator.key}},
 \code{\link{mongo.bson.iterator.type}},
 \code{\link{mongo.bson.iterator.value}},

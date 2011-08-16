@@ -15,7 +15,7 @@ mongo.oid objects have "mongo.oid" as their class so that \code{\link{mongo.bson
 may detect them and append the appropriate BSON OID-typed value to a buffer.
 
 mongo.oid values may also be present in a list and will be handled properly
-by \code{\link{mongo.bson.buffer.append.list}().}
+by \code{\link{mongo.bson.buffer.append.list}()} and \code{\link{mongo.bson.from.list}()}.
 }
 \examples{
 buf <- mongo.bson.buffer.create()

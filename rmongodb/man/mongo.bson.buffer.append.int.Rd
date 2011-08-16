@@ -23,11 +23,6 @@ In the last case, the single value must be coerible to an integer.}
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
 }
-\seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.append}}
-}
 \examples{
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append.int(buf, "age", 23L)
@@ -48,5 +43,9 @@ mongo.bson.buffer.append.int(buf, "board", dim)
 b <- mongo.bson.from.buffer(buf)
 
 # theabove produces a BSON object of the form { "board" : { "width" : 2, "height" : 4, "length" : 8 } }
-
+}
+\seealso{
+\link{mongo.bson}
+\link{mongo.bson.buffer}
+\code{\link{mongo.bson.buffer.append}}
 }

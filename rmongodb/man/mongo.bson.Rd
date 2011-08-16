@@ -14,10 +14,10 @@ mongo.bson objects have "mongo.bson" as their class and
 contain an externally managed pointer to the actual document data.
 This pointer is stored in the "mongo.bson" attribute of the object.
 
-objects of class "\link{mongo.bson.iterator}" are used to iterate over a
+Objects of class "\link{mongo.bson.iterator}" are used to iterate over a
 mongo.bson object to enumerate its keys and values.
 
-objects of class "\link{mongo.bson.buffer}" are used to build BSON documents.
+Objects of class "\link{mongo.bson.buffer}" are used to build BSON documents.
 }
 \examples{
 b <- mongo.bson.from.buffer(buf)

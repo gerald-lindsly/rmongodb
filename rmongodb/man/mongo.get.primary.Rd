@@ -12,7 +12,7 @@ mongo.get.primary(mongo)
 \item{mongo}{(\link{mongo}) a mongo connection object.}
 }
 \value{
-String host & port in the format "%s:%d".
+String host & port in the format "\%s:\%d".
 }
 \seealso{
 \code{\link{mongo.create}},

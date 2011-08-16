@@ -12,8 +12,9 @@ See \url{http://www.mongodb.org/display/DOCS/Timestamp+Data+Type}
 mongo.timestamp objects have "mongo.timestamp", "POSIXct" & "POSIXt" as their class so that \code{\link{mongo.bson.buffer.append}()} 
 may detect them and append the appropriate BSON code-typed value to a buffer.
 
-mongo.timestamp values may also be present in a list and will be handled properly
-by \code{\link{mongo.bson.buffer.append.list}()}
+These mongo.timestamp values may also be present in a list and will be handled properly
+by \code{\link{mongo.bson.buffer.append.list}()} and \code{\link{mongo.bson.from.list}()}.
+
 }
 \examples{
 mongo <- mongo.create()

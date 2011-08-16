@@ -28,9 +28,13 @@ if (mongo.is.connected(mongo)) {
 \seealso{
 \code{\link{mongo.create}},
 \code{\link{mongo.is.connected}},
+\code{\link{mongo.get.databases}},
+\code{\link{mongo.get.database.collections}},
 \code{\link{mongo.insert}},
 \code{\link{mongo.find.one}},
 \code{\link{mongo.find}},
 \code{\link{mongo.update}},
 \code{\link{mongo.remove}},
+\code{\link{mongo.drop}},
+\code{\link{mongo.drop.database}},
 }

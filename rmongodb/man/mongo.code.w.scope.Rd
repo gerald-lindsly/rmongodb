@@ -14,7 +14,8 @@ mongo.code.w.scope objects have "mongo.code.w.scope" as their class so that \cod
 may detect them and append the appropriate BSON code-typed value and scope to a buffer.
 
 These mongo.code.w.scope values may also be present in a list and will be handled properly
-by \code{\link{mongo.bson.buffer.append.list}()}
+by \code{\link{mongo.bson.buffer.append.list}()} and \code{\link{mongo.bson.from.list}()}.
+
 }
 \examples{
 buf <- mongo.bson.buffer.create()

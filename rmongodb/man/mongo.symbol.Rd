@@ -11,7 +11,8 @@ mongo.symbol objects' value is a string representing the value of the symbol.
 mongo.symbol objects have "mongo.symbol" as their class so that \code{\link{mongo.bson.buffer.append}()} 
 may detect them and append the appropriate BSON symbol-typed value to a buffer.
 
-These mongo.symbol values may also be present in a list and will be handled properly by \code{\link{mongo.bson.buffer.append.list}()}
+These mongo.symbol values may also be present in a list and will be handled properly
+by \code{\link{mongo.bson.buffer.append.list}()} and \code{\link{mongo.bson.from.list}()}.
 }
 \examples{
     buf <- mongo.bson.buffer.create()

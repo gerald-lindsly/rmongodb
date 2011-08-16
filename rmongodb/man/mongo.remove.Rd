@@ -17,6 +17,7 @@ mongo.remove(mongo, ns, criteria=mongo.bson.empty())
 The default of mongo.bson.empty() will cause \emph{all} records in the given collection to be removed.}
 }
 \seealso{
+\link{mongo},
 \link{mongo.bson},
 \code{\link{mongo.insert}},
 \code{\link{mongo.update}},
