@@ -23,9 +23,6 @@ mongo.bson.find <- function(b, name)
     .Call(".mongo.bson.find", b, name)
 
 
-mongo.bson.iterator.more <- function(iter)
-    .Call(".mongo.bson.iterator.more", iter)
-
 mongo.bson.iterator.next <- function(iter)
     .Call(".mongo.bson.iterator.next", iter)
 

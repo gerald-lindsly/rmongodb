@@ -380,16 +380,6 @@ SEXP mongo_bson_find(SEXP b, SEXP name) {
 }
 
 
-SEXP mongo_bson_iterator_more(SEXP iter) {
-    bson_iterator* _iter = _checkIterator(iter);
-    SEXP ret;
-    PROTECT(ret = allocVector(LGLSXP, 1));
-    LOGICAL(ret)[0] = bson_iterator_more(_iter) != 0 ? TRUE : FALSE;
-    UNPROTECT(1);
-    return ret;
-}
-
-
 SEXP mongo_bson_iterator_next(SEXP iter) {
     bson_iterator* _iter = _checkIterator(iter);
     SEXP ret;
@@ -541,6 +531,8 @@ int _iterator_getComplex(bson_iterator* iter, Rcomplex* z) {
     if (bson_iterator_next(&sub) != BSON_DOUBLE || strcmp(bson_iterator_key(&sub), "i") != 0)
         return 0;
     z->i = bson_iterator_double(&sub);
+    if (bson_iterator_next(&sub) != BSON_EOO)
+        return 0;
     return 1;
 }
 

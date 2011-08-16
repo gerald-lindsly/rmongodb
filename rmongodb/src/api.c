@@ -56,7 +56,6 @@ static const R_CallMethodDef callMethods[] = {
 
     { ".mongo.bson.iterator.create", (DL_FUNC) mongo_bson_iterator_create, 1},
     { ".mongo.bson.find", (DL_FUNC) mongo_bson_find, 2},
-    { ".mongo.bson.iterator.more", (DL_FUNC) mongo_bson_iterator_more, 1},
     { ".mongo.bson.iterator.next", (DL_FUNC) mongo_bson_iterator_next, 1},
     { ".mongo.bson.iterator.key", (DL_FUNC) mongo_bson_iterator_key, 1},
     { ".mongo.bson.iterator.type", (DL_FUNC) mongo_bson_iterator_type, 1},

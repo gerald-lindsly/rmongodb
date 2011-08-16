@@ -68,7 +68,6 @@ export(mongo.bson.from.list)
 export(mongo.bson.find)
 
 export(mongo.bson.iterator.create)
-export(mongo.bson.iterator.more)
 export(mongo.bson.iterator.next)
 export(mongo.bson.iterator.key)
 export(mongo.bson.iterator.value)
