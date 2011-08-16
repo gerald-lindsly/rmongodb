@@ -317,6 +317,12 @@ SEXP rmongo_cursor_next(SEXP cursor) {
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
     LOGICAL(ret)[0] = !_cursor ? FALSE : (mongo_cursor_next(_cursor) == MONGO_OK);
+    bson* cur = & _cursor->current;
+    cur->finished = 1;
+    bson_little_endian32(&cur->dataSize, cur->data);
+    cur->err = 0;
+    cur->finished = 1;
+    cur->stackPos = 0;
     UNPROTECT(1);
     return ret;
 }
