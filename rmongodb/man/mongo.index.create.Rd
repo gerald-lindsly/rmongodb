@@ -16,7 +16,14 @@ mongo.index.create(mongo, ns, key, options=0L)
 \item{key}{An object enumerating the fields in order which are to participate in the index.
     This object may be a vector of strings listing the key fields or 
     a \link{mongo.bson} object containing the key fields in the desired order.}
-\item{options}{(integer vector) Optional flags governing the operation: mongo.index.unique, mongo.index.drop.dups, mongo.index.background, mongo.index.sparse}
+\item{options}{(integer vector) Optional flags governing the operation:
+    \itemize{
+        \item{\code{\link{mongo.index.unique}}}
+        \item{\code{\link{mongo.index.drop.dups}}}
+        \item{\code{\link{mongo.index.background}}}
+        \item{\code{\link{mongo.index.sparse}}}
+    }
+}
 }
 \value{
 NULL if successful; otherwise, a \link{mongo.bson} object describing the error.  

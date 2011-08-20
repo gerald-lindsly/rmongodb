@@ -16,19 +16,12 @@ mongo.update(mongo, ns, criteria, objNew, flags=0L)
 \item{criteria}{(\link{mongo.bson}) The criteria with which to match records that are to be updated.}
 \item{objNew}{(\link{mongo.bson}) The replacement object.}
 \item{flags}{(integer vector) A list of optional flags governing the operation:
-
-\link{mongo.update.upsert}: insert ObjNew into the database if no record matching criteria is found.
-
-\link{mongo.update.multi}: update multiple records rather than just the first one matched by criteria.
-\link{mongo.update.basic}: Perform a basic update.}
+    \itemize{
+        \item{\code{\link{mongo.update.upsert}}: insert ObjNew into the database if no record matching criteria is found.}
+        \item{\code{\link{mongo.update.multi}}: update multiple records rather than just the first one matched by criteria.}
+        \item{\code{\link{mongo.update.basic}}: Perform a basic update.}
+    }
 }
-\seealso{
-\link{mongo},
-\link{mongo.bson},
-\code{\link{mongo.insert}},
-\code{\link{mongo.find}},
-\code{\link{mongo.find.one}},
-\code{\link{mongo.remove}}
 }
 \examples{
 mongo <- mongo.create()
@@ -59,4 +52,12 @@ if (mongo.is.connected(mongo)) {
     # if such a record exists; otherwise, insert this as a new reord
     mongo.update(mongo, "test.people", criteria, objNew, mongo.update.upsert)
 }
+}
+\seealso{
+\link{mongo},
+\link{mongo.bson},
+\code{\link{mongo.insert}},
+\code{\link{mongo.find}},
+\code{\link{mongo.find.one}},
+\code{\link{mongo.remove}}
 }
