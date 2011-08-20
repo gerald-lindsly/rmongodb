@@ -22,11 +22,6 @@ In the last case, a single as.boolean is appended as the value of the field.}
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
 }
-\seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.append}}
-}
 \examples{
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append.bool(buf, "wise", TRUE)
@@ -47,5 +42,9 @@ mongo.bson.buffer.append.bool(buf, "Looks", flags)
 b <- mongo.bson.from.buffer(buf)
 
 # The above produces a BSON object of the form { "Looks" : { "Tall" : false, "Fat" : false, "Pretty" : true } }
-
+}
+\seealso{
+\link{mongo.bson}
+\link{mongo.bson.buffer}
+\code{\link{mongo.bson.buffer.append}}
 }

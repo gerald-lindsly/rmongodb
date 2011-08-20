@@ -5,7 +5,7 @@
 \description{
 Drop a collection from a database on MongoDB server.  This removes the entire collection.
 
-Obvioulsy care should be taken when using this command.
+Obviously, care should be taken when using this command.
 }
 \usage{
 mongo.drop(mongo, ns)
@@ -17,18 +17,18 @@ mongo.drop(mongo, ns)
 \value{
 (Logical) TRUE if successful; otherwise, FALSE
 }
+\examples{
+mongo <- mongo.create()
+if (mongo.is.connected(mongo)) {
+    print(mongo.drop(mongo, "test.people"))
+
+    mongo.destroy(mongo)
+}
+}
 \seealso{
 \code{\link{mongo.drop.database}},
 \code{\link{mongo.command}},
 \code{\link{mongo.rename}},
 \code{\link{mongo.count}},
-\link{mongo},
-}
-\examples{
-mongo <- mongo.create()
-if (mongo.is.connected(mongo)) {
-    print(mongo.drop(mongo, "test.people")
-
-    mongo.destroy(mongo)
-}
+\link{mongo}
 }

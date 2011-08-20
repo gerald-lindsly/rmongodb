@@ -8,10 +8,11 @@ Display formatted output of a mongo.bson object.
 Output is tabbed (indented to show the nesting level of subobjects and arrays).
 }
 \usage{
-mongo.bson.print(b)
+mongo.bson.print(x, ...)
 }
 \arguments{
-\item{b}{(\link{mongo.bson}) The mongo.bson object to display. }
+\item{x}{(\link{mongo.bson}) The mongo.bson object to display. }
+\item{...}{Parameters passed from generic.}
 }
 \value{
 The parameter is returned unchanged.

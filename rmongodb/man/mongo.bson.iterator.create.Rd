@@ -12,8 +12,8 @@ mongo.bson.iterator.create(b)
 \arguments{
 \item{b}{(\link{mongo.bson}) The mongo.bson object through which to iterate.
 
-\emph{b} may also be an mongo.bson.iterator and is expected to point to a subobject or array.  The iterator returned
-may be used to step through the subobject or array.}
+\emph{b} may also be a mongo.bson.iterator and is expected to point to a subobject or array.
+The iterator returned may be used to step through the subobject or array.}
 }
 \value{
 (\link{mongo.bson.iterator}) An iterator initialized to 'before' the start of the given mongo.bson object.
@@ -21,9 +21,9 @@ may be used to step through the subobject or array.}
 }
 \examples{
 buf <- mongo.bson.buffer.create()
-mongo.bson.buffer.append(buf, "name", "Joe") #  Append a string
-mongo.bson.buffer.append(buf, "created", Sys.time()) #  Append a date/time
-mongo.bson.buffer.append(buf, "cars", NULL) #  Append a NULL
+mongo.bson.buffer.append(buf, "name", "Joe")  # Append a string
+mongo.bson.buffer.append(buf, "created", Sys.time())  # Append a date/time
+mongo.bson.buffer.append(buf, "cars", NULL)  # Append a NULL
 b <- mongo.bson.from.buffer(buf)
 
 iter <- mongo.bson.iterator.create(b)
@@ -34,7 +34,7 @@ while (mongo.bson.iterator.next(iter))
     }
 
 # The above is given for illustrative purposes, but may be performed 
-# much easier by the following:
+# much easier (and faster) by the following:
 iter <- mongo.bson.find(b, "created")
 print(mongo.bson.iterator.value(iter))
 }

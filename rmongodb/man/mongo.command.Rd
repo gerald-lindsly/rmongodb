@@ -15,22 +15,12 @@ mongo.command(mongo, db, command)
 \arguments{
 \item{mongo}{(\link{mongo}) A mongo connection object.}
 \item{db}{(string) The name of the database upon which to perform the command.}
-\item{command}{\link{mongo.bson} An object describing the command.}
+\item{command}{(\link{mongo.bson}) An object describing the command.}
 }
 \value{
 NULL if the command failed.  \code{\link{mongo.get.err}()} may be set to MONGO_COMMAND_FAILED.
 
-(\link{mongo.bson} The server's response if successful.
-}
-\seealso{
-\code{\link{mongo.get.err}},
-\code{\link{mongo.simple.command}},
-\code{\link{mongo.rename}},
-\code{\link{mongo.count}},
-\code{\link{mongo.drop.database}},
-\code{\link{mongo.drop}},
-\link{mongo},
-\link{mongo.bson}
+(\link{mongo.bson}) The server's response if successful.
 }
 \examples{
 mongo <- mongo.create()
@@ -38,7 +28,7 @@ if (mongo.is.connected(mongo)) {
 
     # alternate method of renaming a collection
     buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "renameCollection", ns)
+    mongo.bson.buffer.append(buf, "renameCollection", "test.people")
     mongo.bson.buffer.append(buf, "to", "test.humans")
     command <- mongo.bson.from.buffer(buf)
     mongo.command(mongo, "admin", command)
@@ -51,9 +41,18 @@ if (mongo.is.connected(mongo)) {
     command <- mongo.bson.from.buffer(buf)
     result = mongo.command(mongo, "test", command)
     if (!is.null(result)) {
-        iter = mongo.bson.iterator.create(result)
-        mongo.bson.find(result, "n", iter)
+        iter = mongo.bson.find(result, "n")
         print(mongo.bson.iterator.value(iter))
     }
 }
+}
+\seealso{
+\code{\link{mongo.get.err}},
+\code{\link{mongo.simple.command}},
+\code{\link{mongo.rename}},
+\code{\link{mongo.count}},
+\code{\link{mongo.drop.database}},
+\code{\link{mongo.drop}},
+\link{mongo},
+\link{mongo.bson}
 }

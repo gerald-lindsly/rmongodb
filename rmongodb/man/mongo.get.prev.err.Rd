@@ -1,18 +1,16 @@
-% File rmongodb/man/mongo.get.last.err.Rd
-\name{mongo.get.last.err}
-\alias{mongo.get.last.err}
+% File rmongodb/man/mongo.get.prev.err.Rd
+\name{mongo.get.prev.err}
+\alias{mongo.get.prev.err}
 \title{Retrieve an server error code from a mongo connection object}
 \description{
-Retrieve an server error record from a the MongoDB server.  This describes the last error
-that occurs while accessing the give database.
-While this function retrieves an error record
+Retrieve the previous server error record from a the MongoDB server.  While this function retrieves an error record
 in the form of a mongo.bson record, it also sets the values returned by
 \code{\link{mongo.get.server.err}()} and \code{\link{mongo.get.server.err.string}()}.
-You may find it more convenient using those after calling \code{mongo.get.last.err()} rather than
+You may find it more convenient using those after calling \code{mongo.get.prev.err()} rather than
 unpacking the returned mongo.bson object.
 }
 \usage{
-mongo.get.last.err(mongo, db)
+mongo.get.prev.err(mongo, db)
 }
 \arguments{
 \item{mongo}{(\link{mongo}) a mongo connection object.}
@@ -45,7 +43,10 @@ if (mongo.is.connected(mongo)) {
     b <- mongo.bson.from.buffer(buf)
     mongo.insert(mongo, ns, b);
 
-    err <- mongo.get.last.err(mongo, db)
+    # try insert again
+    mongo.insert(mongo, ns, b);
+
+    err <- mongo.get.prev.err(mongo, db)
     print(mongo.get.server.err(mongo))
     print(mongo.get.server.err.string(mongo))
 }
@@ -53,6 +54,6 @@ if (mongo.is.connected(mongo)) {
 \seealso{
 \code{\link{mongo.get.server.err}},
 \code{\link{mongo.get.server.err.string}},
-\code{\link{mongo.get.prev.err}}
+\code{\link{mongo.get.last.err}}
 \link{mongo}
 }

@@ -8,17 +8,25 @@ Rename a collection on a MongoDB server.
 Note that this may also be used to move a collection from one database to another.
 }
 \usage{
-mongo.rename(mongo, from_ns, to_ns)
+mongo.rename(mongo, from.ns, to.ns)
 }
 \arguments{
 \item{mongo}{(\link{mongo}) A mongo connection object.}
-\item{from_ns}{(string) The namespace of the collection to rename.}
-\item{to_ns}{(string) The new namespace of the collection.}
+\item{from.ns}{(string) The namespace of the collection to rename.}
+\item{to.ns}{(string) The new namespace of the collection.}
 }
 \value{
 NULL if unsuccessful; otherwise,
 
 (\link{mongo.bson}) Server response.
+}
+\examples{
+mongo <- mongo.create()
+if (mongo.is.connected(mongo)) {
+    print(mongo.rename(mongo, "test.people", "test.humans"))
+
+    mongo.destroy(mongo)
+}
 }
 \seealso{
 \code{\link{mongo.drop.database}},
@@ -26,12 +34,4 @@ NULL if unsuccessful; otherwise,
 \code{\link{mongo.command}},
 \code{\link{mongo.count}},
 \link{mongo},
-}
-\examples{
-mongo <- mongo.create()
-if (mongo.is.connected(mongo)) {
-    print(mongo.rename(mongo, "test.people")
-
-    mongo.destroy(mongo)
-}
 }

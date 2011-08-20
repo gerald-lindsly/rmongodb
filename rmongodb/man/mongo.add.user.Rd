@@ -16,11 +16,13 @@ mongo.add.user(mongo, username, password, db="admin")
 \item{password}{(string) password corresponding to username.}
 \item{db}{(string) The database on the server to which to add the username and password.}
 }
+\examples{
+mongo <- mongo.create()
+if (mongo.is.connected(mongo))
+    mongo.add.user(mongo, "Jeff", "H87b5dog")
+}
 \seealso{
 \code{\link{mongo.authenticate}},
 \link{mongo},
 \code{\link{mongo.create}}
-}
-\examples{
-mongo.add.user(mongo, "Jeff", "H87b5dog")
 }

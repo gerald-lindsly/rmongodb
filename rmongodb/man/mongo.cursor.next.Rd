@@ -16,12 +16,6 @@ mongo.cursor.next(cursor)
 \value{
 TRUE if there is a next record; otherwise, FALSE.
 }
-\seealso{
-\code{\link{mongo.find}},
-\link{mongo.cursor},
-\code{\link{mongo.cursor.value}},
-\code{\link{mongo.cursor.destroy}}
-}
 \examples{
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
@@ -36,4 +30,10 @@ if (mongo.is.connected(mongo)) {
         print(mongo.cursor.value(cursor))
     mongo.cursor.destroy(cursor)
 }
+}
+\seealso{
+\code{\link{mongo.find}},
+\link{mongo.cursor},
+\code{\link{mongo.cursor.value}},
+\code{\link{mongo.cursor.destroy}}
 }

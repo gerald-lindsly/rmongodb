@@ -29,11 +29,6 @@ In the last case, a single long is appended as the value of the field.}
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
 }
-\seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.append}}
-}
 \examples{
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append.long(buf, "YearSeconds", 365.24219 * 24 * 60 * 60)
@@ -55,4 +50,9 @@ b <- mongo.bson.from.buffer(buf)
 
 # The above produces a BSON object of the form { "Stars" : { "Sol" : 474, "Proxima Centari" : 133871000, "Bernard's Star" : 188178313 } }
 
+}
+\seealso{
+\link{mongo.bson}
+\link{mongo.bson.buffer}
+\code{\link{mongo.bson.buffer.append}}
 }

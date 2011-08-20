@@ -4,11 +4,11 @@ mongo.bson.empty <- function()
 mongo.bson.size <- function(b)
     .Call(".mongo.bson.size", b)
 
-mongo.bson.print <- function(b)
-    invisible(.Call(".mongo.bson.print", b))
+mongo.bson.print <- function(x, ...)
+    invisible(.Call(".mongo.bson.print", x))
 
-print.mongo.bson <- function(b, digits)
-    invisible(.Call(".mongo.bson.print", b))
+print.mongo.bson <- function(x, ...)
+    invisible(.Call(".mongo.bson.print", x))
 
 mongo.bson.to.list <- function(b)
     .Call(".mongo.bson.to.list", b)
@@ -61,8 +61,8 @@ mongo.oid.from.string <- function(hexstr)
 mongo.oid.to.string <- function(oid)
     .Call(".mongo.oid.to.string", oid)
 
-as.character.mongo.oid <- function(oid)
-    .Call(".mongo.oid.to.string", oid)
+as.character.mongo.oid <- function(x, ...)
+    .Call(".mongo.oid.to.string", x)
 
 mongo.oid.create <- function()
     .Call(".mongo.oid.create")
@@ -70,11 +70,11 @@ mongo.oid.create <- function()
 mongo.oid.time <- function(oid)
     .Call(".mongo.oid.time", oid)
 
-mongo.oid.print <- function(oid)
-    invisible(.Call(".mongo.oid.print", oid))
+mongo.oid.print <- function(x)
+    invisible(.Call(".mongo.oid.print", x))
 
-print.mongo.oid <- function(oid)
-    invisible(.Call(".mongo.oid.print", oid))
+print.mongo.oid <- function(x, ...)
+    invisible(.Call(".mongo.oid.print", x))
 
 
 mongo.timestamp.create <- function(time, increment) {
@@ -83,14 +83,14 @@ mongo.timestamp.create <- function(time, increment) {
     .Call(".mongo.timestamp.create", time, increment)
 }
 
-mongo.code.create <- function(str)
-    .Call(".mongo.code.create", str)
+mongo.code.create <- function(code)
+    .Call(".mongo.code.create", code)
 
-mongo.code.w.scope.create <- function(str, b)
-    .Call(".mongo.code.w.scope.create", str, b)
+mongo.code.w.scope.create <- function(code, scope)
+    .Call(".mongo.code.w.scope.create", code, scope)
 
-mongo.symbol.create <- function(str)
-    .Call(".mongo.symbol.create", str)
+mongo.symbol.create <- function(value)
+    .Call(".mongo.symbol.create", value)
 
 mongo.undefined.create <- function()
     .Call(".mongo.undefined.create")

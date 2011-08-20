@@ -12,10 +12,11 @@ allows it to be called simply by \code{as.character(oid)}.
 See \url{http://www.mongodb.org/display/DOCS/Object+IDs}
 }
 \usage{
-as.character.mongo.oid(oid)
+as.character.mongo.oid(x, ...)
 }
 \arguments{
-\item{oid}{(\link{mongo.oid}) The OID to be converted.}
+\item{x}{(\link{mongo.oid}) The OID to be converted.}
+\item{...}{Parameters passed from generic.}
 }
 \value{
 (string) A string of 24 hex digits representing the bits of \emph{oid}.

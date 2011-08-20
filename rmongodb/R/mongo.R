@@ -13,9 +13,6 @@ mongo.create <- function(host="127.0.0.1", name="", username="", password="", db
 mongo.get.err <- function(mongo)
     .Call(".mongo.get.err", mongo)
 
-mongo.clear.err <- function(mongo)
-    .Call(".mongo.clear.err", mongo)
-
 mongo.disconnect <- function(mongo)
     .Call(".mongo.disconnect", mongo)
 
@@ -131,7 +128,7 @@ mongo.drop <- function(mongo, ns)
     .Call(".mongo.drop", mongo, ns)
 
 mongo.rename <- function(mongo, from.ns, to.ns)
-    .Call(".mongo.rename", mongo, ns)
+    .Call(".mongo.rename", mongo, from.ns, to.ns)
 
 mongo.get.databases <- function(mongo)
     .Call(".mongo.get.databases", mongo)

@@ -18,18 +18,19 @@ mongo.get.database.collections(mongo, db)
  Note this will not include the system collection \emph{db}.system.indexes nor the indexes attached to the database.
 Use mongo.find(mongo, '\emph{db}.system.indexes", limit=0L) for information on any indexes.
 }
-\seealso{
-\code{\link{mongo.get.databases}},
-\code{\link{mongo.drop.database}},
-\code{\link{mongo.command}},
-\code{\link{mongo.rename}},
-\link{mongo},
-}
 \examples{
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
-    print(mongo.get.database.collections(mongo, "test")
+    print(mongo.get.database.collections(mongo, "test"))
 
     mongo.destroy(mongo)
 }
+}
+\seealso{
+\code{\link{mongo.get.databases}},
+\code{\link{mongo.drop.database}},
+\code{\link{mongo.drop}},
+\code{\link{mongo.command}},
+\code{\link{mongo.rename}},
+\link{mongo}
 }

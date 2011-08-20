@@ -20,8 +20,9 @@ A \link{mongo.code.w.scope} object
 \examples{
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append(buf, "scopevar", "scopevalue")
-scope <- mongo.bson.from.buffer()
+scope <- mongo.bson.from.buffer(buf)
 codeWscope <- mongo.code.w.scope.create("y = x", scope)
+buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append(buf, "CodeWscope", codeWscope)
 b <- mongo.bson.from.buffer(buf)
 

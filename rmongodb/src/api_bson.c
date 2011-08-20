@@ -79,8 +79,7 @@ const char* numstr(int i) {
     }
 }
 
-SEXP _mongo_code_create(const char* code)
-{
+SEXP _mongo_code_create(const char* code) {
     SEXP ret, cls;
     PROTECT(ret = allocVector(STRSXP, 1));
     SET_STRING_ELT(ret, 0, mkChar(code));
@@ -92,15 +91,13 @@ SEXP _mongo_code_create(const char* code)
 }
 
 
-SEXP mongo_code_create(SEXP code)
-{
+SEXP mongo_code_create(SEXP code) {
     const char* _code = CHAR(STRING_ELT(code, 0));
     return _mongo_code_create(_code);
 }
 
 
-SEXP _mongo_code_w_scope_create(const char* code, bson* b)
-{
+SEXP _mongo_code_w_scope_create(const char* code, bson* b) {
     SEXP ret, cls, _b;
     PROTECT(ret = allocVector(STRSXP, 1));
     SET_STRING_ELT(ret, 0, mkChar(code));
@@ -115,15 +112,13 @@ SEXP _mongo_code_w_scope_create(const char* code, bson* b)
 }
 
 
-SEXP mongo_code_w_scope_create(SEXP code, SEXP b)
-{
+SEXP mongo_code_w_scope_create(SEXP code, SEXP b) {
     bson* _b = _checkBSON(b);
     return _mongo_code_w_scope_create(CHAR(STRING_ELT(code, 0)), _b);
 }
 
 
-SEXP _mongo_regex_create(const char* pattern, const char* options)
-{
+SEXP _mongo_regex_create(const char* pattern, const char* options) {
     SEXP ret, cls;
     PROTECT(ret = allocVector(STRSXP, 1));
     SET_STRING_ELT(ret, 0, mkChar(pattern));
@@ -139,8 +134,7 @@ SEXP _mongo_regex_create(const char* pattern, const char* options)
 }
 
 
-SEXP mongo_regex_create(SEXP pattern, SEXP options)
-{
+SEXP mongo_regex_create(SEXP pattern, SEXP options) {
     return _mongo_regex_create(CHAR(STRING_ELT(pattern, 0)), CHAR(STRING_ELT(options, 0)));
 }
 
@@ -153,8 +147,7 @@ static void binaryFinalizer(SEXP ptr) {
 }
 
 
-SEXP _mongo_binary_create(char type, const char* data, int len)
-{
+SEXP _mongo_binary_create(char type, const char* data, int len) {
     SEXP ret, cls, ptr;
     PROTECT(ret = allocVector(INTSXP, 1));
     INTEGER(ret)[0] = type;
@@ -208,8 +201,7 @@ SEXP mongo_binary_get(SEXP bin, SEXP index) {
 }
 
 
-SEXP _mongo_symbol_create(const char* symbol)
-{
+SEXP _mongo_symbol_create(const char* symbol) {
     SEXP ret, cls;
     PROTECT(ret = allocVector(STRSXP, 1));
     SET_STRING_ELT(ret, 0, mkChar(symbol));
@@ -221,15 +213,13 @@ SEXP _mongo_symbol_create(const char* symbol)
 }
 
 
-SEXP mongo_symbol_create(SEXP symbol)
-{
+SEXP mongo_symbol_create(SEXP symbol) {
     const char* _symbol = CHAR(STRING_ELT(symbol, 0));
     return _mongo_symbol_create(_symbol);
 }
 
 
-SEXP mongo_undefined_create()
-{
+SEXP mongo_undefined_create() {
     SEXP ret, cls;
     PROTECT(ret = allocVector(STRSXP, 1));
     SET_STRING_ELT(ret, 0, mkChar("UNDEFINED"));
@@ -361,8 +351,9 @@ SEXP mongo_bson_iterator_create(SEXP b) {
         if (t == BSON_ARRAY || t == BSON_OBJECT)
             bson_iterator_subiterator(_iter, &iter);
         else
-            error("Iterator expected to point to an array or subobject");
-    } else {
+            error("Iterator is expected to point to an array or subobject");
+    }
+    else {
         bson* _b = _checkBSON(b);
         bson_iterator_init(&iter, _b);
     }
@@ -579,8 +570,8 @@ SEXP _array_to_object(bson_iterator* _iter) {
         PROTECT(ret = allocVector(REALSXP, count));
         while ((sub_type = bson_iterator_next(&sub)))
             REAL(ret)[i++] = (sub_type == BSON_LONG ?
-                                bson_iterator_long(&sub) :
-                                bson_iterator_double(&sub));
+                              bson_iterator_long(&sub) :
+                              bson_iterator_double(&sub));
         break;
     case BSON_STRING:
         PROTECT(ret = allocVector(STRSXP, count));
@@ -649,8 +640,8 @@ SEXP mongo_bson_iterator_value(SEXP iter) {
         return _mongo_regex_create(bson_iterator_regex(_iter), bson_iterator_regex_opts(_iter));
 
     case BSON_BINDATA:
-        return _mongo_binary_create(bson_iterator_bin_type(_iter), 
-                                    bson_iterator_bin_data(_iter), 
+        return _mongo_binary_create(bson_iterator_bin_type(_iter),
+                                    bson_iterator_bin_data(_iter),
                                     bson_iterator_bin_len(_iter));
 
     case BSON_NULL:
@@ -719,8 +710,7 @@ returnSubObject: {
 }
 
 // passed an iterator to start of a bson object
-SEXP _mongo_bson_to_list(bson_iterator* _iter)
-{
+SEXP _mongo_bson_to_list(bson_iterator* _iter) {
     SEXP names, ret;
     int count = 0;
     bson_iterator iter;
@@ -802,7 +792,7 @@ SEXP _mongo_bson_to_list(bson_iterator* _iter)
         UNPROTECT(2);
         return ret;
     }
-    
+
     SEXP el;
     PROTECT(ret = allocVector(VECSXP, count));
     for (; (sub_type = bson_iterator_next(&iter)); i++) {
@@ -874,8 +864,8 @@ SEXP _mongo_bson_to_list(bson_iterator* _iter)
             break;
 
         case BSON_BINDATA:
-            el = _mongo_binary_create(bson_iterator_bin_type(&iter), 
-                                      bson_iterator_bin_data(&iter), 
+            el = _mongo_binary_create(bson_iterator_bin_type(&iter),
+                                      bson_iterator_bin_data(&iter),
                                       bson_iterator_bin_len(&iter));
             break;
 
@@ -1247,8 +1237,7 @@ SEXP mongo_bson_buffer_append_code(SEXP buf, SEXP name, SEXP value) {
 }
 
 
-SEXP mongo_bson_buffer_append_code_w_scope(SEXP buf, SEXP name, SEXP value)
-{
+SEXP mongo_bson_buffer_append_code_w_scope(SEXP buf, SEXP name, SEXP value) {
     bson_buffer* _buf = _checkBuffer(buf);
     const char* _name = CHAR(STRING_ELT(name, 0));
     _checkClass(value, "mongo.code.w.scope");
@@ -1263,8 +1252,7 @@ SEXP mongo_bson_buffer_append_code_w_scope(SEXP buf, SEXP name, SEXP value)
 }
 
 
-SEXP mongo_bson_buffer_append_regex(SEXP buf, SEXP name, SEXP value)
-{
+SEXP mongo_bson_buffer_append_regex(SEXP buf, SEXP name, SEXP value) {
     bson_buffer* _buf = _checkBuffer(buf);
     const char* _name = CHAR(STRING_ELT(name, 0));
     const char* pattern = CHAR(STRING_ELT(value, 0));
@@ -1389,7 +1377,7 @@ SEXP mongo_bson_from_list(SEXP lst) {
     SEXP buf = _mongo_bson_buffer_create();
     int success = 1;
     int i;
-        SEXP fname;
+    SEXP fname;
     if (names != R_NilValue)
         for (i = 0; i < len && success; i++) {
             PROTECT(fname = allocVector(STRSXP, 1));

@@ -20,9 +20,11 @@ A \link{mongo.binary} object with the values initially being all zero.
 \examples{
 buf <- mongo.bson.buffer.create()
 bin <- mongo.binary.create(type=3, length=4)
-for (i in 0:4)
+for (i in 0:3)
     mongo.binary.set(bin, i, i * 16 + 3)
 mongo.bson.buffer.append(buf, "bin", bin)
+b <- mongo.bson.from.buffer(buf)
+print(b)
 }
 \seealso{
 \link{mongo.binary},

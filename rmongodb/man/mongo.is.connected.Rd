@@ -15,13 +15,13 @@ mongo.is.connected(mongo)
 \value{
 Logical TRUE if the mongo connection object is currently connected to a server; otherwise, FALSE.
 }
-\seealso{
-\code{\link{mongo.create}},
-\link{mongo}
-}
 \examples{
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
     print(mongo.count(mongo, "test.people"))
 }
+}
+\seealso{
+\code{\link{mongo.create}},
+\link{mongo}
 }

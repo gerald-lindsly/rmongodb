@@ -1,2 +1,2 @@
 .onUnload <- function(libpath)
-library.dynam.unload("rmongo", libpath)
+    library.dynam.unload("rmongodb", libpath)

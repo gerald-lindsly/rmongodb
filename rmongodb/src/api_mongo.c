@@ -106,14 +106,14 @@ SEXP rmongo_reconnect(SEXP mongo_conn) {
     if (mongo_reconnect(conn) != MONGO_OK)
         Rprintf("Unable to reconnect\n");
     return mongo_conn;
- }
+}
 
 
 SEXP rmongo_disconnect(SEXP mongo_conn) {
     mongo* conn = _checkMongo(mongo_conn);
     mongo_disconnect(conn);
     return mongo_conn;
- }
+}
 
 
 SEXP mongo_get_socket(SEXP mongo_conn) {
@@ -143,13 +143,6 @@ SEXP mongo_get_err(SEXP mongo_conn) {
     INTEGER(ret)[0] = conn->err;
     UNPROTECT(1);
     return ret;
-}
-
-
-SEXP mongo_clear_err(SEXP mongo_conn) {
-    mongo* conn = _checkMongo(mongo_conn);
-    conn->err = MONGO_CONN_SUCCESS;
-    return mongo_conn;
 }
 
 
@@ -236,8 +229,7 @@ SEXP rmongo_remove(SEXP mongo_conn, SEXP ns, SEXP cond) {
 }
 
 
-SEXP rmongo_find_one(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields)
-{
+SEXP rmongo_find_one(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields) {
     mongo* conn = _checkMongo(mongo_conn);
     const char* _ns = CHAR(STRING_ELT(ns, 0));
     bson* _query = _checkBSON(query);
@@ -262,8 +254,7 @@ static void mongoCursorFinalizer(SEXP ptr) {
 }
 
 
-SEXP _mongo_cursor_create(mongo_cursor* cursor)
-{
+SEXP _mongo_cursor_create(mongo_cursor* cursor) {
     SEXP ret, ptr, cls;
     PROTECT(ret = allocVector(INTSXP, 1));
     INTEGER(ret)[0] = 0;
@@ -285,16 +276,15 @@ mongo_cursor* _checkCursor(SEXP cursor) {
     if (ptr == R_NilValue)
         error("Attribute \"mongo.cursor\" is missing from mongo.cursor class object\n");
     mongo_cursor* _cursor = (mongo_cursor*)R_ExternalPtrAddr(ptr);
- /* NULL cursor value indicates no records returned from find
-    if (!_cursor)
-        error("mongo.cursor object appears to have been destroyed.\n");
-*/
+    /* NULL cursor value indicates no records returned from find
+       if (!_cursor)
+           error("mongo.cursor object appears to have been destroyed.\n");
+    */
     return _cursor;
 }
 
 
-SEXP rmongo_find(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields, SEXP limit, SEXP skip, SEXP options)
-{
+SEXP rmongo_find(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields, SEXP limit, SEXP skip, SEXP options) {
     mongo* conn = _checkMongo(mongo_conn);
     const char* _ns = CHAR(STRING_ELT(ns, 0));
     bson* _query = _checkBSON(query);
@@ -316,13 +306,7 @@ SEXP rmongo_cursor_next(SEXP cursor) {
     mongo_cursor* _cursor = _checkCursor(cursor);
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
-    LOGICAL(ret)[0] = !_cursor ? FALSE : (mongo_cursor_next(_cursor) == MONGO_OK);
-    bson* cur = & _cursor->current;
-    cur->finished = 1;
-    bson_little_endian32(&cur->dataSize, cur->data);
-    cur->err = 0;
-    cur->finished = 1;
-    cur->stackPos = 0;
+    LOGICAL(ret)[0] = (_cursor && mongo_cursor_next(_cursor) == MONGO_OK);
     UNPROTECT(1);
     return ret;
 }
@@ -521,8 +505,7 @@ SEXP mongo_is_master(SEXP mongo_conn) {
 }
 
 
-SEXP mongo_add_user(SEXP mongo_conn, SEXP user, SEXP pass, SEXP db)
-{
+SEXP mongo_add_user(SEXP mongo_conn, SEXP user, SEXP pass, SEXP db) {
     mongo* conn = _checkMongo(mongo_conn);
     const char* _db = CHAR(STRING_ELT(db, 0));
     const char* _user = CHAR(STRING_ELT(user, 0));

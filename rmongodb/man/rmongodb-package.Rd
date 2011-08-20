@@ -25,9 +25,10 @@ Gerald Lindsly
 Maintainer: Gerald Lindsly
 gerald.lindsly@gmail.com
 }
+\seealso{
+\link{mongo}
+}
 \references{
 http://www.mongodb.org
 }
 \keyword{ package }
-\examples{
-}

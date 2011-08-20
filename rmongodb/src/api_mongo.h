@@ -10,7 +10,6 @@ SEXP mongo_get_socket(SEXP mongo_conn);
 SEXP mongo_get_primary(SEXP mongo_conn);
 SEXP mongo_get_hosts(SEXP mongo_conn);
 SEXP mongo_get_err(SEXP mongo_conn);
-SEXP mongo_clear_err(SEXP mongo_conn);
 SEXP mongo_set_timeout(SEXP mongo_conn, SEXP timeout);
 SEXP mongo_get_timeout(SEXP mongo_conn);
 

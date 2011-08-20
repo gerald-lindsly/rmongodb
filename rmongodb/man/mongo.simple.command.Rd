@@ -16,13 +16,21 @@ mongo.simple.command(mongo, db, cmdstr, arg)
 \arguments{
 \item{mongo}{(\link{mongo}) A mongo connection object.}
 \item{db}{(string) The name of the database upon which to perform the command.}
-\item{cmdstr}{The name of the command.}
+\item{cmdstr}{(string) The name of the command.}
 \item{arg}{An argument to the command, may be a string or numeric (as.integer).}
 }
 \value{
 NULL if the command failed.  Use \code{\link{mongo.get.last.err}()} to determine the cause.
 
-(\link{mongo.bson} The server's response if successful.
+(\link{mongo.bson}) The server's response if successful.
+}
+\examples{
+mongo <- mongo.create()
+if (mongo.is.connected(mongo)) {
+    print(mongo.simple.command(mongo, "admin", "buildInfo", 1))
+
+    mongo.destroy(mongo)
+}
 }
 \seealso{
 \code{\link{mongo.command}},
@@ -32,12 +40,4 @@ NULL if the command failed.  Use \code{\link{mongo.get.last.err}()} to determine
 \code{\link{mongo.drop}},
 \link{mongo},
 \link{mongo.bson}
-}
-\examples{
-mongo <- mongo.create()
-if (mongo.is.connected(mongo)) {
-    print(mongo.simple.command(mongo, "admin", "buildInfo", 1))
-
-    mongo.destroy(mongo)
-}
 }

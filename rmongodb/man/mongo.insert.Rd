@@ -17,14 +17,6 @@ mongo.insert(mongo, ns, b)
 
 Note that parameter b may also be a list of mongo.bson records to do a batch insert (See example).}
 }
-\seealso{
-\code{\link{mongo.update}},
-\code{\link{mongo.find}},
-\code{\link{mongo.find.one}},
-\code{\link{mongo.remove}},
-\link{mongo.bson},
-\link{mongo}
-}
 \examples{
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
@@ -55,4 +47,12 @@ if (mongo.is.connected(mongo)) {
     mongo.insert(mongo, ns, list(x, y, z))
 
 }
+}
+\seealso{
+\code{\link{mongo.update}},
+\code{\link{mongo.find}},
+\code{\link{mongo.find.one}},
+\code{\link{mongo.remove}},
+\link{mongo.bson},
+\link{mongo}
 }

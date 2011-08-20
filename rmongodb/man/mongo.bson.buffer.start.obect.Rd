@@ -6,10 +6,10 @@
 BSON documents may themselves contain nested documents.  Call this function
 to start a subobject within a \link{mongo.bson.buffer}. 
 
-\code{\link{mongo.bson.buffer.finsih.object}()} must be called
+\code{\link{mongo.bson.buffer.finish.object}()} must be called
 when finsihed appending subfields.  (\code{mongo.bson.buffer.start.object()}, \code{mongo.bson.buffer.start.array()})
 and 
-\code{mongo.bson.buffer.finsih.object()} may be called in a stackwise (LIFO) order to further nest documents and arrays.
+\code{mongo.bson.buffer.finish.object()} may be called in a stackwise (LIFO) order to further nest documents and arrays.
 }
 \usage{
 mongo.bson.buffer.start.object(buf, name)
@@ -20,13 +20,6 @@ mongo.bson.buffer.start.object(buf, name)
 }
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
-}
-\seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.finish.object}},
-\code{\link{mongo.bson.buffer.start.array}},
-\code{\link{mongo.bson.buffer.append}}
 }
 \examples{
 buf <- mongo.bson.buffer.create()
@@ -39,4 +32,11 @@ b <- mongo.bson.from.buffer(buf)
 
 # the above produces a BSON object of the form:
 # { "name" : { "first" : "Jeff", "last" : "Davis" }, "city" : "Toronto" }
+}
+\seealso{
+\link{mongo.bson}
+\link{mongo.bson.buffer}
+\code{\link{mongo.bson.buffer.finish.object}},
+\code{\link{mongo.bson.buffer.start.array}},
+\code{\link{mongo.bson.buffer.append}}
 }

@@ -20,24 +20,26 @@ mongo.bson.buffer.append.code.w.scope(buf, name, value)
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
 }
 \examples{
+scope <- mongo.bson.from.list(list(scopevar="scopevalue"))
 buf <- mongo.bson.buffer.create()
-mongo.bson.buffer.append(buf, "scopevar", "scopevalue")
-scope <- mongo.bson.from.buffer()
 codeWscope <- mongo.code.w.scope.create("y = x", scope)
-mongo.bson.buffer.append.code.w.scope(buf, "CodeWscope", codeWscope)
-b <- mongo.bson.from.buffer(buf)
-
-# The above produces a BSON object of the form { "CodeWscope" : (CODEWSCOPE) "y = x" (SCOPE) { "scopevar" : "scopevalue" } }
+mongo.bson.buffer.append.code.w.scope(buf, "CodeWscope1", codeWscope)
 
 # mongo.bson.buffer.append() will give the same result as it can detect the mongo.code.w.scope object
+mongo.bson.buffer.append(buf, "CodeWscope2", codeWscope)
 
-#...
-mongo.bson.buffer.append(buf, "CodeWscope", codeWscope)
+b <- mongo.bson.from.buffer(buf)
+
+# The above produces a BSON object of the form:
+# { "CodeWscope1" : (CODEWSCOPE) "y = x" (SCOPE) { "scopevar" : "scopevalue" },
+#   "CodeWscope2" : (CODEWSCOPE) "y = x" (SCOPE) { "scopevar" : "scopevalue" } }
+
 }
 \seealso{
 \link{mongo.code.w.scope}
 \code{\link{mongo.code.w.scope.create}}
 \code{\link{mongo.bson.buffer.append}}
-\link{mongo.bson}
+\code{\link{mongo.bson.from.list}}
 \link{mongo.bson.buffer}
+\link{mongo.bson}
 }

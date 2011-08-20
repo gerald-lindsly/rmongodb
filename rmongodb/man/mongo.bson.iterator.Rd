@@ -12,7 +12,7 @@ contain an externally managed pointer to the actual document data.
 This pointer is stored in the "mongo.bson.iterator" attribute of the object.
 }
 \examples{
-b <- mongo.bson.from.buffer(buf)
+b <- mongo.bson.from.list(list(name="Joy", age=35, city="Ontario"))
 iter <- mongo.bson.iterator.create(b)  # b is of class "mongo.bson"
 while (mongo.bson.iterator.next(iter))
     print(mongo.bson.iterator.value(iter))

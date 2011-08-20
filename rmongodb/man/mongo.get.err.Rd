@@ -33,14 +33,14 @@ Other errors:
 \item{10}{BSON invalid - Not valid for the specified operation.}
 \item{11}{BSON not finished - should not occur with R driver. }
 }
-\seealso{
-\code{\link{mongo.create}},
-\link{mongo}
-}
 \examples{
 mongo <- mongo.create()
 if (!mongo.is.connected(mongo)) {
     print("Unable to connect.  Error code:")
     print(mongo.get.err(mongo))
 }
+}
+\seealso{
+\code{\link{mongo.create}},
+\link{mongo}
 }

@@ -5,8 +5,7 @@
 
 
 /* Initialize the socket services */
-int sock_init()
-{
+int sock_init() {
     static int called_once;
     static int retval;
     if (called_once) return retval;

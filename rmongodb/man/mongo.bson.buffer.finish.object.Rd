@@ -18,13 +18,6 @@ mongo.bson.buffer.finish.object(buf)
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
 }
-\seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.start.object}},
-\code{\link{mongo.bson.buffer.start.array}},
-\code{\link{mongo.bson.buffer.append}}
-}
 \examples{
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.start.object(buf, "name")
@@ -36,4 +29,11 @@ b <- mongo.bson.from.buffer(buf)
 
 # the above produces a BSON object of the form:
 # { "name" : { "first" : "Jeff", "last" : "Davis" }, "city" : "Toronto" }
+}
+\seealso{
+\link{mongo.bson}
+\link{mongo.bson.buffer}
+\code{\link{mongo.bson.buffer.start.object}},
+\code{\link{mongo.bson.buffer.start.array}},
+\code{\link{mongo.bson.buffer.append}}
 }

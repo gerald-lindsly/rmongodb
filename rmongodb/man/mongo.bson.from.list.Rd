@@ -18,7 +18,7 @@ mongo.bson.from.list(lst)
 \arguments{
 \item{lst}{(list) The list to convert. 
 
-This \emph{must} be a list, \emph{not} a vector of atomic types; otherwsie an error is thrown, 
+This \emph{must} be a list, \emph{not} a vector of atomic types; otherwise, an error is thrown;
 use \code{as.list()} as necessary.}
 }
 \value{
@@ -27,11 +27,12 @@ use \code{as.list()} as necessary.}
 \examples{
 lst <- list(name="John", age=32)
 b <- mongo.bson.from.list(lst)
-mongo.insert(mongo, "test.people", b)
+# the above produces a BSON object of the form: { "name" : "John", "age" : 32.0 }
 
 # Convert a vector of an atomic type to a list and then to a mongo.bson object
 v <- c(president="Jefferson", vice="Burr")
 b <- mongo.bson.from.list(as.list(v))
+# the above produces a BSON object of the form: { "president" : "Jefferson", "vice" : "Burr" }
 }
 \seealso{
 \code{\link{mongo.bson.to.list}}

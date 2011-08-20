@@ -8,7 +8,7 @@ Retrieve an server error string from a mongo connection object.
 \code{\link{mongo.find}()}, \code{\link{mongo.find.one}()}, \code{\link{mongo.index.create}()}
  set or clear this error string depending on whether they are successful or not.
 
-\code{\link{mongo.get.last.error}()} and \code{\link{mongo.get.prev.error}()}
+\code{\link{mongo.get.last.err}()} and \code{\link{mongo.get.prev.err}()}
 both set or clear this error string according to what the server reports.
 }
 \usage{
@@ -18,16 +18,7 @@ mongo.get.server.err.string(mongo)
 \item{mongo}{(\link{mongo}) a mongo connection object.}
 }
 \value{
-(string) server error string
-}
-\seealso{
-\code{\link{mongo.get.server.err}},
-\code{\link{mongo.get.last.err}},
-\code{\link{mongo.get.prev.err}},
-\code{\link{mongo.find}},
-\code{\link{mongo.find.one}},
-\code{\link{mongo.index.create}},
-\link{mongo}
+(string) Server error string
 }
 \examples{
 mongo <- mongo.create()
@@ -41,8 +32,17 @@ if (mongo.is.connected(mongo)) {
 
     result <- mongo.find.one(mongo, "test.people", query)
     if (is.null(result)) {
-        print(mongo.get.server.err.(mongo))
+        print(mongo.get.server.err(mongo))
         print(mongo.get.server.err.string(mongo))
     }
 }
+}
+\seealso{
+\code{\link{mongo.get.server.err}},
+\code{\link{mongo.get.last.err}},
+\code{\link{mongo.get.prev.err}},
+\code{\link{mongo.find}},
+\code{\link{mongo.find.one}},
+\code{\link{mongo.index.create}},
+\link{mongo}
 }

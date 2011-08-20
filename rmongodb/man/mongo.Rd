@@ -36,5 +36,5 @@ if (mongo.is.connected(mongo)) {
 \code{\link{mongo.update}},
 \code{\link{mongo.remove}},
 \code{\link{mongo.drop}},
-\code{\link{mongo.drop.database}},
+\code{\link{mongo.drop.database}}
 }

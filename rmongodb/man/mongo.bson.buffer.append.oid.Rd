@@ -18,7 +18,7 @@ TRUE if successful; otherwise, FALSE if an error occured appending the data.
 }
 \examples{
 buf <- mongo.bson.buffer.create()
-mongo.bson.buffer.append.oid(buf, "Now", Sys.oid())
+mongo.bson.buffer.append.oid(buf, "Now", mongo.oid.create())
 b <- mongo.bson.from.buffer(buf)
 }
 \seealso{

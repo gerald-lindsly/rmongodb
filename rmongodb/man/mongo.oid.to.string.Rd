@@ -29,7 +29,7 @@ print(as.character(oid))  # print same thing as above line
 \link{mongo.oid},
 \code{\link{mongo.oid.create}}
 \code{\link{as.character.mongo.oid}}
-\code{\link{mongo.oid.to.string}}
+\code{\link{mongo.oid.from.string}}
 \code{\link{mongo.bson.buffer.append}},
 \code{\link{mongo.bson.buffer.append.oid}},
 \link{mongo.bson.buffer},

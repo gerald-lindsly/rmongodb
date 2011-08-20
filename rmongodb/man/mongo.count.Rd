@@ -18,15 +18,6 @@ mongo.count(mongo, ns, query=mongo.bson.empty())
 \value{
 (double) The number of matching records.
 }
-\seealso{
-\code{\link{mongo.find}},
-\code{\link{mongo.find.one}},
-\code{\link{mongo.insert}},
-\code{\link{mongo.update}},
-\code{\link{mongo.remove}},
-\link{mongo},
-\link{mongo.bson}
-}
 \examples{
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
@@ -43,11 +34,11 @@ if (mongo.is.connected(mongo)) {
     # where age == 21
     just.legal.count <- mongo.count(mongo, "test.people", query)
     print("people of age 21")
-    print(legal.count)
+    print(just.legal.count)
 
     buf <- mongo.bson.buffer.create()
     mongo.bson.buffer.start.object(buf, "age")
-    mongo.bson.buffer.append("$gte", 21L)
+    mongo.bson.buffer.append(buf, "$gte", 21L)
     mongo.bson.buffer.finish.object(buf)
     query <- mongo.bson.from.buffer(buf)
 
@@ -57,4 +48,13 @@ if (mongo.is.connected(mongo)) {
     print("people of age 21 or greater")
     print(total.legal.count)
 }
+}
+\seealso{
+\code{\link{mongo.find}},
+\code{\link{mongo.find.one}},
+\code{\link{mongo.insert}},
+\code{\link{mongo.update}},
+\code{\link{mongo.remove}},
+\link{mongo},
+\link{mongo.bson}
 }

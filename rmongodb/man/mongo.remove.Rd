@@ -16,14 +16,6 @@ mongo.remove(mongo, ns, criteria=mongo.bson.empty())
 \item{criteria}{(\link{mongo.bson}) The criteria with which to match records that are to be removed.
 The default of mongo.bson.empty() will cause \emph{all} records in the given collection to be removed.}
 }
-\seealso{
-\link{mongo},
-\link{mongo.bson},
-\code{\link{mongo.insert}},
-\code{\link{mongo.update}},
-\code{\link{mongo.find}},
-\code{\link{mongo.find.one}}
-}
 \examples{
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
@@ -37,4 +29,12 @@ if (mongo.is.connected(mongo)) {
     # remove all records from collection cars in database test
     mongo.remove(mongo, "test.cars")
 }
+}
+\seealso{
+\link{mongo},
+\link{mongo.bson},
+\code{\link{mongo.insert}},
+\code{\link{mongo.update}},
+\code{\link{mongo.find}},
+\code{\link{mongo.find.one}}
 }

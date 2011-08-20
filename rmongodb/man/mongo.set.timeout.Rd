@@ -19,5 +19,11 @@ mongo.set.timeout(mongo, timeout)
 \link{mongo}
 }
 \examples{
-mongo.set.timeout(mongo, 2000L)
+mongo <- mongo.create()
+if (mongo.is.connected(mongo)) {
+    mongo.set.timeout(mongo, 2000L)
+    timeout <- mongo.get.timeout(mongo)
+    if (timeout != 2000L)
+        error("expected timeout of 2000");
+}
 }

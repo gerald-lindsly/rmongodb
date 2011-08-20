@@ -2,7 +2,6 @@ useDynLib(rmongodb, .registration = TRUE)
 
 export(mongo.create)
 export(mongo.get.err)
-export(mongo.clear.err)
 export(mongo.disconnect)
 export(mongo.reconnect)
 export(mongo.destroy)

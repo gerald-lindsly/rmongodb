@@ -25,11 +25,6 @@ In the last case, a single complex is appended as the value of the field.}
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
 }
-\seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.append}}
-}
 \examples{
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append.complex(buf, "Alpha", 3.14159 + 2i)
@@ -45,11 +40,15 @@ b <- mongo.bson.from.buffer(buf)
 
 buf <- mongo.bson.buffer.create()
 values <- c(0.5 + 0.1i, 0.25)
-names(Values) <- c("Theta", "Epsilon")
-mongo.bson.buffer.append.complex(buf, "Values", distances)
+names(values) <- c("Theta", "Epsilon")
+mongo.bson.buffer.append.complex(buf, "Values", values)
 b <- mongo.bson.from.buffer(buf)
 
 # The above produces a BSON object of the form:
 # { "Values" : { "Theta" : { "r" : 0.5, "i" : 0.1 }, "Epsilon" : { " r" : 0.25, "i" : 0 } } }
-
+}
+\seealso{
+\link{mongo.bson}
+\link{mongo.bson.buffer}
+\code{\link{mongo.bson.buffer.append}}
 }

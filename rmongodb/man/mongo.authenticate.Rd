@@ -7,7 +7,9 @@ Autherticate a user and password against a given database on a MongoDB server.
 
 See \url{http://www.mongodb.org/display/DOCS/Security+and+Authentication}.
 
-Note that mongo.create() can authenticate a username and password before returning a connected mongo object. }
+Note that \code{\link{mongo.create}()} can authenticate a username and password
+before returning a connected mongo object.
+}
 \usage{
 mongo.authenticate(mongo, username, password, db="admin")
 }
@@ -17,11 +19,13 @@ mongo.authenticate(mongo, username, password, db="admin")
 \item{password}{(string) password corresponding to username.}
 \item{db}{(string) The database on the server against which to validate the username and password.}
 }
+\examples{
+mongo <- mongo.create()
+if (mongo.is.connected(mongo))
+    mongo.authenticate(mongo, "Joe", "ZxYaBc217")
+}
 \seealso{
 \code{\link{mongo.add.user}},
 \link{mongo},
 \code{\link{mongo.create}}
-}
-\examples{
-mongo.authenticate(mongo, "Joe", "ZxYaBc217")
 }

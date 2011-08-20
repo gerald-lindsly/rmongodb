@@ -10,17 +10,14 @@ Output is tabbed (indented to show the nesting level of subobjects and arrays).
 This version is an alias of mongo.bson.print() so that print() will properly handle the mongo.bson class.
 }
 \usage{
-print.mongo.bson(b)
+print.mongo.bson(x, ...)
 }
 \arguments{
-\item{(\link{mongo.bson}}{ The mongo.bson object to display.}
+\item{x}{(\link{mongo.bson} The object to display.}
+\item{...}{Parameters passed from generic.}
 }
 \value{
 The parameter is returned unchanged.
-}
-\seealso{
-\code{\link{mongo.bson.print}},
-\link{mongo.bson}
 }
 \examples{
 buf <- mongo.bson.buffer.create()
@@ -32,4 +29,8 @@ b <- mongo.bson.from.buffer(buf)
 print.mongo.bson(b)
 mongo.bson.print(b)
 print(b)
+}
+\seealso{
+\code{\link{mongo.bson.print}},
+\link{mongo.bson}
 }

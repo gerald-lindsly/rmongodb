@@ -18,15 +18,15 @@ mongo.bson.from.buffer(buf)
 \value{
 A \link{mongo.bson} object as converted from the buffer parameter.
 }
-\seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.append}}
-}
 \examples{
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append(buf, "name", "Fred")
 mongo.bson.buffer.append(buf, "city", "Dayton")
 b <- mongo.bson.from.buffer(buf)
 print(b)
+}
+\seealso{
+\link{mongo.bson}
+\link{mongo.bson.buffer}
+\code{\link{mongo.bson.buffer.append}}
 }

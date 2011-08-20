@@ -14,12 +14,12 @@ mongo.get.socket(mongo)
 \value{
 Integer socket number
 }
-\seealso{
-\code{\link{mongo.create}},
-\link{mongo}
-}
 \examples{
 mongo <- mongo.create()
 if (mongo.is.connected(mongo))
     print(mongo.get.socket(mongo))
+}
+\seealso{
+\code{\link{mongo.create}},
+\link{mongo}
 }

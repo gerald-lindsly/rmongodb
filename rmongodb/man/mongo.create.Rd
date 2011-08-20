@@ -12,7 +12,7 @@ Only the external data pointed to by the "mongo" attribute actually changes if, 
 mongo.timeout is called after the initial call to \code{mongo.create}.
 }
 \usage{
-mongo.create(host="127.0.0.1:27017", name="", username="", password="", db_name="admin", timeout=0L)
+mongo.create(host="127.0.0.1", name="", username="", password="", db="admin", timeout=0L)
 }
 \arguments{
 \item{host}{(string vector) A list of hosts/ports to which to connect.
@@ -28,7 +28,7 @@ mongo.create(host="127.0.0.1:27017", name="", username="", password="", db_name=
 \item{username}{(string) The username to be used for authentication purposes.
     The default username of "" indicates that no user authentication is to be performed by the initial connect.}
 \item{password}{(string) The password corresponding to the given username.}
-\item{db_name}{(string) The database upon which to authenticate the given username and password.
+\item{db}{(string) The name of the database upon which to authenticate the given username and password.
     If authentication fails, the connection is disconnected, but mongo.get.err() will indicate not indicate an error. }
 \item{timeout}{(as.integer) The number of milliseconds to wait before timing out of a network operation.
     The default (0L) indicates no timeout.}
@@ -36,6 +36,10 @@ mongo.create(host="127.0.0.1:27017", name="", username="", password="", db_name=
 \value{
     If successful, a mongo object for use in subsequent database operations; 
     otherwise, mongo.get.err() may be called on the returned mongo object to see why it failed.
+}
+\examples{
+mongo <- mongo.create()
+mongo <- mongo.create("192.168.0.3")
 }
 \seealso{
 \link{mongo},
@@ -48,8 +52,4 @@ mongo.create(host="127.0.0.1:27017", name="", username="", password="", db_name=
 \code{\link{mongo.get.socket}},
 \code{\link{mongo.set.timeout}},
 \code{\link{mongo.get.timeout}}
-}
-\examples{
-mongo <- mongo.create()
-mongo <- mongo.create("192.168.0.3")
 }

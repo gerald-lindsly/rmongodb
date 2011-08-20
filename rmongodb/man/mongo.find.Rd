@@ -29,18 +29,6 @@ mongo.find(mongo, ns, query=mongo.bson.empty(), fields=mongo.bson.empty(), limit
 Note that an empty cursor will be returned if a database error occurred.  
 \code{\link{mongo.get.server.err}()} and \code{\link{mongo.get.server.err.string}()} may be examined in that case.
 }
-\seealso{
-\code{\link{mongo.cursor}},
-\code{\link{mongo.cursor.next}},
-\code{\link{mongo.cursor.value}},
-\code{\link{mongo.find.one}},
-\code{\link{mongo.insert}},
-\code{\link{mongo.index.create}},
-\code{\link{mongo.update}},
-\code{\link{mongo.remove}},
-\link{mongo},
-\link{mongo.bson}
-}
 \examples{
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
@@ -55,4 +43,16 @@ if (mongo.is.connected(mongo)) {
         print(mongo.cursor.value(cursor))
     mongo.cursor.destroy(cursor)
 }
+}
+\seealso{
+\code{\link{mongo.cursor}},
+\code{\link{mongo.cursor.next}},
+\code{\link{mongo.cursor.value}},
+\code{\link{mongo.find.one}},
+\code{\link{mongo.insert}},
+\code{\link{mongo.index.create}},
+\code{\link{mongo.update}},
+\code{\link{mongo.remove}},
+\link{mongo},
+\link{mongo.bson}
 }

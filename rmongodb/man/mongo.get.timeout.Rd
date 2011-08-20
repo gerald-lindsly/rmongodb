@@ -3,7 +3,7 @@
 \alias{mongo.get.timeout}
 \title{Get the timeout value of a mongo connection}
 \description{
-get the timeout value for network operations on a mongo connection.  
+Get the timeout value for network operations on a mongo connection.  
 }
 \usage{
 mongo.get.timeout(mongo)
@@ -14,9 +14,17 @@ mongo.get.timeout(mongo)
 \value{
 (integer) timeout value in milliseconds.
 }
-\seealso{
-\code{\link{mongo.set.timeout}}
-}
 \examples{
-timeout <- mongo.get.timeout(mongo)
+mongo <- mongo.create()
+if (mongo.is.connected(mongo)) {
+    mongo.set.timeout(mongo, 2000L)
+    timeout <- mongo.get.timeout(mongo)
+    if (timeout != 2000L)
+        error("expected timeout of 2000");
+}
+}
+\seealso{
+\code{\link{mongo.set.timeout}},
+\code{\link{mongo.create}},
+\link{mongo}
 }

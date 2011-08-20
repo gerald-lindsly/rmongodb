@@ -14,18 +14,18 @@ mongo.get.databases(mongo)
 \value{
 (string vector) List of databases.  Note this will not include the system databases "admin" and "local".
 }
+\examples{
+mongo <- mongo.create()
+if (mongo.is.connected(mongo)) {
+    print(mongo.get.databases(mongo))
+
+    mongo.destroy(mongo)
+}
+}
 \seealso{
 \code{\link{mongo.get.database.collections}},
 \code{\link{mongo.drop.database}},
 \code{\link{mongo.command}},
 \code{\link{mongo.rename}},
 \link{mongo},
-}
-\examples{
-mongo <- mongo.create()
-if (mongo.is.connected(mongo)) {
-    print(mongo.get.databases(mongo)
-
-    mongo.destroy(mongo)
-}
 }

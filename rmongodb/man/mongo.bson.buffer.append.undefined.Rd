@@ -1,6 +1,6 @@
-% File rmongodb/man/mongo.bson.buffer.append.null.Rd
-\name{mongo.bson.buffer.append.null}
-\alias{mongo.bson.buffer.append.null}
+% File rmongodb/man/mongo.bson.buffer.append.undefined.Rd
+\name{mongo.bson.buffer.append.undefined}
+\alias{mongo.bson.buffer.append.undefined}
 \title{Append a undefined field onto a mongo.bson.buffer}
 \description{
 Append a undefined value onto a \link{mongo.bson.buffer}.
@@ -18,24 +18,23 @@ mongo.bson.buffer.append.undefined(buf, name)
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
 }
-\seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\link{mongo.undefined}
-\code{\link{mongo.undefined.create}}
-\code{\link{mongo.bson.buffer.append}}
-}
 \examples{
 buf <- mongo.bson.buffer.create()
-mongo.bson.buffer.append.Undefined(buf, "Undef")
+mongo.bson.buffer.append.undefined(buf, "Undef")
 b <- mongo.bson.from.buffer(buf)
 
 # The above produces a BSON object of the form { "Undef" : UNDEFINED }
 
 # The same result can be produced by the following code:
 buf <- mongo.bson.buffer.create()
-Undef <- mongo.undefined.create()
-mongo.bson.buffer.append(buf, "Undef", Undef)
+undef <- mongo.undefined.create()
+mongo.bson.buffer.append(buf, "Undef", undef)
 b <- mongo.bson.from.buffer(buf)
-
+}
+\seealso{
+\link{mongo.bson}
+\link{mongo.bson.buffer}
+\link{mongo.undefined}
+\code{\link{mongo.undefined.create}}
+\code{\link{mongo.bson.buffer.append}}
 }

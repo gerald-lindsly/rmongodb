@@ -22,13 +22,6 @@ and not necessarily a \link{mongo.symbol} object.}
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
 }
-\seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\link{mongo.symbol}
-\code{\link{mongo.symbol.create}}
-\code{\link{mongo.bson.buffer.append}}
-}
 \examples{
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append.symbol(buf, "A", "Alpha")
@@ -41,5 +34,11 @@ buf <- mongo.bson.buffer.create()
 sym <- mongo.symbol.create("Alpha")
 mongo.bson.buffer.append(buf, "A", sym)
 b <- mongo.bson.from.buffer(buf)
-
+}
+\seealso{
+\link{mongo.bson}
+\link{mongo.bson.buffer}
+\link{mongo.symbol}
+\code{\link{mongo.symbol.create}}
+\code{\link{mongo.bson.buffer.append}}
 }

@@ -13,12 +13,12 @@ mongo.bson.buffer.create()
 \value{
 A fresh \link{mongo.bson.buffer} object
 }
+\examples{
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append(buf, "name", "Donna")
+b <- mongo.bson.from.buffer(buf)
+}
 \seealso{
 \link{mongo.bson}
 \link{mongo.bson.buffer}
-}
-\examples{
-buf <- mongo.bson.buffer.create()
-mongo.bson.buffer.append("name", "Donna")
-b <- mongo.bson.from.buffer(buf)
 }

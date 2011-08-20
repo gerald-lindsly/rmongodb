@@ -18,12 +18,6 @@ mongo.cursor.destroy(cursor)
 TRUE if successful; otherwise, FALSE (when an error occurs during sending the Kill Cursor operation to the server).
 in either case, the cursor should not be used for further operations.
 }
-\seealso{
-\code{\link{mongo.find}},
-\link{mongo.cursor},
-\code{\link{mongo.cursor.next}},
-\code{\link{mongo.cursor.value}},
-}
 \examples{
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
@@ -38,4 +32,10 @@ if (mongo.is.connected(mongo)) {
         print(mongo.cursor.destroy(cursor))
     mongo.cursor.destroy(cursor)
 }
+}
+\seealso{
+\code{\link{mongo.find}},
+\link{mongo.cursor},
+\code{\link{mongo.cursor.next}},
+\code{\link{mongo.cursor.value}},
 }

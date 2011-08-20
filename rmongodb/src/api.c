@@ -13,7 +13,6 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.connect", (DL_FUNC) rmongo_connect, 1 },
     { ".mongo.is.connected", (DL_FUNC) mongo_is_connected, 1 },
     { ".mongo.get.err", (DL_FUNC) mongo_get_err, 1 },
-    { ".mongo.clear.err", (DL_FUNC) mongo_clear_err, 1 },
     { ".mongo.reconnect", (DL_FUNC) rmongo_reconnect, 1 },
     { ".mongo.disconnect", (DL_FUNC) rmongo_disconnect, 1 },
     { ".mongo.destroy", (DL_FUNC) rmongo_destroy, 1 },
@@ -131,7 +130,7 @@ void attribute_visible R_init_rmongodb(DllInfo *dll) {
     R_registerRoutines(dll, NULL, callMethods, NULL, NULL);
 
     sock_init();
-	install_mongo_symbols();
+    install_mongo_symbols();
     bson_malloc_func = _malloc;
     bson_realloc_func = _realloc;
     bson_free = _free;
@@ -140,5 +139,5 @@ void attribute_visible R_init_rmongodb(DllInfo *dll) {
     set_bson_err_handler(_err_handler);
 
     Rprintf("rmongodb package (mongo-r-driver) loaded\n"
-    "Use 'help(\"mongo\")' to get started.\n\n");
+            "Use 'help(\"mongo\")' to get started.\n\n");
 }

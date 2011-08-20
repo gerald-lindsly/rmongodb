@@ -15,6 +15,8 @@ int _hasClass(SEXP cls, const char* name) {
 
 
 int _objHasClass(SEXP b, const char* name) {
+    if (b == R_NilValue)
+        return 0;
     SEXP cls = getAttrib(b, R_ClassSymbol);
     return cls != R_NilValue && _hasClass(cls, name);
 }

@@ -30,15 +30,6 @@ NULL if no record matching the criteria is found; otherwise,
 Note that NULL may also be returned if a database error occurred (when a badly formed query is used, for example).
 \code{\link{mongo.get.server.err}} and \code{\link{mongo.get.server.err.string}} may be examined in that case.
 }
-\seealso{
-\code{\link{mongo.find}},
-\code{\link{mongo.index.create}},
-\code{\link{mongo.insert}},
-\code{\link{mongo.update}},
-\code{\link{mongo.remove}},
-\link{mongo},
-\link{mongo.bson}
-}
 \examples{
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
@@ -65,4 +56,13 @@ if (mongo.is.connected(mongo)) {
     # find the first record in collection cars of database test
     have.car <- !is.null(mongo.find.one(mongo, "test.cars"))
 }
+}
+\seealso{
+\code{\link{mongo.find}},
+\code{\link{mongo.index.create}},
+\code{\link{mongo.insert}},
+\code{\link{mongo.update}},
+\code{\link{mongo.remove}},
+\link{mongo},
+\link{mongo.bson}
 }

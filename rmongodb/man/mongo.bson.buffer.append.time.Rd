@@ -15,15 +15,20 @@ overflow the largest value that can be held in a signed 32-bit number. At such t
 including R and this driver, will need to address that issue.
 }
 \usage{
-mongo.bson.buffer.append.time(buf, name, value)
+mongo.bson.buffer.append.time(buf, name, time)
 }
 \arguments{
 \item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
 \item{name}{(string) The name (key) of the field appended to the buffer.}
-\item{value}{(integer) A time value.  This may also be an object of class "POSIXct", "POSIXlt" or "mongo.timestamp".}
+\item{time}{(integer) A time value.  This may also be an object of class "POSIXct", "POSIXlt" or "mongo.timestamp".}
 }
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
+}
+\examples{
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append.time(buf, "Now", Sys.time())
+b <- mongo.bson.from.buffer(buf)
 }
 \seealso{
 \link{mongo.timestamp},
@@ -31,9 +36,4 @@ TRUE if successful; otherwise, FALSE if an error occured appending the data.
 \code{\link{mongo.bson.buffer.append}},
 \link{mongo.bson.buffer},
 \link{mongo.bson}
-}
-\examples{
-buf <- mongo.bson.buffer.create()
-mongo.bson.buffer.append.time(buf, "Now", Sys.time())
-b <- mongo.bson.from.buffer(buf)
 }

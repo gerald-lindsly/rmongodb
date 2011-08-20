@@ -20,11 +20,6 @@ mongo.bson.buffer.append.list(buf, name, value)
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
 }
-\seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.append}}
-}
 \examples{
 buf <- mongo.bson.buffer.create()
 l <- list(fruit = "apple", hasSeeds = TRUE)
@@ -32,4 +27,9 @@ mongo.bson.buffer.append.list(buf, "item", l)
 b <- mongo.bson.from.buffer(buf)
 
 # this produces a BSON object of the form { "item" : { "fruit" : "apple", "hasSeeds" : true } }
+}
+\seealso{
+\link{mongo.bson}
+\link{mongo.bson.buffer}
+\code{\link{mongo.bson.buffer.append}}
 }

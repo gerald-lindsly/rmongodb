@@ -20,8 +20,9 @@ by \code{\link{mongo.bson.buffer.append.list}()} and \code{\link{mongo.bson.from
 \examples{
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append(buf, "sv", "sx")
-scope <- mongo.bson.from.buffer()
+scope <- mongo.bson.from.buffer(buf)
 codeWscope <- mongo.code.w.scope.create("y = x", scope)
+buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append(buf, "CodeWscope", codeWscope)
 lst <- list(c1 = codeWscope, One = 1)
 mongo.bson.buffer.append.list(buf, "listWcodeWscope", lst)

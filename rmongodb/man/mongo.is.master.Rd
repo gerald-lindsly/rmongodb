@@ -16,14 +16,14 @@ mongo.is.master(mongo)
 \value{
 (logical) TRUE if the server reports that it is a master; otherwise, FALSE.
 }
-\seealso{
-\code{\link{mongo.create}},
-\link{mongo}
-}
 \examples{
 mongo <- mongo.create(c("127.0.0.1", "192.168.0.3"), name="Accounts")
 if (mongo.is.connected(mongo)) {
     print("isMaster")
     print(if (mongo.is.master(mongo)) "Yes" else "No")
 }
+}
+\seealso{
+\code{\link{mongo.create}},
+\link{mongo}
 }

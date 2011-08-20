@@ -24,7 +24,7 @@ A \link{mongo.timestamp} object
 }
 \examples{
 mongo <- mongo.create()
-if (mongo.is.connected()) {
+if (mongo.is.connected(mongo)) {
     buf <- mongo.bson.buffer.create()
     # special Null timestamp -- automatically filled in if one of first two fields in a record
     ts <- mongo.timestamp.create(0,0)

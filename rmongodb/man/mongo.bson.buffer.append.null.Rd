@@ -16,16 +16,15 @@ mongo.bson.buffer.append.null(buf, name)
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
 }
-\seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.append}}
-}
 \examples{
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append.null(buf, "Nil")
 b <- mongo.bson.from.buffer(buf)
 
 # The above produces a BSON object of the form { "Nil" : NULL }
-
+}
+\seealso{
+\link{mongo.bson}
+\link{mongo.bson.buffer}
+\code{\link{mongo.bson.buffer.append}}
 }

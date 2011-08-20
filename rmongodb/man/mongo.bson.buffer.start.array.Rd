@@ -24,13 +24,6 @@ mongo.bson.buffer.start.array(buf, name)
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
 }
-\seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.finish.object}},
-\code{\link{mongo.bson.buffer.start.array}},
-\code{\link{mongo.bson.buffer.append}}
-}
 \examples{
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.start.array(buf, "Fibonacci")
@@ -49,4 +42,11 @@ b <- mongo.bson.from.buffer(buf)
 
 # the above produces a BSON object of the form:
 # { "Fibonacci" : [ 0, 1, 1, 2, 3, 5, 8, 13, 21 ] }
+}
+\seealso{
+\link{mongo.bson}
+\link{mongo.bson.buffer}
+\code{\link{mongo.bson.buffer.finish.object}},
+\code{\link{mongo.bson.buffer.start.array}},
+\code{\link{mongo.bson.buffer.append}}
 }

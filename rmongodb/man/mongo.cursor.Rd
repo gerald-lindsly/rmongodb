@@ -17,12 +17,6 @@ mongo.cursor objects have "mongo.cursor" as their class and
 contain an externally managed pointer to the actual cursor data.
 This pointer is stored in the "mongo.cursor" attribute of the object.
 }
-\seealso{
-\code{\link{mongo.find}},
-\code{\link{mongo.cursor.next}},
-\code{\link{mongo.cursor.value}},
-\code{\link{mongo.cursor.destroy}}
-}
 \examples{
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
@@ -37,4 +31,10 @@ if (mongo.is.connected(mongo)) {
         print(mongo.cursor.value(cursor))
     mongo.cursor.destroy(cursor)
 }
+}
+\seealso{
+\code{\link{mongo.find}},
+\code{\link{mongo.cursor.next}},
+\code{\link{mongo.cursor.value}},
+\code{\link{mongo.cursor.destroy}}
 }

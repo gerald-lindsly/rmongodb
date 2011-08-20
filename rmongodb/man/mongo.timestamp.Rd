@@ -18,7 +18,7 @@ by \code{\link{mongo.bson.buffer.append.list}()} and \code{\link{mongo.bson.from
 }
 \examples{
 mongo <- mongo.create()
-if (mongo.is.connected()) {
+if (mongo.is.connected(mongo)) {
     buf <- mongo.bson.buffer.create()
     # special Null timestamp -- automatically filled in if one of first two fields in a record
     ts <- mongo.timestamp.create(0,0)

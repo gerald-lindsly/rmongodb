@@ -22,11 +22,6 @@ In the last case, a single string is appended as the value of the field.}
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
 }
-\seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.append}}
-}
 \examples{
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append.string(buf, "name", "Joe")
@@ -47,5 +42,9 @@ mongo.bson.buffer.append.string(buf, "board", staff)
 b <- mongo.bson.from.buffer(buf)
 
 # The above produces a BSON object of the form { "board" : { "Chairman" : "Mark", "President" : "Jennifer", "Secretary" : "Robert" } }
-
+}
+\seealso{
+\link{mongo.bson}
+\link{mongo.bson.buffer}
+\code{\link{mongo.bson.buffer.append}}
 }

@@ -22,15 +22,6 @@ mongo.index.create(mongo, ns, key, options=0L)
 NULL if successful; otherwise, a \link{mongo.bson} object describing the error.  
 \code{\link{mongo.get.server.err}()} or \code{\link{mongo.get.server.err.string}()} may alternately be called in this case instead of examining the returned object.
 }
-\seealso{
-\code{\link{mongo.find}},
-\code{\link{mongo.find.one}},
-\code{\link{mongo.insert}},
-\code{\link{mongo.update}},
-\code{\link{mongo.remove}},
-\link{mongo},
-\link{mongo.bson}
-}
 \examples{
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
@@ -48,4 +39,13 @@ if (mongo.is.connected(mongo)) {
     # add an index using an alternate method of specifying the key fields
     b <- mongo.index.create(mongo, "test.people", key)
 }
+}
+\seealso{
+\code{\link{mongo.find}},
+\code{\link{mongo.find.one}},
+\code{\link{mongo.insert}},
+\code{\link{mongo.update}},
+\code{\link{mongo.remove}},
+\link{mongo},
+\link{mongo.bson}
 }

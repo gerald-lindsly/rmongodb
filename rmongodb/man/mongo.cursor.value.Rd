@@ -14,14 +14,6 @@ mongo.cursor.value(cursor)
 \value{
 (\link{mongo.bson}) The current record of the result set.
 }
-\seealso{
-\code{\link{mongo.find}},
-\code{\link{mongo.cursor}},
-\code{\link{mongo.cursor.next}},
-\code{\link{mongo.cursor.value}},
-\code{\link{mongo.cursor.destroy}},
-\link{mongo.bson}
-}
 \examples{
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
@@ -36,4 +28,12 @@ if (mongo.is.connected(mongo)) {
         print(mongo.cursor.value(cursor))
     mongo.cursor.destroy(cursor)
 }
+}
+\seealso{
+\code{\link{mongo.find}},
+\code{\link{mongo.cursor}},
+\code{\link{mongo.cursor.next}},
+\code{\link{mongo.cursor.value}},
+\code{\link{mongo.cursor.destroy}},
+\link{mongo.bson}
 }
