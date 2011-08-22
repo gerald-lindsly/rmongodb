@@ -18,7 +18,7 @@ and perform the same action as the specific functions.  These functions are:
 \item \code{\link{mongo.bson.buffer.append.symbol}()}
 \item \code{\link{mongo.bson.buffer.append.code}()}
 \item \code{\link{mongo.bson.buffer.append.code.w.scope}()}
-\item \code{\link{mongo.bson.buffer.append.binary}()}
+\item \code{\link{mongo.bson.buffer.append.raw}()}
 \item \code{\link{mongo.bson.buffer.append.time}()}
 \item \code{\link{mongo.bson.buffer.append.timestamp}()}
 \item \code{\link{mongo.bson.buffer.append.regex}()}

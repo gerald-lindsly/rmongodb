@@ -15,5 +15,7 @@ extern SEXP sym_increment;
 extern SEXP sym_scope;
 extern SEXP sym_mongo_cursor;
 extern SEXP sym_options;
-extern SEXP sym_mongo_binary;
+extern SEXP sym_subtype;
 extern SEXP sym_length;
+extern SEXP sym_mongo_gridfs;
+extern SEXP sym_mongo_gridfile;

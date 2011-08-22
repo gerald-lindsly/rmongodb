@@ -98,15 +98,6 @@ mongo.undefined.create <- function()
 mongo.regex.create <- function(pattern, options="")
     .Call(".mongo.regex.create", pattern, options)
 
-mongo.binary.create <- function(type, length)
-    .Call(".mongo.binary.create", type, length)
-
-mongo.binary.set <- function(bin, index, value)
-    .Call(".mongo.binary.set", bin, index, value)
-
-mongo.binary.get <- function(bin, index)
-    .Call(".mongo.binary.get", bin, index)
-
 
 mongo.bson.buffer.create <- function()
     .Call(".mongo.bson.buffer.create")
@@ -159,8 +150,8 @@ mongo.bson.buffer.append.symbol <- function(buf, name, value)
 mongo.bson.buffer.append.regex <- function(buf, name, value)
     .Call(".mongo.bson.buffer.append.regex", buf, name, value)
 
-mongo.bson.buffer.append.binary <- function(buf, name, value)
-    .Call(".mongo.bson.buffer.append.binary", buf, name, value)
+mongo.bson.buffer.append.raw <- function(buf, name, value, subtype=NULL)
+    .Call(".mongo.bson.buffer.append.raw", buf, name, value, subtype)
 
 mongo.bson.buffer.append.oid <- function(buf, name, value)
     .Call(".mongo.bson.buffer.append.oid", buf, name, value)

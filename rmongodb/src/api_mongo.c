@@ -12,18 +12,6 @@ static void mongoFinalizer(SEXP ptr) {
 }
 
 
-mongo* _checkMongo(SEXP mongo_conn) {
-    _checkClass(mongo_conn, "mongo");
-    SEXP ptr = getAttrib(mongo_conn, sym_mongo);
-    if (ptr == R_NilValue)
-        error("Attribute \"mongo\" is missing from mongo class object\n");
-    mongo* conn = (mongo*)R_ExternalPtrAddr(ptr);
-    if (!conn)
-        error("mongo connection object appears to have been destroyed.\n");
-    return conn;
-}
-
-
 SEXP rmongo_destroy(SEXP mongo_conn) {
     mongo* conn = _checkMongo(mongo_conn);
     mongo_destroy(conn);

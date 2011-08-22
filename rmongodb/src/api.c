@@ -4,6 +4,7 @@
 
 #include "api_bson.h"
 #include "api_mongo.h"
+#include "api_gridfs.h"
 #include "symbols.h"
 
 int sock_init();
@@ -72,9 +73,6 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.symbol.create", (DL_FUNC) mongo_symbol_create, 1},
     { ".mongo.undefined.create", (DL_FUNC) mongo_undefined_create, 0},
     { ".mongo.regex.create", (DL_FUNC) mongo_regex_create, 2},
-    { ".mongo.binary.create", (DL_FUNC) mongo_binary_create, 2},
-    { ".mongo.binary.set", (DL_FUNC) mongo_binary_set, 3},
-    { ".mongo.binary.get", (DL_FUNC) mongo_binary_get, 2},
 
     { ".mongo.bson.buffer.create", (DL_FUNC) mongo_bson_buffer_create, 0},
     { ".mongo.bson.from.buffer", (DL_FUNC) mongo_bson_from_buffer, 1},
@@ -89,7 +87,7 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.bson.buffer.append.symbol", (DL_FUNC) mongo_bson_buffer_append_symbol, 3},
     { ".mongo.bson.buffer.append.code", (DL_FUNC) mongo_bson_buffer_append_code, 3},
     { ".mongo.bson.buffer.append.code.w.scope", (DL_FUNC) mongo_bson_buffer_append_code_w_scope, 3},
-    { ".mongo.bson.buffer.append.binary", (DL_FUNC) mongo_bson_buffer_append_binary, 3},
+    { ".mongo.bson.buffer.append.raw", (DL_FUNC) mongo_bson_buffer_append_raw, 4},
     { ".mongo.bson.buffer.append.time", (DL_FUNC) mongo_bson_buffer_append_time, 3},
     { ".mongo.bson.buffer.append.timestamp", (DL_FUNC) mongo_bson_buffer_append_timestamp, 3},
     { ".mongo.bson.buffer.append.regex", (DL_FUNC) mongo_bson_buffer_append_symbol, 3},
@@ -102,6 +100,24 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.bson.buffer.start.array", (DL_FUNC) mongo_bson_buffer_start_array, 2},
     { ".mongo.bson.buffer.finish.object", (DL_FUNC) mongo_bson_buffer_finish_object, 1},
     { ".mongo.bson.buffer.size", (DL_FUNC) mongo_bson_buffer_size, 1},
+
+    { ".mongo.gridfs.create", (DL_FUNC) mongo_gridfs_create, 3},
+    { ".mongo.gridfs.destroy", (DL_FUNC) mongo_gridfs_destroy, 1},
+    { ".mongo.gridfs.store.file", (DL_FUNC) mongo_gridfs_store_file, 4},
+    { ".mongo.gridfs.remove.file", (DL_FUNC) mongo_gridfs_remove_file, 2},
+    { ".mongo.gridfile.create", (DL_FUNC) mongo_gridfile_create, 2},
+    { ".mongo.gridfile.destroy", (DL_FUNC) mongo_gridfile_destroy, 1},
+    { ".mongo.gridfs.find", (DL_FUNC) mongo_gridfs_find, 2},
+    { ".mongo.gridfile.get.descriptor", (DL_FUNC) mongo_gridfile_get_descriptor, 1},
+    { ".mongo.gridfile.get.filename", (DL_FUNC) mongo_gridfile_get_filename, 1},
+    { ".mongo.gridfile.get.length", (DL_FUNC) mongo_gridfile_get_length, 1},
+    { ".mongo.gridfile.get.chunk.size", (DL_FUNC) mongo_gridfile_get_chunk_size, 1},
+    { ".mongo.gridfile.get.chunk.count", (DL_FUNC) mongo_gridfile_get_chunk_count, 1},
+    { ".mongo.gridfile.get.content.type", (DL_FUNC) mongo_gridfile_get_content_type, 1},
+    { ".mongo.gridfile.get.upload.date", (DL_FUNC) mongo_gridfile_get_upload_date, 1},
+    { ".mongo.gridfile.get.md5", (DL_FUNC) mongo_gridfile_get_md5, 1},
+    { ".mongo.gridfile.get.metadata", (DL_FUNC) mongo_gridfile_get_metadata, 1},
+    { ".mongo.gridfile.get.chunk", (DL_FUNC) mongo_gridfile_get_chunk, 2},
 
     { NULL, NULL, 0 }
 };

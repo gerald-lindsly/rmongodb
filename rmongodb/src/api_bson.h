@@ -23,9 +23,6 @@ SEXP mongo_code_w_scope_create(SEXP code, SEXP scope);
 SEXP mongo_symbol_create(SEXP code);
 SEXP mongo_undefined_create();
 SEXP mongo_regex_create(SEXP pattern, SEXP options);
-SEXP mongo_binary_create(SEXP type, SEXP length);
-SEXP mongo_binary_set(SEXP bin, SEXP index, SEXP value);
-SEXP mongo_binary_get(SEXP bin, SEXP index);
 
 SEXP mongo_oid_from_string(SEXP hexstr);
 SEXP mongo_oid_to_string(SEXP oid);
@@ -46,7 +43,7 @@ SEXP mongo_bson_buffer_append_code(SEXP buf, SEXP name, SEXP value);
 SEXP mongo_bson_buffer_append_code_w_scope(SEXP buf, SEXP name, SEXP value);
 SEXP mongo_bson_buffer_append_symbol(SEXP buf, SEXP name, SEXP value);
 SEXP mongo_bson_buffer_append_regex(SEXP buf, SEXP name, SEXP value);
-SEXP mongo_bson_buffer_append_binary(SEXP buf, SEXP name, SEXP value);
+SEXP mongo_bson_buffer_append_raw(SEXP buf, SEXP name, SEXP value, SEXP subtype);
 SEXP mongo_bson_buffer_append_undefined(SEXP buf, SEXP name);
 SEXP mongo_bson_buffer_append_time(SEXP buf, SEXP name, SEXP value);
 SEXP mongo_bson_buffer_append_timestamp(SEXP buf, SEXP name, SEXP value);

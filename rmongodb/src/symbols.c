@@ -13,8 +13,11 @@ SEXP sym_increment;
 SEXP sym_scope;
 SEXP sym_mongo_cursor;
 SEXP sym_options;
-SEXP sym_mongo_binary;
+SEXP sym_subtype;
 SEXP sym_length;
+SEXP sym_mongo_gridfs;
+SEXP sym_mongo_gridfile;
+
 
 void install_mongo_symbols() {
     sym_mongo = install("mongo");
@@ -30,6 +33,8 @@ void install_mongo_symbols() {
     sym_scope = install("scope");
     sym_mongo_cursor = install("mongo.cursor");
     sym_options = install("options");
-    sym_mongo_binary = install("mongo.binary");
+    sym_subtype = install("subtype");
     sym_length = install("length");
+    sym_mongo_gridfs = install("mongo.gridfs");
+    sym_mongo_gridfile = install("mongo.gridfile");
 }

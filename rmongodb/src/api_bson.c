@@ -42,32 +42,6 @@ void _checkBinary(SEXP bin) {
 }
 
 
-static void bsonFinalizer(SEXP ptr) {
-    if (!R_ExternalPtrAddr(ptr)) return;
-    bson* b = (bson*)R_ExternalPtrAddr(ptr);
-    bson_destroy(b);
-    Free(b);
-    R_ClearExternalPtr(ptr); /* not really needed */
-}
-
-
-SEXP _mongo_bson_create(bson* b) {
-    SEXP ret, ptr, cls;
-    PROTECT(ret = allocVector(INTSXP, 1));
-    INTEGER(ret)[0] = 0;
-    bson* obj = Calloc(1, bson);
-    bson_copy(obj, b);
-    ptr = R_MakeExternalPtr(obj, sym_mongo_bson, R_NilValue);
-    PROTECT(ptr);
-    R_RegisterCFinalizerEx(ptr, bsonFinalizer, TRUE);
-    setAttrib(ret, sym_mongo_bson, ptr);
-    PROTECT(cls = allocVector(STRSXP, 1));
-    SET_STRING_ELT(cls, 0, mkChar("mongo.bson"));
-    classgets(ret, cls);
-    return ret;
-}
-
-
 const char* numstr(int i) {
     extern const char bson_numstrs[1000][4];
     if (i < 1000)
@@ -139,64 +113,15 @@ SEXP mongo_regex_create(SEXP pattern, SEXP options) {
 }
 
 
-static void binaryFinalizer(SEXP ptr) {
-    if (!R_ExternalPtrAddr(ptr)) return;
-    void* b = (void*)R_ExternalPtrAddr(ptr);
-    Free(b);
-    R_ClearExternalPtr(ptr); /* not really needed */
-}
-
-
-SEXP _mongo_binary_create(char type, const char* data, int len) {
-    SEXP ret, cls, ptr;
-    PROTECT(ret = allocVector(INTSXP, 1));
-    INTEGER(ret)[0] = type;
-    void* d = (void*)Calloc(len, char);
-    if (data) memcpy(d, data, len);
-    ptr = R_MakeExternalPtr(d, sym_mongo_binary, R_NilValue);
-    PROTECT(ptr);
-    R_RegisterCFinalizerEx(ptr, binaryFinalizer, TRUE);
-    setAttrib(ret, sym_mongo_binary, ptr);
-    SEXP rlen;
-    PROTECT(rlen = allocVector(INTSXP, 1));
-    INTEGER(rlen)[0] = len;
-    setAttrib(ret, sym_length, rlen);
-    PROTECT(cls = allocVector(STRSXP, 1));
-    SET_STRING_ELT(cls, 0, mkChar("mongo.binary"));
-    classgets(ret, cls);
-    UNPROTECT(4);
-    return ret;
-}
-
-
-SEXP mongo_binary_create(SEXP type, SEXP len) {
-    return _mongo_binary_create(asInteger(type), NULL, asInteger(len));
-}
-
-
-SEXP mongo_binary_set(SEXP bin, SEXP index, SEXP value) {
-    _checkBinary(bin);
-    int i = asInteger(index);
-    int len = INTEGER(getAttrib(bin, sym_length))[0];
-    if (i >= len)
-        error("index (%d) must be less than the length (%d) of the binary object", i, len);
-    char* data = (char*)R_ExternalPtrAddr(getAttrib(bin, sym_mongo_binary));
-    data[i] = (char)asInteger(value);
-    return R_NilValue;
-}
-
-
-SEXP mongo_binary_get(SEXP bin, SEXP index) {
-    _checkBinary(bin);
-    int i = asInteger(index);
-    int len = INTEGER(getAttrib(bin, sym_length))[0];
-    if (i >= len)
-        error("index (%d) must be less than the length (%d) of the binary object", i, len);
-    char* data = (char*)R_ExternalPtrAddr(getAttrib(bin, sym_mongo_binary));
+SEXP _raw_create(char type, const char* data, int len) {
     SEXP ret;
-    PROTECT(ret = allocVector(INTSXP, 1));
-    INTEGER(ret)[0] = (int)data[i];
-    UNPROTECT(1);
+    PROTECT(ret = allocVector(RAWSXP, len));
+    if (data) memcpy(RAW(ret), data, len);
+    SEXP _subtype;
+    PROTECT(_subtype = allocVector(INTSXP, 1));
+    INTEGER(_subtype)[0] = type;
+    setAttrib(ret, sym_subtype, _subtype);
+    UNPROTECT(2);
     return ret;
 }
 
@@ -397,18 +322,6 @@ SEXP mongo_bson_iterator_type(SEXP iter) {
     PROTECT(ret = allocVector(INTSXP, 1));
     INTEGER(ret)[0] = bson_iterator_type(_iter);
     UNPROTECT(1);
-    return ret;
-}
-
-
-SEXP _createPOSIXct(int t) {
-    SEXP ret, cls;
-    PROTECT(ret = allocVector(INTSXP, 1));
-    INTEGER(ret)[0] = t;
-    PROTECT(cls = allocVector(STRSXP, 2));
-    SET_STRING_ELT(cls, 0, mkChar("POSIXct"));
-    SET_STRING_ELT(cls, 1, mkChar("POSIXt"));
-    classgets(ret, cls);
     return ret;
 }
 
@@ -640,9 +553,9 @@ SEXP mongo_bson_iterator_value(SEXP iter) {
         return _mongo_regex_create(bson_iterator_regex(_iter), bson_iterator_regex_opts(_iter));
 
     case BSON_BINDATA:
-        return _mongo_binary_create(bson_iterator_bin_type(_iter),
-                                    bson_iterator_bin_data(_iter),
-                                    bson_iterator_bin_len(_iter));
+        return _raw_create(bson_iterator_bin_type(_iter),
+                           bson_iterator_bin_data(_iter),
+                           bson_iterator_bin_len(_iter));
 
     case BSON_NULL:
         return R_NilValue;
@@ -864,9 +777,9 @@ SEXP _mongo_bson_to_list(bson_iterator* _iter) {
             break;
 
         case BSON_BINDATA:
-            el = _mongo_binary_create(bson_iterator_bin_type(&iter),
-                                      bson_iterator_bin_data(&iter),
-                                      bson_iterator_bin_len(&iter));
+            el = _raw_create(bson_iterator_bin_type(&iter),
+                             bson_iterator_bin_data(&iter),
+                             bson_iterator_bin_len(&iter));
             break;
 
         case BSON_ARRAY: {
@@ -1279,15 +1192,24 @@ SEXP mongo_bson_buffer_append_symbol(SEXP buf, SEXP name, SEXP value) {
 }
 
 
-SEXP mongo_bson_buffer_append_binary(SEXP buf, SEXP name, SEXP value) {
+SEXP mongo_bson_buffer_append_raw(SEXP buf, SEXP name, SEXP value, SEXP subtype) {
     bson_buffer* _buf = _checkBuffer(buf);
     const char* _name = CHAR(STRING_ELT(name, 0));
-    _checkBinary(value);
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
-    int len = INTEGER(getAttrib(value, sym_length))[0];
-    char* data = (char*)R_ExternalPtrAddr(getAttrib(value, sym_mongo_binary));
-    LOGICAL(ret)[0] = (bson_append_binary(_buf, _name, INTEGER(value)[0], data, len) == BSON_OK);
+    int len = LENGTH(value);
+    int _subtype;
+    if (subtype == R_NilValue) {
+        SEXP attrSubtype = getAttrib(value, sym_subtype);
+        if (attrSubtype == R_NilValue)
+            _subtype = BSON_BIN_BINARY;
+        else
+            _subtype = asInteger(attrSubtype);
+    }
+    else
+        _subtype = INTEGER(subtype)[0];
+    char* data = (char*)RAW(value);
+    LOGICAL(ret)[0] = (bson_append_binary(_buf, _name, _subtype, data, len) == BSON_OK);
     UNPROTECT(1);
     return ret;
 }
@@ -1318,8 +1240,6 @@ SEXP mongo_bson_buffer_append(SEXP buf, SEXP name, SEXP value) {
             return mongo_bson_buffer_append_undefined(buf, name);
         if (_hasClass(cls, "mongo.regex"))
             return mongo_bson_buffer_append_regex(buf, name, value);
-        if (_hasClass(cls, "mongo.binary"))
-            return mongo_bson_buffer_append_binary(buf, name, value);
     }
     int t = TYPEOF(value);
     switch (t) {
@@ -1329,6 +1249,7 @@ SEXP mongo_bson_buffer_append(SEXP buf, SEXP name, SEXP value) {
     case REALSXP: return mongo_bson_buffer_append_double(buf, name, value);
     case CPLXSXP: return mongo_bson_buffer_append_complex(buf, name, value);
     case VECSXP:  return mongo_bson_buffer_append_list(buf, name, value);
+    case RAWSXP:  return mongo_bson_buffer_append_raw(buf, name, value, R_NilValue);
     default:
         error("Unhandled R type (%d) in mongo.bson.buffer.append\n", t);
         return R_NilValue; // never reached

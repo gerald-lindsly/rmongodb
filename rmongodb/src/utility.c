@@ -1,6 +1,7 @@
+#include <R.h>
+#include <Rinternals.h>
 #include "utility.h"
 #include "symbols.h"
-#include <Rinternals.h>
 #include <string.h>
 
 
@@ -43,4 +44,55 @@ bson* _checkBSON(SEXP b) {
 int _isBSON(SEXP b) {
     return _objHasClass(b, "mongo.bson");
 }
+
+
+mongo* _checkMongo(SEXP mongo_conn) {
+    _checkClass(mongo_conn, "mongo");
+    SEXP ptr = getAttrib(mongo_conn, sym_mongo);
+    if (ptr == R_NilValue)
+        error("Attribute \"mongo\" is missing from mongo class object\n");
+    mongo* conn = (mongo*)R_ExternalPtrAddr(ptr);
+    if (!conn)
+        error("mongo connection object appears to have been destroyed.\n");
+    return conn;
+}
+
+
+SEXP _createPOSIXct(int t) {
+    SEXP ret, cls;
+    PROTECT(ret = allocVector(INTSXP, 1));
+    INTEGER(ret)[0] = t;
+    PROTECT(cls = allocVector(STRSXP, 2));
+    SET_STRING_ELT(cls, 0, mkChar("POSIXct"));
+    SET_STRING_ELT(cls, 1, mkChar("POSIXt"));
+    classgets(ret, cls);
+    return ret;
+}
+
+
+static void bsonFinalizer(SEXP ptr) {
+    if (!R_ExternalPtrAddr(ptr)) return;
+    bson* b = (bson*)R_ExternalPtrAddr(ptr);
+    bson_destroy(b);
+    Free(b);
+    R_ClearExternalPtr(ptr); /* not really needed */
+}
+
+
+SEXP _mongo_bson_create(bson* b) {
+    SEXP ret, ptr, cls;
+    PROTECT(ret = allocVector(INTSXP, 1));
+    INTEGER(ret)[0] = 0;
+    bson* obj = Calloc(1, bson);
+    bson_copy(obj, b);
+    ptr = R_MakeExternalPtr(obj, sym_mongo_bson, R_NilValue);
+    PROTECT(ptr);
+    R_RegisterCFinalizerEx(ptr, bsonFinalizer, TRUE);
+    setAttrib(ret, sym_mongo_bson, ptr);
+    PROTECT(cls = allocVector(STRSXP, 1));
+    SET_STRING_ELT(cls, 0, mkChar("mongo.bson"));
+    classgets(ret, cls);
+    return ret;
+}
+
 
