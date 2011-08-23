@@ -50,6 +50,7 @@ static const R_CallMethodDef callMethods[] = {
 
     { ".mongo.bson.empty", (DL_FUNC) mongo_bson_empty, 0},
     { ".mongo.bson.size", (DL_FUNC) mongo_bson_size, 1},
+    { ".mongo.bson.destroy", (DL_FUNC) mongo_bson_destroy, 1},
     { ".mongo.bson.print", (DL_FUNC) mongo_bson_print, 1},
     { ".mongo.bson.to.list", (DL_FUNC) mongo_bson_to_list, 1},
     { ".mongo.bson.from.list", (DL_FUNC) mongo_bson_from_list, 1},
@@ -104,10 +105,10 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.gridfs.create", (DL_FUNC) mongo_gridfs_create, 3},
     { ".mongo.gridfs.destroy", (DL_FUNC) mongo_gridfs_destroy, 1},
     { ".mongo.gridfs.store.file", (DL_FUNC) mongo_gridfs_store_file, 4},
+    { ".mongo.gridfs.store.raw", (DL_FUNC) mongo_gridfs_store_raw, 4},
     { ".mongo.gridfs.remove.file", (DL_FUNC) mongo_gridfs_remove_file, 2},
-    { ".mongo.gridfile.create", (DL_FUNC) mongo_gridfile_create, 2},
-    { ".mongo.gridfile.destroy", (DL_FUNC) mongo_gridfile_destroy, 1},
     { ".mongo.gridfs.find", (DL_FUNC) mongo_gridfs_find, 2},
+    { ".mongo.gridfile.destroy", (DL_FUNC) mongo_gridfile_destroy, 1},
     { ".mongo.gridfile.get.descriptor", (DL_FUNC) mongo_gridfile_get_descriptor, 1},
     { ".mongo.gridfile.get.filename", (DL_FUNC) mongo_gridfile_get_filename, 1},
     { ".mongo.gridfile.get.length", (DL_FUNC) mongo_gridfile_get_length, 1},
@@ -118,6 +119,12 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.gridfile.get.md5", (DL_FUNC) mongo_gridfile_get_md5, 1},
     { ".mongo.gridfile.get.metadata", (DL_FUNC) mongo_gridfile_get_metadata, 1},
     { ".mongo.gridfile.get.chunk", (DL_FUNC) mongo_gridfile_get_chunk, 2},
+    { ".mongo.gridfile.get.chunks", (DL_FUNC) mongo_gridfile_get_chunks, 3},
+    { ".mongo.gridfile.read", (DL_FUNC) mongo_gridfile_get_chunk, 2},
+    { ".mongo.gridfile.seek", (DL_FUNC) mongo_gridfile_get_chunk, 2},
+    { ".mongo.gridfile.writer.create", (DL_FUNC) mongo_gridfile_writer_create, 3},
+    { ".mongo.gridfile.writer.write", (DL_FUNC) mongo_gridfile_writer_write, 2},
+    { ".mongo.gridfile.writer.finish", (DL_FUNC) mongo_gridfile_writer_finish, 1},
 
     { NULL, NULL, 0 }
 };

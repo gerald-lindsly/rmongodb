@@ -4,6 +4,9 @@ mongo.bson.empty <- function()
 mongo.bson.size <- function(b)
     .Call(".mongo.bson.size", b)
 
+mongo.bson.destroy <- function(b)
+    .Call(".mongo.bson.destroy", b)
+
 mongo.bson.print <- function(x, ...)
     invisible(.Call(".mongo.bson.print", x))
 
@@ -180,5 +183,3 @@ mongo.bson.buffer.finish.object <- function(buf)
 mongo.bson.buffer.size <- function(buf)
     .Call(".mongo.bson.buffer.size", buf)
 
-mongo.sys.time <- function()
-    .Call(".mongo.sys.time")

@@ -267,10 +267,15 @@ print(mongo.gridfile.get.content.type(gridfile))
 print(mongo.gridfile.get.upload.date(gridfile))
 print(mongo.gridfile.get.md5(gridfile))
 print(mongo.gridfile.get.metadata(gridfile))
+
 b <- mongo.gridfile.get.chunk(gridfile, 0)
 print(b)
 iter <- mongo.bson.find(b, "data")
 print(rawToChar(mongo.bson.iterator.value(iter)))
+
+test.out <- file("test.out")
+mongo.gridfile.pipe(gridfile, test.out)
+
 mongo.gridfile.destroy(gridfile)
 
 ##mongo.disconnect(mongo)

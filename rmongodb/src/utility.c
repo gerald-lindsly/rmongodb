@@ -96,3 +96,27 @@ SEXP _mongo_bson_create(bson* b) {
 }
 
 
+static void mongoCursorFinalizer(SEXP ptr) {
+    if (!R_ExternalPtrAddr(ptr)) return;
+    mongo_cursor* cursor = (mongo_cursor*)R_ExternalPtrAddr(ptr);
+    mongo_cursor_destroy(cursor);
+    R_ClearExternalPtr(ptr); /* not really needed */
+}
+
+
+SEXP _mongo_cursor_create(mongo_cursor* cursor) {
+    SEXP ret, ptr, cls;
+    PROTECT(ret = allocVector(INTSXP, 1));
+    INTEGER(ret)[0] = 0;
+    ptr = R_MakeExternalPtr(cursor, sym_mongo_cursor, R_NilValue);
+    PROTECT(ptr);
+    R_RegisterCFinalizerEx(ptr, mongoCursorFinalizer, TRUE);
+    setAttrib(ret, sym_mongo_cursor, ptr);
+    PROTECT(cls = allocVector(STRSXP, 1));
+    SET_STRING_ELT(cls, 0, mkChar("mongo.cursor"));
+    classgets(ret, cls);
+    UNPROTECT(3);
+    return ret;
+}
+
+

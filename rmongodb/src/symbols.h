@@ -19,3 +19,4 @@ extern SEXP sym_subtype;
 extern SEXP sym_length;
 extern SEXP sym_mongo_gridfs;
 extern SEXP sym_mongo_gridfile;
+extern SEXP sym_mongo_gridfile_writer;

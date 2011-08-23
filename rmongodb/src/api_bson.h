@@ -7,6 +7,7 @@ SEXP mongo_sys_time();
 SEXP mongo_bson_empty();
 SEXP mongo_bson_size(SEXP b);
 SEXP mongo_bson_print(SEXP b);
+SEXP mongo_bson_destroy(SEXP b);
 
 SEXP mongo_bson_iterator_create(SEXP b);
 SEXP mongo_bson_find(SEXP b, SEXP name);

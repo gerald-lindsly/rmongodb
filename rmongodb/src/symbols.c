@@ -17,6 +17,7 @@ SEXP sym_subtype;
 SEXP sym_length;
 SEXP sym_mongo_gridfs;
 SEXP sym_mongo_gridfile;
+SEXP sym_mongo_gridfile_writer;
 
 
 void install_mongo_symbols() {
@@ -37,4 +38,5 @@ void install_mongo_symbols() {
     sym_length = install("length");
     sym_mongo_gridfs = install("mongo.gridfs");
     sym_mongo_gridfile = install("mongo.gridfile");
+    sym_mongo_gridfile_writer = install("mongo.gridfile.writer");
 }

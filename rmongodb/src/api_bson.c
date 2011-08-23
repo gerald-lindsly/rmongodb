@@ -8,6 +8,14 @@
 
 typedef bson bson_buffer;
 
+SEXP mongo_bson_destroy(SEXP b) {
+    bson* _b = _checkBSON(b);
+    bson_destroy(_b);
+    SEXP ptr = getAttrib(b, sym_mongo_bson);
+    R_ClearExternalPtr(ptr);
+    return R_NilValue;
+}
+
 bson_buffer* _checkBuffer(SEXP buf) {
     _checkClass(buf, "mongo.bson.buffer");
     SEXP ptr = getAttrib(buf, sym_mongo_bson_buffer);
@@ -1366,6 +1374,7 @@ SEXP mongo_bson_buffer_size(SEXP buf) {
     return ret;
 }
 
+/*
 SEXP mongo_sys_time() {
     time_t t;
     time(&t);
@@ -1373,3 +1382,4 @@ SEXP mongo_sys_time() {
     UNPROTECT(2);
     return ret;
 }
+*/
