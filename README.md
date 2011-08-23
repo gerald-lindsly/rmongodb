@@ -1,8 +1,13 @@
 This is an R extension supporting access to MongoDB.
 
-After unpacking to C:\mongo-r-driver, drop mongo-c-driver's src directory into mongo-r-driver/rmongodb/src
+After cloning the repo, drop [mongo-c-driver](http://github.com/mongodb/mongo-c-driver)'s src directory into rmongodb/rmongodb/src
 
 The driver is installed into R with:
-C:\mongo-r-driver> R CMD INSTALL rmongodb
+
+`R CMD INSTALL rmongodb`
 
 Once this is done, the package may be loaded from within R like any other.
+
+To run the unit tests:
+
+`R --no-save < test.R`
