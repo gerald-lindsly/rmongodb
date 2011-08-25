@@ -25,5 +25,4 @@ rmongodb/src/net.h
 rmongodb/src/net.c
 rmongodb/src/numbers.c
 rmongodb/src/platform.h
-rmongodb/src/platform/linux/net.h
-rmongodb/src/platform/linux/net.c
+rmongodb/src/platform/
