@@ -12,6 +12,8 @@ mongo.bson.buffer.append.int(buf, "age", 48L)
 mongo.bson.buffer.append.bool(buf, "True", TRUE)
 mongo.bson.buffer.append.double(buf, "ThreePointFive", 3.5)
 mongo.bson.buffer.append.long(buf, "YearSeconds", 365.24219 * 24 * 60 * 60)
+mongo.bson.buffer.append.time(buf, "lt", strptime("05-12-2012", "%m-%d-%Y"))
+
 oid <- mongo.oid.from.string("1234567890AB1234567890AB")
 mongo.bson.buffer.append.oid(buf, "_id", oid)
 id <- mongo.oid.create()
@@ -44,7 +46,7 @@ for (i in 0:2)
 mongo.bson.buffer.append(buf, "bin", bin)
 
 mongo.bson.buffer.append.time(buf, "Now", Sys.time())
-ts <- mongo.timestamp.create(Sys.time() + 60 * 60 * 1000, 25L)
+ts <- mongo.timestamp.create(Sys.time() + 24 * 60 * 60, 25L)
 mongo.bson.buffer.append.timestamp(buf, "Later", ts)
 
 b <- mongo.bson.from.buffer(buf)
@@ -249,13 +251,19 @@ b <- mongo.bson.from.buffer(buf)
 print(b)
 print(mongo.bson.to.list(b))
 
-gfs <- mongo.gridfs.create(mongo, "gridfs")
+gfs <- mongo.gridfs.create(mongo, "grid")
+if (!mongo.gridfs.store.file(gfs, "test.R"))
+    error("unable to store test.R")
 if (!mongo.gridfs.store.file(gfs, "rmongodb.pdf"))
     error("unable to store rmongodb.pdf")
 if (!mongo.gridfs.store.file(gfs, "check.bat"))
     error("unable to store check.bat")
 if (!mongo.gridfs.store.file(gfs, "test.bat"))
     error("unable to store test.bat")
+
+mongo.gridfs.remove.file(gfs, "test.bat")
+if (!is.null(mongo.gridfs.find(gfs, "test.bat")))
+    error("mongo.gridfs.remove.file didn't work.")
 
 gridfile <- mongo.gridfs.find(gfs, "check.bat")
 print(mongo.gridfile.get.descriptor(gridfile))
@@ -275,6 +283,21 @@ print(rawToChar(mongo.bson.iterator.value(iter)))
 
 test.out <- file("test.out")
 mongo.gridfile.pipe(gridfile, test.out)
+
+    gfw <- mongo.gridfile.writer.create(gfs, "test.dat")
+
+    # store 4 bytes
+    mongo.gridfile.writer.write(gfw, charToRaw("test"))
+
+    # store string & LF plus 0-byte terminator
+    buf <- writeBin("Test\n", as.raw(1))
+    mongo.gridfile.writer.write(gfw, buf)
+
+    # store PI as a float
+    buf <- writeBin(3.1415926, as.raw(1), size=4, endian="little")
+    mongo.gridfile.writer.write(gfw, buf)
+
+    mongo.gridfile.writer.finish(gfw)
 
 mongo.gridfile.destroy(gridfile)
 

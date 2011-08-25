@@ -24,9 +24,11 @@ mongo.bson.buffer.append(buf, "name", "Fred")
 mongo.bson.buffer.append(buf, "city", "Dayton")
 b <- mongo.bson.from.buffer(buf)
 print(b)
+mongo.bson.destroy(b)
 }
 \seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.append}}
+\link{mongo.bson},
+\link{mongo.bson.buffer},
+\code{\link{mongo.bson.buffer.append}},
+\code{\link{mongo.bson.destroy}}
 }

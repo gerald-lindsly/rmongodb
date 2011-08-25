@@ -149,36 +149,10 @@ gridfile* _checkGridfileWriter(SEXP gfw) {
 }
 
 
-char* _getRaw(SEXP raw, int* size) {
-    int len = LENGTH(raw);
-    switch (TYPEOF(raw)) {
-    case LGLSXP: 
-        *size = sizeof(LOGICAL(raw)[0]) * len;
-        return (char*)(&LOGICAL(raw)[0]);
-    case INTSXP: 
-        *size = sizeof(INTEGER(raw)[0]) * len;
-        return (char*)(&INTEGER(raw)[0]);
-    case REALSXP:
-        *size = sizeof(REAL(raw)[0]) * len;
-        return (char*)(&REAL(raw)[0]);
-    case CPLXSXP:
-        *size = sizeof(COMPLEX(raw)[0]) * len;
-        return (char*)(&COMPLEX(raw)[0]);
-    case RAWSXP:
-        *size = sizeof(RAW(raw)[0]) * len;
-        return (char*)(&RAW(raw)[0]);
-    default:
-        error("Type (%d) is not supported");
-        return NULL; // never reaches here -- avoid warning
-    }
-}
-
-
 SEXP mongo_gridfile_writer_write(SEXP gfw, SEXP raw) {
     gridfile* gfile = _checkGridfileWriter(gfw);
-    int size = 0;
-    char* _raw = _getRaw(raw, &size);
-    if (size) gridfile_write_buffer(gfile, _raw, size);
+    int len = LENGTH(raw);
+    if (len) gridfile_write_buffer(gfile, (char*)RAW(raw), len);
     return R_NilValue;
 }
 
@@ -188,21 +162,21 @@ SEXP mongo_gridfile_writer_finish(SEXP gfw) {
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
     LOGICAL(ret)[0] = (gridfile_writer_done(gfile) == MONGO_OK);
-    gridfile_destroy(gfile);
+    Free(gfile);
     R_ClearExternalPtr(getAttrib(gfw, sym_mongo_gridfile));
+    UNPROTECT(1);
     return ret;
 }
 
 
-SEXP mongo_gridfs_store_raw(SEXP gfs, SEXP raw, SEXP remotename, SEXP contenttype) {
+SEXP mongo_gridfs_store(SEXP gfs, SEXP raw, SEXP remotename, SEXP contenttype) {
     gridfs* _gfs = _checkGridfs(gfs);
     const char* _remotename = CHAR(STRING_ELT(remotename, 0));
     const char* _contenttype = CHAR(STRING_ELT(contenttype, 0));
-    int size = 0;
-    char* _raw = _getRaw(raw, &size);
+    int len = LENGTH(raw);
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
-    LOGICAL(ret)[0] = (gridfs_store_buffer(_gfs, _raw, size, _remotename, _contenttype) == MONGO_OK);
+    LOGICAL(ret)[0] = (gridfs_store_buffer(_gfs, (char*)RAW(raw), len, _remotename, _contenttype) == MONGO_OK);
     UNPROTECT(1);
     return ret;
 }

@@ -5,7 +5,7 @@
 SEXP mongo_gridfs_create(SEXP mongo_conn, SEXP db, SEXP prefix);
 SEXP mongo_gridfs_destroy(SEXP gfs);
 SEXP mongo_gridfs_store_file(SEXP gfs, SEXP filename, SEXP remotename, SEXP contenttype);
-SEXP mongo_gridfs_store_raw(SEXP gfs, SEXP raw, SEXP remotename, SEXP contenttype);
+SEXP mongo_gridfs_store(SEXP gfs, SEXP raw, SEXP remotename, SEXP contenttype);
 SEXP mongo_gridfs_remove_file(SEXP gfs, SEXP filename);
 SEXP mongo_gridfile_writer_create(SEXP gfs, SEXP remotename, SEXP contenttype);
 SEXP mongo_gridfile_writer_write(SEXP gfw, SEXP raw);

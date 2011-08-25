@@ -28,7 +28,7 @@ and perform the same action as the specific functions.  These functions are:
 \item \code{\link{mongo.bson.buffer.append.list}()}
 }
 
-Note that \code{\link{mongo.bson.buffer.append.long}()} is missing from the above list since R has 
+\code{\link{mongo.bson.buffer.append.long}()} is missing from the above list since R has 
 no 64-bit long integer type.  If you wish a value to be stored in the BSON data as a long
 you must explicity call that function.
 }

@@ -80,11 +80,8 @@ print.mongo.oid <- function(x, ...)
     invisible(.Call(".mongo.oid.print", x))
 
 
-mongo.timestamp.create <- function(time, increment) {
-    if (inherits(time, "POSIXlt"))
-        time <- as.POSIXct(time)
+mongo.timestamp.create <- function(time, increment)
     .Call(".mongo.timestamp.create", time, increment)
-}
 
 mongo.code.create <- function(code)
     .Call(".mongo.code.create", code)
@@ -132,11 +129,8 @@ mongo.bson.buffer.append.undefined <- function(buf, name)
 mongo.bson.buffer.append.string <- function(buf, name, value)
     .Call(".mongo.bson.buffer.append.string", buf, name, value)
 
-mongo.bson.buffer.append.time <- function(buf, name, time) {
-    if (inherits(time, "POSIXlt"))
-        time <- as.POSIXct(time)
+mongo.bson.buffer.append.time <- function(buf, name, time)
     .Call(".mongo.bson.buffer.append.time", buf, name, time)
-}
 
 mongo.bson.buffer.append.timestamp <- function(buf, name, value)
     .Call(".mongo.bson.buffer.append.timestamp", buf, name, value)

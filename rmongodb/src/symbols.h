@@ -2,6 +2,7 @@
 
 void install_mongo_symbols();
 
+extern SEXP sym_as_POSIXct;
 extern SEXP sym_mongo;
 extern SEXP sym_host;
 extern SEXP sym_name;

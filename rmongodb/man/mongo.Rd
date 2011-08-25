@@ -37,4 +37,5 @@ if (mongo.is.connected(mongo)) {
 \code{\link{mongo.remove}},
 \code{\link{mongo.drop}},
 \code{\link{mongo.drop.database}}
+\link{mongo.gridfs}
 }

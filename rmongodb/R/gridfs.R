@@ -1,20 +1,20 @@
 mongo.gridfs.create <- function(mongo, db, prefix="fs")
     .Call(".mongo.gridfs.create", mongo, db, prefix)
 
-mongo.gridfs.destroy <- function(gfs)
-    .Call(".mongo.gridfs.destroy", gfs)
+mongo.gridfs.destroy <- function(gridfs)
+    .Call(".mongo.gridfs.destroy", gridfs)
 
-mongo.gridfs.store.file <- function(gfs, filename, remotename="", contenttype="")
-    .Call(".mongo.gridfs.store.file", gfs, filename, remotename, contenttype)
+mongo.gridfs.store.file <- function(gridfs, filename, remotename="", contenttype="")
+    .Call(".mongo.gridfs.store.file", gridfs, filename, remotename, contenttype)
 
-mongo.gridfs.remove.file <- function(gfs, remotename)
-    .Call(".mongo.gridfs.remove.file", gfs, remotename)
+mongo.gridfs.remove.file <- function(gridfs, remotename)
+    .Call(".mongo.gridfs.remove.file", gridfs, remotename)
 
-mongo.gridfs.store.raw <- function(gfs, raw, remotename, contenttype="")
-    .Call(".mongo.gridfs.store.raw", gfs, remotename, raw, contenttype)
+mongo.gridfs.store <- function(gridfs, raw, remotename, contenttype="")
+    .Call(".mongo.gridfs.store", gridfs, raw, remotename, contenttype)
 
-mongo.gridfile.writer.create <- function(gfs, remotename, contenttype="")
-    .Call(".mongo.gridfile.writer.create", gfs, remotename)
+mongo.gridfile.writer.create <- function(gridfs, remotename, contenttype="")
+    .Call(".mongo.gridfile.writer.create", gridfs, remotename, contenttype)
 
 mongo.gridfile.writer.write <- function(gfw, raw)
     .Call(".mongo.gridfile.writer.write", gfw, raw)
@@ -22,11 +22,11 @@ mongo.gridfile.writer.write <- function(gfw, raw)
 mongo.gridfile.writer.finish <- function(gfw)
     .Call(".mongo.gridfile.writer.finish", gfw)
 
+mongo.gridfs.find <- function(gridfs, query)
+    .Call(".mongo.gridfs.find", gridfs, query)
+
 mongo.gridfile.destroy <- function(gridfile)
     .Call(".mongo.gridfile.destroy", gridfile)
-
-mongo.gridfs.find <- function(gfs, query)
-    .Call(".mongo.gridfs.find", gfs, query)
 
 mongo.gridfile.get.descriptor <- function(gridfile)
     .Call(".mongo.gridfile.get.descriptor", gridfile)

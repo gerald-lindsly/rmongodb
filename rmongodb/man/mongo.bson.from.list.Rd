@@ -35,6 +35,7 @@ b <- mongo.bson.from.list(as.list(v))
 # the above produces a BSON object of the form: { "president" : "Jefferson", "vice" : "Burr" }
 }
 \seealso{
-\code{\link{mongo.bson.to.list}}
-\link{mongo.bson}
+\code{\link{mongo.bson.to.list}},
+\link{mongo.bson},
+\code{\link{mongo.bson.destroy}}
 }

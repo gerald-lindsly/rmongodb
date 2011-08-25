@@ -32,5 +32,6 @@ while (mongo.bson.iterator.next(iter))
 \link{mongo.bson.buffer},
 \code{\link{mongo.bson.from.buffer}},
 \code{\link{mongo.bson.empty}},
-\code{\link{mongo.find.one}}.
+\code{\link{mongo.find.one}},
+\code{\link{mongo.bson.destroy}}
 }

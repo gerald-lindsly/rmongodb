@@ -125,14 +125,11 @@ SEXP _raw_create(char type, const char* data, int len) {
     SEXP ret;
     PROTECT(ret = allocVector(RAWSXP, len));
     if (data) memcpy(RAW(ret), data, len);
-    if (type) {
-        SEXP _subtype;
-        PROTECT(_subtype = allocVector(INTSXP, 1));
-        INTEGER(_subtype)[0] = type;
-        setAttrib(ret, sym_subtype, _subtype);
-        UNPROTECT(1);
-    }
-    UNPROTECT(1);
+    SEXP _subtype;
+    PROTECT(_subtype = allocVector(INTSXP, 1));
+    INTEGER(_subtype)[0] = type;
+    setAttrib(ret, sym_subtype, _subtype);
+    UNPROTECT(2);
     return ret;
 }
 

@@ -1,5 +1,6 @@
 #include "symbols.h"
 
+SEXP sym_as_POSIXct;
 SEXP sym_mongo;
 SEXP sym_host;
 SEXP sym_name;
@@ -21,6 +22,7 @@ SEXP sym_mongo_gridfile_writer;
 
 
 void install_mongo_symbols() {
+    sym_as_POSIXct = install("as.POSIXct");
     sym_mongo = install("mongo");
     sym_host = install("host");
     sym_name = install("name");
