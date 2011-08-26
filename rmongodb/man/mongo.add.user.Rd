@@ -6,6 +6,7 @@
 Add a user and password against to the given database on a MongoDB server for authentication purposes.
 
 See \url{http://www.mongodb.org/display/DOCS/Security+and+Authentication}.
+
 }
 \usage{
 mongo.add.user(mongo, username, password, db="admin")
@@ -22,7 +23,7 @@ if (mongo.is.connected(mongo))
     mongo.add.user(mongo, "Jeff", "H87b5dog")
 }
 \seealso{
-\code{\link{mongo.authenticate}},
-\link{mongo},
-\code{\link{mongo.create}}
+\code{\link{mongo.authenticate}},\cr
+\link{mongo},\cr
+\code{\link{mongo.create}}.
 }

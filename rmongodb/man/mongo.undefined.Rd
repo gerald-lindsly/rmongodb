@@ -8,7 +8,8 @@ Objects of class "mongo.undefined" are used to represent undefined values in BSO
 
 mongo.undefined objects are strings (a character vector) with a single value of "UNDEFINED"
 
-mongo.undefined objects have "mongo.undefined" as their class so that \code{\link{mongo.bson.buffer.append}()} 
+mongo.undefined objects have "mongo.undefined" as their class so that\cr
+\code{\link{mongo.bson.buffer.append}()} 
 may detect them and append the appropriate BSON undefined value to a buffer.
 
 These mongo.undefined values may also be present in a list and will be handled properly
@@ -26,9 +27,9 @@ b <- mongo.bson.from.buffer(buf)
 # { "Undef": UNDEFINED, "listWundef" : { "u1" : UNDEFINED, "One" : 1 } }
 }
 \seealso{
-\code{\link{mongo.undefined.create}},
-\code{\link{mongo.bson.buffer.append}},
-\code{\link{mongo.bson.buffer.append.list}},
-\link{mongo.bson.buffer},
-\link{mongo.bson}
+\code{\link{mongo.undefined.create}},\cr
+\code{\link{mongo.bson.buffer.append}},\cr
+\code{\link{mongo.bson.buffer.append.list}},\cr
+\link{mongo.bson.buffer},\cr
+\link{mongo.bson}.
 }

@@ -32,9 +32,9 @@ mongo.bson.buffer.append(buf, "Undef", undef)
 b <- mongo.bson.from.buffer(buf)
 }
 \seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\link{mongo.undefined}
-\code{\link{mongo.undefined.create}}
-\code{\link{mongo.bson.buffer.append}}
+\link{mongo.bson},\cr
+\link{mongo.bson.buffer},\cr
+\link{mongo.undefined},\cr
+\code{\link{mongo.undefined.create}},\cr
+\code{\link{mongo.bson.buffer.append}}.
 }

@@ -22,8 +22,8 @@ mongo.bson.buffer.append.oid(buf, "Now", mongo.oid.create())
 b <- mongo.bson.from.buffer(buf)
 }
 \seealso{
-\link{mongo.bson},
-\link{mongo.bson.buffer},
-\link{mongo.oid.create},
-\code{\link{mongo.bson.buffer.append}}
+\link{mongo.bson},\cr
+\link{mongo.bson.buffer},\cr
+\link{mongo.oid.create},\cr
+\code{\link{mongo.bson.buffer.append}}.
 }

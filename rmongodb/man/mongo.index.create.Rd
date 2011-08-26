@@ -26,7 +26,7 @@ mongo.index.create(mongo, ns, key, options=0L)
 }
 }
 \value{
-NULL if successful; otherwise, a \link{mongo.bson} object describing the error.  
+NULL if successful; otherwise, a \link{mongo.bson} object describing the error.\cr
 \code{\link{mongo.get.server.err}()} or \code{\link{mongo.get.server.err.string}()} may alternately be called in this case instead of examining the returned object.
 }
 \examples{
@@ -35,7 +35,8 @@ if (mongo.is.connected(mongo)) {
     # Add a city index to collection people in database test
     b <- mongo.index.create(mongo, "test.people", "city")
 
-    # Add an index to collection people in database test which will speed up queries by age followed by name
+    # Add an index to collection people in database test
+    # which will speed up queries of age followed by name
     b <- mongo.index.create(mongo, "test.people", c("age", "name"))
 
     buf <- mongo.bson.buffer.create()
@@ -48,11 +49,11 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.find}},
-\code{\link{mongo.find.one}},
-\code{\link{mongo.insert}},
-\code{\link{mongo.update}},
-\code{\link{mongo.remove}},
-\link{mongo},
-\link{mongo.bson}
+\code{\link{mongo.find}},\cr
+\code{\link{mongo.find.one}},\cr
+\code{\link{mongo.insert}},\cr
+\code{\link{mongo.update}},\cr
+\code{\link{mongo.remove}},\cr
+\link{mongo},\cr
+\link{mongo.bson}.
 }

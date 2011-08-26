@@ -21,6 +21,6 @@ if (mongo.is.connected(mongo))
     print(mongo.get.hosts(mongo))
 }
 \seealso{
-\code{\link{mongo.create}},
+\code{\link{mongo.create}},\cr
 \link{mongo}
 }

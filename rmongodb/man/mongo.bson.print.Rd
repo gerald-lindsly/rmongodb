@@ -17,9 +17,6 @@ mongo.bson.print(x, ...)
 \value{
 The parameter is returned unchanged.
 }
-\seealso{
-\link{mongo.bson}
-}
 \examples{
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append(buf, "name", "Fred")
@@ -30,4 +27,7 @@ b <- mongo.bson.from.buffer(buf)
 mongo.bson.print(b)
 print.mongo.bson(b)
 print(b)
+}
+\seealso{
+\link{mongo.bson}
 }

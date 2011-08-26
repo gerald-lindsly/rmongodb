@@ -23,9 +23,9 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.get.database.collections}},
-\code{\link{mongo.drop.database}},
-\code{\link{mongo.command}},
-\code{\link{mongo.rename}},
-\link{mongo},
+\code{\link{mongo.get.database.collections}},\cr
+\code{\link{mongo.drop.database}},\cr
+\code{\link{mongo.command}},\cr
+\code{\link{mongo.rename}},\cr
+\link{mongo}.
 }

@@ -24,7 +24,8 @@ if (mongo.is.connected(mongo)) {
     mongo.bson.buffer.append(buf, "city", "St. Louis")
     query <- mongo.bson.from.buffer(buf)
 
-    # Find the first 1000 records in collection people of database test where city == "St. Louis"
+    # Find the first 1000 records in collection people
+    # of database test where city == "St. Louis"
     cursor <- mongo.find(mongo, "test.people", query, limit=1000L)
     # Step though the matching records and display them
     while (mongo.cursor.next(cursor))
@@ -33,8 +34,8 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.find}},
-\code{\link{mongo.cursor.next}},
-\code{\link{mongo.cursor.value}},
-\code{\link{mongo.cursor.destroy}}
+\code{\link{mongo.find}},\cr
+\code{\link{mongo.cursor.next}},\cr
+\code{\link{mongo.cursor.value}},\cr
+\code{\link{mongo.cursor.destroy}}.
 }

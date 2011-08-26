@@ -23,8 +23,8 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\link{mongo},
-\code{\link{mongo.create}},
-\code{\link{mongo.reconnect}},
-\code{\link{mongo.is.connected}}
+\link{mongo},\cr
+\code{\link{mongo.create}},\cr
+\code{\link{mongo.reconnect}},\cr
+\code{\link{mongo.is.connected}}.
 }

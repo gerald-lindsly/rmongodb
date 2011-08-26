@@ -38,8 +38,8 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.gridfile.writer.create}},
-\link{mongo.gridfile.writer},
+\link{mongo.gridfs},\cr
+\code{\link{mongo.gridfile.writer.create}},\cr
+\link{mongo.gridfile.writer},\cr
 \code{\link{mongo.gridfile.writer.write}}.
-\link{mongo.gridfs}
 }

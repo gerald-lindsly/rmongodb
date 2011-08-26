@@ -52,8 +52,8 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.get.server.err}},
-\code{\link{mongo.get.server.err.string}},
-\code{\link{mongo.get.last.err}}
-\link{mongo}
+\code{\link{mongo.get.server.err}},\cr
+\code{\link{mongo.get.server.err.string}},\cr
+\code{\link{mongo.get.last.err}}\cr
+\link{mongo}.
 }

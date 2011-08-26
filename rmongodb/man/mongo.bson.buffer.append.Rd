@@ -45,12 +45,15 @@ TRUE if successful; otherwise, FALSE if an error occured appending the data.
 }
 \examples{
 buf <- mongo.bson.buffer.create()
-mongo.bson.buffer.append(buf, "name", "Joe") #  Append a string
-mongo.bson.buffer.append(buf, "created", Sys.time()) #  Append a date/time
-mongo.bson.buffer.append(buf, "cars", NULL) #  Append a NULL
+# Append a string
+mongo.bson.buffer.append(buf, "name", "Joe")
+# Append a date/time
+mongo.bson.buffer.append(buf, "created", Sys.time())
+# Append a NULL
+mongo.bson.buffer.append(buf, "cars", NULL)
 b <- mongo.bson.from.buffer(buf)
 }
 \seealso{
-\link{mongo.bson},
-\link{mongo.bson.buffer}
+\link{mongo.bson},\cr
+\link{mongo.bson.buffer}.
 }

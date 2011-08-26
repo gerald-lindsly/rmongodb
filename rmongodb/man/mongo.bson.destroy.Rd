@@ -22,7 +22,7 @@ print(b)
 mongo.bson.destroy(b)
 }
 \seealso{
-\link{mongo.bson},
-\code{\link{mongo.bson.from.list}},
-\code{\link{mongo.bson.from.buffer}}
+\link{mongo.bson},\cr
+\code{\link{mongo.bson.from.list}},\cr
+\code{\link{mongo.bson.from.buffer}}.
 }

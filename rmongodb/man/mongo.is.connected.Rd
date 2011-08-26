@@ -22,6 +22,6 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.create}},
-\link{mongo}
+\code{\link{mongo.create}},\cr
+\link{mongo}.
 }

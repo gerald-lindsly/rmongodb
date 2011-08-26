@@ -8,7 +8,9 @@ Find records in a collection that match a given query.
 See \url{http://www.mongodb.org/display/DOCS/Querying}.
 }
 \usage{
-mongo.find(mongo, ns, query=mongo.bson.empty(), fields=mongo.bson.empty(), limit=1L, skip=0L, options=0L)
+mongo.find(mongo, ns, query=mongo.bson.empty(),
+           fields=mongo.bson.empty(), limit=1L,
+           skip=0L, options=0L)
 }
 \arguments{
 \item{mongo}{(\link{mongo}) a mongo connection object.}
@@ -20,13 +22,21 @@ mongo.find(mongo, ns, query=mongo.bson.empty(), fields=mongo.bson.empty(), limit
     however, specific fields may be specified to cut down on network traffic and memory overhead.}
 \item{limit}{(as.integer) The maximum number of records to be returned. A limit of 0L will return all matching records not skipped.}
 \item{skip}{(as.integer) The number of matching records to skip before returning subsequent matching records.}
-\item{options}{(integer vector) Flags governing the requested operation as follows: mongo.find.cursor.tailable, 
-    mongo.find.slave.ok, mongo.find.oplog.replay, mongo.find.no.cursor.timeout, mongo.find.await.data, 
-    mongo.find.exhaust, or mongo.find.partial.results.}
+\item{options}{(integer vector) Flags governing the requested operation as follows:
+    \itemize{
+        \item{\link{mongo.find.cursor.tailable}}
+        \item{\link{mongo.find.slave.ok}}
+        \item{\link{mongo.find.oplog.replay}}
+        \item{\link{mongo.find.no.cursor.timeout}}
+        \item{\link{mongo.find.await.data}}
+        \item{\link{mongo.find.exhaust}}
+        \item{\link{mongo.find.partial.results}}
+     }}
 }
 \value{
 (\link{mongo.cursor}) An object of class "mongo.cursor" which is used to step through the matching records.
-Note that an empty cursor will be returned if a database error occurred.  
+
+Note that an empty cursor will be returned if a database error occurred.\cr
 \code{\link{mongo.get.server.err}()} and \code{\link{mongo.get.server.err.string}()} may be examined in that case.
 }
 \examples{
@@ -36,7 +46,8 @@ if (mongo.is.connected(mongo)) {
     mongo.bson.buffer.append(buf, "age", 18L)
     query <- mongo.bson.from.buffer(buf)
 
-    # Find the first 100 records in collection people of database test where age == 18
+    # Find the first 100 records
+    #    in collection people of database test where age == 18
     cursor <- mongo.find(mongo, "test.people", query, limit=100L)
     # Step though the matching records and display them
     while (mongo.cursor.next(cursor))
@@ -45,14 +56,14 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.cursor}},
-\code{\link{mongo.cursor.next}},
-\code{\link{mongo.cursor.value}},
-\code{\link{mongo.find.one}},
-\code{\link{mongo.insert}},
-\code{\link{mongo.index.create}},
-\code{\link{mongo.update}},
-\code{\link{mongo.remove}},
-\link{mongo},
-\link{mongo.bson}
+\code{\link{mongo.cursor}},\cr
+\code{\link{mongo.cursor.next}},\cr
+\code{\link{mongo.cursor.value}},\cr
+\code{\link{mongo.find.one}},\cr
+\code{\link{mongo.insert}},\cr
+\code{\link{mongo.index.create}},\cr
+\code{\link{mongo.update}},\cr
+\code{\link{mongo.remove}},\cr
+\link{mongo},\cr
+\link{mongo.bson}.
 }

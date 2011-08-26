@@ -33,7 +33,8 @@ buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append.string(buf, "names", c("Fred", "Jeff", "John"))
 b <- mongo.bson.from.buffer(buf)
 
-# The above produces a BSON object of the form { "names" : ["Fred", "Jeff", "John"] }
+# The above produces a BSON object of the form:
+# { "names" : ["Fred", "Jeff", "John"] }
 
 buf <- mongo.bson.buffer.create()
 staff <- c("Mark", "Jennifer", "Robert")
@@ -41,10 +42,13 @@ names(staff) <- c("Chairman", "President", "Secretary")
 mongo.bson.buffer.append.string(buf, "board", staff)
 b <- mongo.bson.from.buffer(buf)
 
-# The above produces a BSON object of the form { "board" : { "Chairman" : "Mark", "President" : "Jennifer", "Secretary" : "Robert" } }
+# The above produces a BSON object of the form:
+# { "board" : { "Chairman"  : "Mark",
+#               "President" : "Jennifer",
+#               "Secretary" : "Robert" } }
 }
 \seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.append}}
+\link{mongo.bson},\cr
+\link{mongo.bson.buffer},\cr
+\code{\link{mongo.bson.buffer.append}}.
 }

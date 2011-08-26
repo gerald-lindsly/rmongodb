@@ -13,7 +13,8 @@ mongo.bson.binary
 5L
 }
 \seealso{
-\code{\link{mongo.bson.iterator.type}}
-\code{\link{mongo.bson.iterator.next}}
-\link{mongo.bson}
+\code{\link{mongo.bson.iterator.type}},\cr
+\code{\link{mongo.bson.iterator.next}},\cr
+\link{mongo.bson.iterator},\cr
+\link{mongo.bson}.
 }

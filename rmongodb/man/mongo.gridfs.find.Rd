@@ -27,7 +27,8 @@ if (mongo.is.connected(mongo)) {
 
     # find a GridFS file uploaded midnight July 4, 2008
     buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "uploadDate", strptime("07-04-2008", "\%m-\%d-\%Y"))
+    mongo.bson.buffer.append(buf, "uploadDate",
+        strptime("07-04-2008", "\%m-\%d-\%Y"))
     query <- mongo.bson.from.buffer(buf)
     gf <- mongo.gridfs.find(gridfs, query)
 
@@ -38,7 +39,7 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\link{mongo.gridfile},
-\code{\link{mongo.gridfile.get.filename}},
-\link{mongo.gridfs}
+\link{mongo.gridfile},\cr
+\code{\link{mongo.gridfile.get.filename}},\cr
+\link{mongo.gridfs}.
 }

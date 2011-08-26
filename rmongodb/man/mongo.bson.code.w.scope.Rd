@@ -13,7 +13,7 @@ mongo.bson.code.w.scope
 15L
 }
 \seealso{
-\code{\link{mongo.bson.iterator.type}}
-\code{\link{mongo.bson.iterator.next}}
+\code{\link{mongo.bson.iterator.type}},\cr
+\code{\link{mongo.bson.iterator.next}},\cr
 \link{mongo.bson}
 }

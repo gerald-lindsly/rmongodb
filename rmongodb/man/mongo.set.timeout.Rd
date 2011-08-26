@@ -13,11 +13,6 @@ mongo.set.timeout(mongo, timeout)
 \item{mongo}{(\link{mongo}) a mongo connection object.}
 \item{timeout}{(as.integer) number of milliseconds to which to set the timeout value.}
 }
-\seealso{
-\code{\link{mongo.get.timeout}},
-\code{\link{mongo.create}},
-\link{mongo}
-}
 \examples{
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
@@ -26,4 +21,9 @@ if (mongo.is.connected(mongo)) {
     if (timeout != 2000L)
         error("expected timeout of 2000");
 }
+}
+\seealso{
+\code{\link{mongo.get.timeout}},\cr
+\code{\link{mongo.create}},\cr
+\link{mongo}.
 }

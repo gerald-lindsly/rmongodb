@@ -6,8 +6,8 @@
 \description{
 Objects of class "mongo.gridfile.writer" are used to buffer multiple writes to a single GridFS file.
 
-Use \code{\link{mongo.gridfile.writer.create}} to create an object of this class, 
-\code{\link{mongo.gridfile.writer.write}} to write data to it, and
+Use \code{\link{mongo.gridfile.writer.create}} to create an object of this class,\cr
+\code{\link{mongo.gridfile.writer.write}} to write data to it, and\cr
 \code{\link{mongo.gridfile.writer.finish}} when done writing.
 
 mongo.gridfile.writer objects have "mongo.gridfile.writer" as their class and
@@ -40,8 +40,8 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.gridfile.writer.create}},
-\code{\link{mongo.gridfile.writer.write}},
-\code{\link{mongo.gridfile.writer.finish}},
-\link{mongo.gridfs}.
+\link{mongo.gridfs},\cr
+\code{\link{mongo.gridfile.writer.create}},\cr
+\code{\link{mongo.gridfile.writer.write}},\cr
+\code{\link{mongo.gridfile.writer.finish}}.
 }

@@ -3,7 +3,7 @@
 \alias{mongo.regex.create}
 \title{Create a mongo.regex object}
 \description{
-Create a \link{mongo.regex} object for appending to a buffer with
+Create a \link{mongo.regex} object for appending to a buffer with\cr
 \code{\link{mongo.bson.buffer.append.regex}()} or \code{\link{mongo.bson.buffer.append}()}, or
 for embedding in a list such that \code{\link{mongo.bson.buffer.append.list}()} will properly insert a regular expression value
 value into a mongo.bson.buffer object.
@@ -27,10 +27,10 @@ mongo.bson.buffer.append.regex(buf, "MatchAcme", regex)
 b <- mongo.bson.from.buffer(buf)
 }
 \seealso{
-\link{mongo.regex},
-\code{\link{mongo.bson.buffer.append}},
-\code{\link{mongo.bson.buffer.append.regex}},
-\code{\link{mongo.bson.buffer.append.list}},
-\link{mongo.bson.buffer},
-\link{mongo.bson}
+\link{mongo.regex},\cr
+\code{\link{mongo.bson.buffer.append}},\cr
+\code{\link{mongo.bson.buffer.append.regex}},\cr
+\code{\link{mongo.bson.buffer.append.list}},\cr
+\link{mongo.bson.buffer},\cr
+\link{mongo.bson}.
 }

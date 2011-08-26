@@ -41,6 +41,6 @@ if (!mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.create}},
+\code{\link{mongo.create}},\cr
 \link{mongo}
 }

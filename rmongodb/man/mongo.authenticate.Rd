@@ -25,7 +25,7 @@ if (mongo.is.connected(mongo))
     mongo.authenticate(mongo, "Joe", "ZxYaBc217")
 }
 \seealso{
-\code{\link{mongo.add.user}},
-\link{mongo},
-\code{\link{mongo.create}}
+\code{\link{mongo.add.user}},\cr
+\link{mongo},\cr
+\code{\link{mongo.create}}.
 }

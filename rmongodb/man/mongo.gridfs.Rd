@@ -8,11 +8,11 @@ Objects of class "mongo.gridfs" are used to store and/or access a \"Grid File Sy
 MongoDB server.  While primarily intended to store large documents that won't fit on the server as
 a single BSON object, GridFS may also be used to store large numbers of smaller files.
 
-See \url{http://www.mongodb.org/display/DOCS/GridFS} and 
+See \url{http://www.mongodb.org/display/DOCS/GridFS} and\cr
 \url{http://www.mongodb.org/display/DOCS/When+to+use+GridFS}.
 
 mongo.gridfs objects have "mongo.gridfs" as their class and
-contain an externally managed pointer to the actual data used to manage operations on the GridFS.
+contain an externally managed pointer to the actual data used to manage operations on the GridFS.\cr
 This pointer is stored in the "mongo.gridfs" attribute of the object.  The object also has a "mongo" attribute
 holding a pointer to the mongo connection object used in creation to prevent garbage collection on the mongo
 object while the mongo.gridfile is still active.
@@ -40,10 +40,10 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.gridfs.destroy}},
-\code{\link{mongo.gridfs.store.file}},
-\code{\link{mongo.gridfs.remove.file}},
-\code{\link{mongo.gridfs.store}},
-\code{\link{mongo.gridfile.writer.create}},
-\code{\link{mongo.gridfs.find}}
+\code{\link{mongo.gridfs.destroy}},\cr
+\code{\link{mongo.gridfs.store.file}},\cr
+\code{\link{mongo.gridfs.remove.file}},\cr
+\code{\link{mongo.gridfs.store}},\cr
+\code{\link{mongo.gridfile.writer.create}},\cr
+\code{\link{mongo.gridfs.find}}.
 }

@@ -13,15 +13,16 @@ This pointer is stored in the "mongo.bson.iterator" attribute of the object.
 }
 \examples{
 b <- mongo.bson.from.list(list(name="Joy", age=35, city="Ontario"))
-iter <- mongo.bson.iterator.create(b)  # b is of class "mongo.bson"
+# b is of class "mongo.bson"
+iter <- mongo.bson.iterator.create(b)
 while (mongo.bson.iterator.next(iter))
     print(mongo.bson.iterator.value(iter))
 }
 \seealso{
-\code{\link{mongo.bson.iterator.create}},
-\code{\link{mongo.bson.find}},
-\code{\link{mongo.bson.iterator.next}},
-\code{\link{mongo.bson.iterator.key}},
-\code{\link{mongo.bson.iterator.value}},
-\link{mongo.bson}
+\code{\link{mongo.bson.iterator.create}},\cr
+\code{\link{mongo.bson.find}},\cr
+\code{\link{mongo.bson.iterator.next}},\cr
+\code{\link{mongo.bson.iterator.key}},\cr
+\code{\link{mongo.bson.iterator.value}},\cr
+\link{mongo.bson}.
 }

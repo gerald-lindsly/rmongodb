@@ -26,10 +26,11 @@ l <- list(fruit = "apple", hasSeeds = TRUE)
 mongo.bson.buffer.append.list(buf, "item", l)
 b <- mongo.bson.from.buffer(buf)
 
-# this produces a BSON object of the form { "item" : { "fruit" : "apple", "hasSeeds" : true } }
+# this produces a BSON object of the form:
+# { "item" : { "fruit" : "apple", "hasSeeds" : true } }
 }
 \seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.append}}
+\link{mongo.bson},\cr
+\link{mongo.bson.buffer},\cr
+\code{\link{mongo.bson.buffer.append}}.
 }

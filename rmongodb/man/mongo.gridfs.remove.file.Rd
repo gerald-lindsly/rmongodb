@@ -24,7 +24,7 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\link{mongo.gridfs},
-\code{\link{mongo.gridfs.store.file}}
-\code{\link{mongo.gridfs.store}}
+\link{mongo.gridfs},\cr
+\code{\link{mongo.gridfs.store.file}}\cr
+\code{\link{mongo.gridfs.store}}.
 }

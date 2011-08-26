@@ -3,7 +3,7 @@
 \alias{mongo.symbol.create}
 \title{Create a mongo.symbol object}
 \description{
-Create a mongo.symbol object for appending to a buffer with \code{\link{mongo.bson.buffer.append}()} or
+Create a mongo.symbol object for appending to a buffer with\cr \code{\link{mongo.bson.buffer.append}()} or
 for embedding in a list such that \code{\link{mongo.bson.buffer.append.list}()} will properly insert a symbol
 value into the mongo.bson.buffer object.
 }
@@ -26,12 +26,15 @@ mongo.bson.buffer.append.symbol(buf, "D", "Delta")
 b <- mongo.bson.from.buffer(buf)
 
 # the above will create a mongo.bson object of the following form:
-# { "A": (SYMBOL) "Alpha", "listWsym" : { "a1" : (SYMBOL) "Aplha", "One" : 1 }, "D" : (SYMBOL) "Delta" }
+# { "A": (SYMBOL) "Alpha",
+#   "listWsym" : { "a1"  : (SYMBOL) "Aplha",
+#                  "One" : 1 }, 
+#   "D" : (SYMBOL) "Delta" }
 }
 \seealso{
-\link{mongo.symbol},
-\code{\link{mongo.bson.buffer.append}},
-\code{\link{mongo.bson.buffer.append.list}},
-\link{mongo.bson.buffer},
-\link{mongo.bson}
+\link{mongo.symbol},\cr
+\code{\link{mongo.bson.buffer.append}},\cr
+\code{\link{mongo.bson.buffer.append.list}},\cr
+\link{mongo.bson.buffer},\cr
+\link{mongo.bson}.
 }

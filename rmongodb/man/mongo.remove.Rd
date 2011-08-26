@@ -23,7 +23,8 @@ if (mongo.is.connected(mongo)) {
     mongo.bson.buffer.append(buf, "name", "Jeff")
     criteria <- mongo.bson.from.buffer(buf)
 
-    # remove all records where name is "Jeff" from collection people in database test
+    # remove all records where name is "Jeff"
+    # from collection people in database test
     mongo.remove(mongo, "test.people", criteria)
 
     # remove all records from collection cars in database test
@@ -31,10 +32,10 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\link{mongo},
-\link{mongo.bson},
-\code{\link{mongo.insert}},
-\code{\link{mongo.update}},
-\code{\link{mongo.find}},
-\code{\link{mongo.find.one}}
+\link{mongo},\cr
+\link{mongo.bson},\cr
+\code{\link{mongo.insert}},\cr
+\code{\link{mongo.update}},\cr
+\code{\link{mongo.find}},\cr
+\code{\link{mongo.find.one}}.
 }

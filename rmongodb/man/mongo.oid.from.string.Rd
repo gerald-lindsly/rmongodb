@@ -26,13 +26,13 @@ mongo.bson.buffer.append(buf, "_id", oid)
 b <- mongo.bson.from.buffer(buf)
 }
 \seealso{
-\link{mongo.oid},
-\code{\link{mongo.oid.create}}
-\code{\link{as.character.mongo.oid}}
-\code{\link{mongo.oid.to.string}}
-\code{\link{mongo.bson.buffer.append}},
-\code{\link{mongo.bson.buffer.append.oid}},
-\code{\link{mongo.bson.buffer.append.list}},
-\link{mongo.bson.buffer},
-\link{mongo.bson}
+\link{mongo.oid},\cr
+\code{\link{mongo.oid.create}},\cr
+\code{\link{as.character.mongo.oid}},\cr
+\code{\link{mongo.oid.to.string}},\cr
+\code{\link{mongo.bson.buffer.append}},\cr
+\code{\link{mongo.bson.buffer.append.oid}},\cr
+\code{\link{mongo.bson.buffer.append.list}},\cr
+\link{mongo.bson.buffer},\cr
+\link{mongo.bson}.
 }

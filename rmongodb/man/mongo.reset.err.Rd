@@ -3,7 +3,7 @@
 \alias{mongo.reset.err}
 \title{Retrieve an server error code from a mongo connection object}
 \description{
-Send a "reset error" command to the server, it also resets the values returned by
+Send a "reset error" command to the server, it also resets the values returned by\cr
 \code{\link{mongo.get.server.err}()} and \code{\link{mongo.get.server.err.string}()}.
 }
 \usage{
@@ -45,9 +45,9 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.get.server.err}},
-\code{\link{mongo.get.server.err.string}},
-\code{\link{mongo.get.last.err}},
-\code{\link{mongo.get.prev.err}}
-\link{mongo}
+\code{\link{mongo.get.server.err}},\cr
+\code{\link{mongo.get.server.err.string}},\cr
+\code{\link{mongo.get.last.err}},\cr
+\code{\link{mongo.get.prev.err}},\cr
+\link{mongo}.
 }

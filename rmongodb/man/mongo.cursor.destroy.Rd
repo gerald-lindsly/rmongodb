@@ -7,6 +7,10 @@
 
 Note that \code{mongo.cursor.destroy(cursor)} may be called before all records of a result set 
 are iterated through (for example, if a desired record is located in the result set).
+
+Although the 'destroy' functions in this package are called automatically by garbage collection, 
+this one in particular should be called as soon as feasible when finished with the cursor so
+that server resources are freed.
 }
 \usage{
 mongo.cursor.destroy(cursor)
@@ -25,7 +29,8 @@ if (mongo.is.connected(mongo)) {
     mongo.bson.buffer.append(buf, "city", "St. Louis")
     query <- mongo.bson.from.buffer(buf)
 
-    # Find the first 1000 records in collection people of database test where city == "St. Louis"
+    # Find the first 1000 records in collection people
+    # of database test where city == "St. Louis"
     cursor <- mongo.find(mongo, "test.people", query, limit=1000L)
     # Step though the matching records and display them
     while (mongo.cursor.next(cursor))
@@ -34,8 +39,8 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.find}},
-\link{mongo.cursor},
-\code{\link{mongo.cursor.next}},
-\code{\link{mongo.cursor.value}},
+\code{\link{mongo.find}},\cr
+\link{mongo.cursor},\cr
+\code{\link{mongo.cursor.next}},\cr
+\code{\link{mongo.cursor.value}}.
 }

@@ -24,7 +24,7 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.set.timeout}},
-\code{\link{mongo.create}},
-\link{mongo}
+\code{\link{mongo.set.timeout}},\cr
+\code{\link{mongo.create}},\cr
+\link{mongo}.
 }

@@ -33,7 +33,8 @@ buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append.bool(buf, "bools", c(TRUE, FALSE, FALSE))
 b <- mongo.bson.from.buffer(buf)
 
-# The above produces a BSON object of the form { "bools" : [true, false, false] }
+# The above produces a BSON object of the form:
+# { "bools" : [true, false, false] }
 
 buf <- mongo.bson.buffer.create()
 flags <- c(FALSE, FALSE, TRUE)
@@ -41,10 +42,11 @@ names(flags) <- c("Tall", "Fat", "Pretty")
 mongo.bson.buffer.append.bool(buf, "Looks", flags)
 b <- mongo.bson.from.buffer(buf)
 
-# The above produces a BSON object of the form { "Looks" : { "Tall" : false, "Fat" : false, "Pretty" : true } }
+# The above produces a BSON object of the form:
+# { "Looks" : { "Tall" : false, "Fat" : false, "Pretty" : true } }
 }
 \seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.append}}
+\link{mongo.bson},\cr
+\link{mongo.bson.buffer},\cr
+\code{\link{mongo.bson.buffer.append}}.
 }

@@ -9,7 +9,7 @@ Note that since R has no long (64-bit integer) type, doubles are used in R, but 
 when stored in the buffer; some loss of precision may occur.
 
 This is the only case in which \code{\link{mongo.bson.buffer.append}()} cannot
-make the proper guess about what type to encode into the buffer.
+make the proper guess about what type to encode into the buffer.\cr
 You must call \code{mongo.bson.buffer.append.long()} explicitly; otherwise, doubles are appended.
 }
 \usage{
@@ -31,16 +31,20 @@ TRUE if successful; otherwise, FALSE if an error occured appending the data.
 }
 \examples{
 buf <- mongo.bson.buffer.create()
-mongo.bson.buffer.append.long(buf, "YearSeconds", 365.24219 * 24 * 60 * 60)
+mongo.bson.buffer.append.long(buf, "YearSeconds",
+    365.24219 * 24 * 60 * 60)
 b <- mongo.bson.from.buffer(buf)
 
-# The above produces a BSON object of the form { "YearSeconds" : 31556925 }
+# The above produces a BSON object of the form:
+# { "YearSeconds" : 31556925 }
 
 buf <- mongo.bson.buffer.create()
-mongo.bson.buffer.append.long(buf, "longs", c(1, 9087654321, 1234567809))
+mongo.bson.buffer.append.long(buf, "longs", 
+    c(1, 9087654321, 1234567809))
 b <- mongo.bson.from.buffer(buf)
 
-# The above produces a BSON object of the form { "longs" : [1, 9087654321, 1234567809] }
+# The above produces a BSON object of the form:
+# { "longs" : [1, 9087654321, 1234567809] }
 
 buf <- mongo.bson.buffer.create()
 distances <- c(473, 133871000, 188178313)
@@ -48,11 +52,13 @@ names(distances) <- c("Sol", "Proxima Centari", "Bernard's Star")
 mongo.bson.buffer.append.long(buf, "Stars", distances)
 b <- mongo.bson.from.buffer(buf)
 
-# The above produces a BSON object of the form { "Stars" : { "Sol" : 474, "Proxima Centari" : 133871000, "Bernard's Star" : 188178313 } }
-
+# The above produces a BSON object of the form:
+# { "Stars" : { "Sol" : 474,
+#               "Proxima Centari" : 133871000, 
+#               "Bernard's Star"  : 188178313 } }
 }
 \seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.append}}
+\link{mongo.bson},\cr
+\link{mongo.bson.buffer},\cr
+\code{\link{mongo.bson.buffer.append}}.\cr
 }

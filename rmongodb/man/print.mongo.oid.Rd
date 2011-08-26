@@ -19,12 +19,6 @@ print.mongo.oid(x, ...)
 \value{
 The parameter is returned unchanged.
 }
-\seealso{
-\code{\link{mongo.oid.print}},
-\code{\link{mongo.oid.to.string}},
-\link{mongo.bson.oid}
-\link{mongo.bson}
-}
 \examples{
 oid <- mongo.oid.create()
 
@@ -32,4 +26,10 @@ oid <- mongo.oid.create()
 print.mongo.oid(oid)
 mongo.oid.print(oid)
 print(oid)
+}
+\seealso{
+\code{\link{mongo.oid.print}},\cr
+\code{\link{mongo.oid.to.string}},\cr
+\link{mongo.bson.oid},\cr
+\link{mongo.bson}.
 }

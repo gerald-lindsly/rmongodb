@@ -27,8 +27,8 @@ mongo.oid.print(oid)
 print(oid)
 }
 \seealso{
-\code{\link{mongo.oid.print}},
-\code{\link{mongo.oid.to.string}},
-\link{mongo.bson.oid}
-\link{mongo.bson}
+\code{\link{mongo.oid.print}},\cr
+\code{\link{mongo.oid.to.string}},\cr
+\link{mongo.bson.oid},\cr
+\link{mongo.bson}.
 }

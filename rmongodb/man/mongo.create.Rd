@@ -12,7 +12,8 @@ Only the external data pointed to by the "mongo" attribute actually changes if, 
 mongo.timeout is called after the initial call to \code{mongo.create}.
 }
 \usage{
-mongo.create(host="127.0.0.1", name="", username="", password="", db="admin", timeout=0L)
+mongo.create(host="127.0.0.1", name="",
+             username="", password="", db="admin", timeout=0L)
 }
 \arguments{
 \item{host}{(string vector) A list of hosts/ports to which to connect.
@@ -42,14 +43,14 @@ mongo <- mongo.create()
 mongo <- mongo.create("192.168.0.3")
 }
 \seealso{
-\link{mongo},
-\code{\link{mongo.is.connected}},
-\code{\link{mongo.disconnect}},
-\code{\link{mongo.reconnect}},
-\code{\link{mongo.get.err}},
-\code{\link{mongo.get.primary}},
-\code{\link{mongo.get.hosts}},
-\code{\link{mongo.get.socket}},
-\code{\link{mongo.set.timeout}},
-\code{\link{mongo.get.timeout}}
+\link{mongo},\cr
+\code{\link{mongo.is.connected}},\cr
+\code{\link{mongo.disconnect}},\cr
+\code{\link{mongo.reconnect}},\cr
+\code{\link{mongo.get.err}},\cr
+\code{\link{mongo.get.primary}},\cr
+\code{\link{mongo.get.hosts}},\cr
+\code{\link{mongo.get.socket}},\cr
+\code{\link{mongo.set.timeout}},\cr
+\code{\link{mongo.get.timeout}}.
 }

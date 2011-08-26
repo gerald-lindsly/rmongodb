@@ -12,7 +12,7 @@ mongo.gridfs.create(mongo, db, prefix="fs")
 \item{mongo}{A (\link{mongo}) connection object.}
 \item{db}{(string) The name of the database in which to access and/or store the gridfs-related collections. }
 \item{prefix}{(string) The prefix to use constructing the gridfs-related collection names. 
-There are two collections used for this purpose:
+There are two collections used for this purpose:\cr
 \"\emph{db}.\emph{prefix}.files\" and  \"\emph{db}.\emph{prefix}.chunks\".}
 }
 \value{
@@ -28,11 +28,11 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\link{mongo.gridfs},
-\code{\link{mongo.gridfs.destroy}},
-\code{\link{mongo.gridfs.store.file}},
-\code{\link{mongo.gridfs.remove.file}},
-\code{\link{mongo.gridfs.store}},
-\code{\link{mongo.gridfile.writer.create}},
-\code{\link{mongo.gridfs.find}}
+\link{mongo.gridfs},\cr
+\code{\link{mongo.gridfs.destroy}},\cr
+\code{\link{mongo.gridfs.store.file}},\cr
+\code{\link{mongo.gridfs.remove.file}},\cr
+\code{\link{mongo.gridfs.store}},\cr
+\code{\link{mongo.gridfile.writer.create}},\cr
+\code{\link{mongo.gridfs.find}}.
 }

@@ -36,9 +36,9 @@ mongo.bson.buffer.append(buf, "A", sym)
 b <- mongo.bson.from.buffer(buf)
 }
 \seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\link{mongo.symbol}
-\code{\link{mongo.symbol.create}}
-\code{\link{mongo.bson.buffer.append}}
+\link{mongo.bson},\cr
+\link{mongo.bson.buffer},\cr
+\link{mongo.symbol},\cr
+\code{\link{mongo.symbol.create}},\cr
+\code{\link{mongo.bson.buffer.append}}.
 }

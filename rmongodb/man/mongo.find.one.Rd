@@ -5,13 +5,14 @@
 \description{
 Find the first record in a collection that matches a given query.
 
-This simplified version of mongo.find() eliminates the need 
+This is a simplified version of mongo.find() which eliminates the need 
 to step through returned records with a cursor.
 
 See \url{http://www.mongodb.org/display/DOCS/Querying}.
 }
 \usage{
-mongo.find.one(mongo, ns, query=mongo.bson.empty(), fields=mongo.bson.empty())
+mongo.find.one(mongo, ns, query=mongo.bson.empty(),
+                          fields=mongo.bson.empty())
 }
 \arguments{
 \item{mongo}{(\link{mongo}) A mongo connection object.}
@@ -37,7 +38,8 @@ if (mongo.is.connected(mongo)) {
     mongo.bson.buffer.append(buf, "name", "Jeff")
     query <- mongo.bson.from.buffer(buf)
 
-    # find the first record where name is "Jeff" in collection people of database test
+    # find the first record where name is "Jeff"\
+    #    in collection people of database test
     b <- mongo.find.one(mongo, "test.people", query)
     if (!is.null(b))
         print(b)
@@ -47,7 +49,8 @@ if (mongo.is.connected(mongo)) {
     mongo.bson.buffer.append(buf, "age", 1L)
     fields <- mongo.bson.from.buffer(buf)
 
-    # find the first record where name is "Jeff" in collection people of database test
+    # find the first record where name is "Jeff"
+    #    in collection people of database test
     # return only the _id and age fields of the matched record
     b <- mongo.find.one(mongo, "test.people", query, fields)
     if (!is.null(b))
@@ -58,11 +61,11 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.find}},
-\code{\link{mongo.index.create}},
-\code{\link{mongo.insert}},
-\code{\link{mongo.update}},
-\code{\link{mongo.remove}},
-\link{mongo},
-\link{mongo.bson}
+\code{\link{mongo.find}},\cr
+\code{\link{mongo.index.create}},\cr
+\code{\link{mongo.insert}},\cr
+\code{\link{mongo.update}},\cr
+\code{\link{mongo.remove}},\cr
+\link{mongo},\cr
+\link{mongo.bson}.
 }

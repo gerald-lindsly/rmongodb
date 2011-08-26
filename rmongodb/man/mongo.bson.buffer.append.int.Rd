@@ -42,10 +42,11 @@ names(dim) <- c("width", "height", "length")
 mongo.bson.buffer.append.int(buf, "board", dim)
 b <- mongo.bson.from.buffer(buf)
 
-# theabove produces a BSON object of the form { "board" : { "width" : 2, "height" : 4, "length" : 8 } }
+# theabove produces a BSON object of the form:
+# { "board" : { "width" : 2, "height" : 4, "length" : 8 } }
 }
 \seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.append}}
+\link{mongo.bson},\cr
+\link{mongo.bson.buffer},\cr
+\code{\link{mongo.bson.buffer.append}}.
 }

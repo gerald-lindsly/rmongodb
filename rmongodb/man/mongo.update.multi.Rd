@@ -12,7 +12,7 @@ mongo.update.multi
 2L
 }
 \seealso{
-\code{\link{mongo.update}},
-\code{\link{mongo.update.upsert}},
-\code{\link{mongo.update.basic}}
+\code{\link{mongo.update}},\cr
+\code{\link{mongo.update.upsert}},\cr
+\code{\link{mongo.update.basic}}.
 }

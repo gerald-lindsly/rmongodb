@@ -19,14 +19,13 @@ mongo.bson.buffer.append.raw(buf, name, value, subtype=NULL)
     the "subtype" attribute of the raw is used.  If this is not present,
     mongo.binary.binary is used.  The following constants are defined:
     \itemize{
-        item{\code{\link{mongo.binary.binary}} (0L) }
-        item{\code{\link{mongo.binary.function}} (1L) }
-        item{\code{\link{mongo.binary.old}} (2L) }
-        item{\code{\link{mongo.binary.uuid}} (3L) }
-        item{\code{\link{mongo.binary.md5}} (5L) }
-        item{\code{\link{mongo.binary.user}} (128L)}
-    }
-}
+        \item{\code{\link{mongo.binary.binary}} (0L) }
+        \item{\code{\link{mongo.binary.function}} (1L) }
+        \item{\code{\link{mongo.binary.old}} (2L) }
+        \item{\code{\link{mongo.binary.uuid}} (3L) }
+        \item{\code{\link{mongo.binary.md5}} (5L) }
+        \item{\code{\link{mongo.binary.user}} (128L) }
+    }}
 }
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
@@ -38,13 +37,14 @@ for (i in 0:2)
     bin[i] <- as.raw(i * 3)
 mongo.bson.buffer.append.raw(buf, "bin1", bin)
 
-# Note that \code{\link{mongo.bson.buffer.append}()} will detect whether the value parameter 
+# Note that mongo.bson.buffer.append()
+# will detect whether the value parameter 
 # is a raw object and append the appropriate value.
 
 mongo.bson.buffer.append(buf, "bin2", bin)  # gives same result
 }
 \seealso{
-\code{\link{mongo.bson.buffer.append}},
-\link{mongo.bson},
-\link{mongo.bson.buffer}
+\code{\link{mongo.bson.buffer.append}},\cr
+\link{mongo.bson},\cr
+\link{mongo.bson.buffer}.
 }

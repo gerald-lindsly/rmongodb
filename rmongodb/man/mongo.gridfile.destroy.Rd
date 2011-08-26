@@ -3,7 +3,7 @@
 \alias{mongo.gridfile.destroy}
 \title{Destroy a mongo.gridfile object}
 \description{
-Releases the resources associated with a \link{mongo.gridfile} object.
+Releases the resources associated with a \link{mongo.gridfile} object.\cr
 These are created by \code{\link{mongo.gridfs.find}()}.
 
 It is not absolutely necessary to call this function since R's garbage collection will eventually
@@ -29,7 +29,7 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.gridfs.find}},
-\link{mongo.gridfile},
-\link{mongo.gridfs},
+\code{\link{mongo.gridfs.find}},\cr
+\link{mongo.gridfile},\cr
+\link{mongo.gridfs}.
 }

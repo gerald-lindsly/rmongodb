@@ -31,6 +31,6 @@ mongo.bson.print(b)
 print(b)
 }
 \seealso{
-\code{\link{mongo.bson.print}},
-\link{mongo.bson}
+\code{\link{mongo.bson.print}},\cr
+\link{mongo.bson}.
 }

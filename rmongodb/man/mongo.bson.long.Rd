@@ -13,7 +13,7 @@ mongo.bson.long
 18L
 }
 \seealso{
-\code{\link{mongo.bson.iterator.type}}
-\code{\link{mongo.bson.iterator.next}}
-\link{mongo.bson}
+\code{\link{mongo.bson.iterator.type}},\cr
+\code{\link{mongo.bson.iterator.next}},\cr
+\link{mongo.bson}.
 }

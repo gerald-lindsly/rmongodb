@@ -26,9 +26,9 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.drop.database}},
-\code{\link{mongo.command}},
-\code{\link{mongo.rename}},
-\code{\link{mongo.count}},
-\link{mongo}
+\code{\link{mongo.drop.database}},\cr
+\code{\link{mongo.command}},\cr
+\code{\link{mongo.rename}},\cr
+\code{\link{mongo.count}},\cr
+\link{mongo}.
 }

@@ -18,7 +18,7 @@ mongo.command(mongo, db, command)
 \item{command}{(\link{mongo.bson}) An object describing the command.}
 }
 \value{
-NULL if the command failed.  \code{\link{mongo.get.err}()} may be set to MONGO_COMMAND_FAILED.
+NULL if the command failed.  \code{\link{mongo.get.err}()} may be MONGO_COMMAND_FAILED.
 
 (\link{mongo.bson}) The server's response if successful.
 }
@@ -47,12 +47,12 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.get.err}},
-\code{\link{mongo.simple.command}},
-\code{\link{mongo.rename}},
-\code{\link{mongo.count}},
-\code{\link{mongo.drop.database}},
-\code{\link{mongo.drop}},
-\link{mongo},
-\link{mongo.bson}
+\code{\link{mongo.get.err}},\cr
+\code{\link{mongo.simple.command}},\cr
+\code{\link{mongo.rename}},\cr
+\code{\link{mongo.count}},\cr
+\code{\link{mongo.drop.database}},\cr
+\code{\link{mongo.drop}},\cr
+\link{mongo},\cr
+\link{mongo.bson}.
 }

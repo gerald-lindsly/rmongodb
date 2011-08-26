@@ -75,6 +75,6 @@ l <- mongo.bson.to.list(b)
 print(l)
 }
 \seealso{
-\code{\link{mongo.bson.from.list}}
-\link{mongo.bson}
+\code{\link{mongo.bson.from.list}},\cr
+\link{mongo.bson}.
 }

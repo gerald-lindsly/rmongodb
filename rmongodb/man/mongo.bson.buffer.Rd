@@ -6,7 +6,7 @@
 \description{
 Objects of class "mongo.bson.buffer" are used to build BSON documents (\link{mongo.bson} objects).
 
-There are many functions for appending data into a mongo.bson.buffer object.
+There are many functions for appending data into a mongo.bson.buffer object.\cr
 See \code{\link{mongo.bson.buffer.append}()} for a list of those functions.
 
 After constructing your object in the buffer,
@@ -24,11 +24,11 @@ mongo.bson.buffer.append.int(buf, "year", 1968)
 b <- mongo.bson.from.buffer(buf)
 }
 \seealso{
-\link{mongo.bson},
-\code{\link{mongo.bson.buffer.size}},
-\code{\link{mongo.bson.from.buffer}},
-\code{\link{mongo.bson.buffer.append}},
-\code{\link{mongo.bson.buffer.start.object}},
-\code{\link{mongo.bson.buffer.start.array}},
-\code{\link{mongo.bson.buffer.finish.object}},
+\link{mongo.bson},\cr
+\code{\link{mongo.bson.buffer.size}},\cr
+\code{\link{mongo.bson.from.buffer}},\cr
+\code{\link{mongo.bson.buffer.append}},\cr
+\code{\link{mongo.bson.buffer.start.object}},\cr
+\code{\link{mongo.bson.buffer.start.array}},\cr
+\code{\link{mongo.bson.buffer.finish.object}}.
 }

@@ -4,7 +4,8 @@
 \title{Create a mongo.code object}
 \description{
 Create a mongo.code object for appending to a buffer with \code{\link{mongo.bson.buffer.append}()} or
-for embedding in a list such that \code{\link{mongo.bson.buffer.append.list}()} will properly insert a code
+for embedding in a list such that\cr
+\code{\link{mongo.bson.buffer.append.list}()} will properly insert a code
 value into the mongo.bson.buffer object.
 }
 \usage{
@@ -26,12 +27,15 @@ mongo.bson.buffer.append.code(buf, "Code2", "a = 1")
 b <- mongo.bson.from.buffer(buf)
 
 # the above will create a mongo.bson object of the following form:
-# { "Code": (CODE) "y = x", "listWcode" : { "c1" : (CODE) "y = x", "One" : 1 }, "Code2" : (CODE) "a = 1" }
+# { "Code": (CODE) "y = x",
+#   "listWcode" : { "c1"  : (CODE) "y = x", 
+#                   "One" : 1 },
+#   "Code2" : (CODE) "a = 1" }
 }
 \seealso{
-\link{mongo.code},
-\code{\link{mongo.bson.buffer.append}},
-\code{\link{mongo.bson.buffer.append.list}},
-\link{mongo.bson.buffer},
-\link{mongo.bson}
+\link{mongo.code},\cr
+\code{\link{mongo.bson.buffer.append}},\cr
+\code{\link{mongo.bson.buffer.append.list}},\cr
+\link{mongo.bson.buffer},\cr
+\link{mongo.bson}.
 }

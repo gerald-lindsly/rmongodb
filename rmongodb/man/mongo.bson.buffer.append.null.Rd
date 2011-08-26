@@ -24,7 +24,7 @@ b <- mongo.bson.from.buffer(buf)
 # The above produces a BSON object of the form { "Nil" : NULL }
 }
 \seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.append}}
+\link{mongo.bson},\cr
+\link{mongo.bson.buffer},\cr
+\code{\link{mongo.bson.buffer.append}}.
 }

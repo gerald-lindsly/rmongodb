@@ -26,7 +26,8 @@ buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append.code(buf, "SetXtoY", "x = y")
 b <- mongo.bson.from.buffer(buf)
 
-# The above produces a BSON object of the form { "SetXtoY" : (CODE) "x = y" }
+# The above produces a BSON object of the form:
+# { "SetXtoY" : (CODE) "x = y" }
 
 # The same result can be produced by the following code:
 buf <- mongo.bson.buffer.create()
@@ -35,9 +36,9 @@ mongo.bson.buffer.append(buf, "SetXtoY", code)
 b <- mongo.bson.from.buffer(buf)
 }
 \seealso{
-\link{mongo.code}
-\code{\link{mongo.code.create}}
-\code{\link{mongo.bson.buffer.append}}
-\link{mongo.bson}
-\link{mongo.bson.buffer}
+\link{mongo.code},\cr
+\code{\link{mongo.code.create}},\cr
+\code{\link{mongo.bson.buffer.append}},\cr
+\link{mongo.bson},\cr
+\link{mongo.bson.buffer}.
 }

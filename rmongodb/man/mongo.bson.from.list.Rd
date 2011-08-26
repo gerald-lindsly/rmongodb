@@ -27,15 +27,18 @@ use \code{as.list()} as necessary.}
 \examples{
 lst <- list(name="John", age=32)
 b <- mongo.bson.from.list(lst)
-# the above produces a BSON object of the form: { "name" : "John", "age" : 32.0 }
+# the above produces a BSON object of the form:
+# { "name" : "John", "age" : 32.0 }
 
-# Convert a vector of an atomic type to a list and then to a mongo.bson object
+# Convert a vector of an atomic type to a list and
+# then to a mongo.bson object
 v <- c(president="Jefferson", vice="Burr")
 b <- mongo.bson.from.list(as.list(v))
-# the above produces a BSON object of the form: { "president" : "Jefferson", "vice" : "Burr" }
+# the above produces a BSON object of the form:
+# { "president" : "Jefferson", "vice" : "Burr" }
 }
 \seealso{
-\code{\link{mongo.bson.to.list}},
-\link{mongo.bson},
-\code{\link{mongo.bson.destroy}}
+\code{\link{mongo.bson.to.list}},\cr
+\link{mongo.bson},\cr
+\code{\link{mongo.bson.destroy}}.
 }

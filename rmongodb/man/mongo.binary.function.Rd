@@ -12,6 +12,6 @@ mongo.binary.function
 1L
 }
 \seealso{
-\code{\link{mongo.bson.buffer.append.raw}}
-\link{mongo.bson}
+\code{\link{mongo.bson.buffer.append.raw}},\cr
+\link{mongo.bson}.
 }

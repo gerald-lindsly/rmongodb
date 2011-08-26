@@ -48,16 +48,18 @@ if (mongo.is.connected(mongo)) {
     mongo.bson.buffer.append(buf, "age", 27L)
     objNew <- mongo.bson.from.buffer(buf)
 
-    # update the entire record to { name: "Jeff", age: 27 } where name equals "Jeff"
+    # update the entire record to { name: "Jeff", age: 27 }
+    # where name equals "Jeff"
     # if such a record exists; otherwise, insert this as a new reord
-    mongo.update(mongo, "test.people", criteria, objNew, mongo.update.upsert)
+    mongo.update(mongo, "test.people", criteria, objNew,
+        mongo.update.upsert)
 }
 }
 \seealso{
-\link{mongo},
-\link{mongo.bson},
-\code{\link{mongo.insert}},
-\code{\link{mongo.find}},
-\code{\link{mongo.find.one}},
-\code{\link{mongo.remove}}
+\link{mongo},\cr
+\link{mongo.bson},\cr
+\code{\link{mongo.insert}},\cr
+\code{\link{mongo.find}},\cr
+\code{\link{mongo.find.one}},\cr
+\code{\link{mongo.remove}}.
 }

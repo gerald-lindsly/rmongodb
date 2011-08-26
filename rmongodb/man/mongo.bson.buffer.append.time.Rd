@@ -20,7 +20,7 @@ mongo.bson.buffer.append.time(buf, name, time)
 \arguments{
 \item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
 \item{name}{(string) The name (key) of the field appended to the buffer.}
-\item{time}{(integer) A time value.  This may also be an object of class "POSIXct", "POSIXlt" or "mongo.timestamp".}
+\item{time}{(integer) A time value.  This may also be an object of\cr class "POSIXct", "POSIXlt" or "mongo.timestamp".}
 }
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
@@ -31,9 +31,9 @@ mongo.bson.buffer.append.time(buf, "Now", Sys.time())
 b <- mongo.bson.from.buffer(buf)
 }
 \seealso{
-\link{mongo.timestamp},
-\code{\link{mongo.timestamp.create}},
-\code{\link{mongo.bson.buffer.append}},
-\link{mongo.bson.buffer},
-\link{mongo.bson}
+\link{mongo.timestamp},\cr
+\code{\link{mongo.timestamp.create}},\cr
+\code{\link{mongo.bson.buffer.append}},\cr
+\link{mongo.bson.buffer},\cr
+\link{mongo.bson}.
 }

@@ -3,11 +3,13 @@
 \alias{mongo.bson.buffer.start.array}
 \title{Start an array within a mongo.bson.buffer}
 \description{
-Call this function to start an array within a \link{mongo.bson.buffer}.
+Call this function to start an array within a \link{mongo.bson.buffer}.\cr
 \code{\link{mongo.bson.buffer.finish.object}()} must be called
-when finished appending the elements of the array.  (\code{mongo.bson.buffer.start.object()}, 
-\code{mongo.bson.buffer.start.array()}) and 
-\code{mongo.bson.buffer.finsih.object()} may be called in a stackwise (LIFO) order to further nest arrays and documents.
+when finished appending the elements of the array.
+
+(\code{mongo.bson.buffer.start.object()}, \code{mongo.bson.buffer.start.array()}) and\cr
+\code{mongo.bson.buffer.finsih.object()} may be called in a stackwise (LIFO) order to 
+further nest arrays and documents.
 
 The names of the elements appended should properly be given sequentially numbered strings.
 
@@ -44,9 +46,9 @@ b <- mongo.bson.from.buffer(buf)
 # { "Fibonacci" : [ 0, 1, 1, 2, 3, 5, 8, 13, 21 ] }
 }
 \seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
-\code{\link{mongo.bson.buffer.finish.object}},
-\code{\link{mongo.bson.buffer.start.array}},
-\code{\link{mongo.bson.buffer.append}}
+\link{mongo.bson},\cr
+\link{mongo.bson.buffer},\cr
+\code{\link{mongo.bson.buffer.finish.object}},\cr
+\code{\link{mongo.bson.buffer.start.array}},\cr
+\code{\link{mongo.bson.buffer.append}}.
 }

@@ -5,7 +5,7 @@
 \description{
 Append a \link{mongo.bson.iterator}'s element into a \link{mongo.bson.buffer}.
 
-Note that \code{\link{mongo.bson.buffer.append}()} will detect if its value parameter
+\code{\link{mongo.bson.buffer.append}()} will detect if its value parameter
 is a mongo.bson.iterator object and perform the same action as this function.
 }
 \usage{
@@ -32,9 +32,9 @@ b <- mongo.bson.from.buffer(buf)
 # { "last" : "Smith" }
 }
 \seealso{
-\link{mongo.bson},
-\link{mongo.bson.buffer},
-\code{\link{mongo.bson.find}},
-\code{\link{mongo.bson.from.list}},
-\code{\link{mongo.bson.buffer.append}}
+\link{mongo.bson},\cr
+\link{mongo.bson.buffer},\cr
+\code{\link{mongo.bson.find}},\cr
+\code{\link{mongo.bson.from.list}},\cr
+\code{\link{mongo.bson.buffer.append}}.
 }

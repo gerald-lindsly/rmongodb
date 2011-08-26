@@ -27,8 +27,8 @@ print(b)
 mongo.bson.destroy(b)
 }
 \seealso{
-\link{mongo.bson},
-\link{mongo.bson.buffer},
-\code{\link{mongo.bson.buffer.append}},
-\code{\link{mongo.bson.destroy}}
+\link{mongo.bson},\cr
+\link{mongo.bson.buffer},\cr
+\code{\link{mongo.bson.buffer.append}},\cr
+\code{\link{mongo.bson.destroy}}.
 }

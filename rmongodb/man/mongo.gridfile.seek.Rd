@@ -3,7 +3,7 @@
 \alias{mongo.gridfile.seek}
 \title{Seek to a position in a mongo.gridfile}
 \description{
-Seek to a position in a \link{mongo.gridfile}.  
+Seek to a position in a \link{mongo.gridfile}.\cr
 This sets the position at which the next \code{\link{mongo.gridfile.read}()} will start.
 }
 \usage{
@@ -30,20 +30,20 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.gridfs}},
-\code{\link{mongo.gridfs.find}},
-\link{mongo.gridfile},
-\code{\link{mongo.gridfile.get.descriptor}},
-\code{\link{mongo.gridfile.get.filename}},
-\code{\link{mongo.gridfile.get.length}},
-\code{\link{mongo.gridfile.get.chunk.size}},
-\code{\link{mongo.gridfile.get.chunk.count}},
-\code{\link{mongo.gridfile.get.content.type}},
-\code{\link{mongo.gridfile.get.upload.date}},
-\code{\link{mongo.gridfile.get.md5}},
-\code{\link{mongo.gridfile.get.metadata}},
-\code{\link{mongo.gridfile.get.chunk}},
-\code{\link{mongo.gridfile.get.chunks}},
-\code{\link{mongo.gridfile.read}},
-\code{\link{mongo.gridfile.pipe}}
+\code{\link{mongo.gridfs}},\cr
+\code{\link{mongo.gridfs.find}},\cr
+\link{mongo.gridfile},\cr
+\code{\link{mongo.gridfile.get.descriptor}},\cr
+\code{\link{mongo.gridfile.get.filename}},\cr
+\code{\link{mongo.gridfile.get.length}},\cr
+\code{\link{mongo.gridfile.get.chunk.size}},\cr
+\code{\link{mongo.gridfile.get.chunk.count}},\cr
+\code{\link{mongo.gridfile.get.content.type}},\cr
+\code{\link{mongo.gridfile.get.upload.date}},\cr
+\code{\link{mongo.gridfile.get.md5}},\cr
+\code{\link{mongo.gridfile.get.metadata}},\cr
+\code{\link{mongo.gridfile.get.chunk}},\cr
+\code{\link{mongo.gridfile.get.chunks}},\cr
+\code{\link{mongo.gridfile.read}},\cr
+\code{\link{mongo.gridfile.pipe}}.
 }

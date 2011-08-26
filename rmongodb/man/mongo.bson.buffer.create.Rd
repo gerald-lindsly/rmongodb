@@ -19,6 +19,6 @@ mongo.bson.buffer.append(buf, "name", "Donna")
 b <- mongo.bson.from.buffer(buf)
 }
 \seealso{
-\link{mongo.bson}
-\link{mongo.bson.buffer}
+\link{mongo.bson},\cr
+\link{mongo.bson.buffer}.
 }

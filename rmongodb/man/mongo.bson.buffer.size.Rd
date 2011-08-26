@@ -26,6 +26,6 @@ y <- mongo.bson.from.buffer(buf)
 print(mongo.bson.size(y))
 }
 \seealso{
-\link{mongo.bson.buffer}
-\link{mongo.bson}
+\link{mongo.bson.buffer},\cr
+\link{mongo.bson}.
 }

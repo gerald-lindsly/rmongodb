@@ -3,8 +3,8 @@
 \alias{mongo.bson.find}
 \title{Find a field within a mongo.bson object by name}
 \description{
-Find a field within a \link{mongo.bson} object by the name (key) of the field and return a
-\link{mongo.bson.iterator} pointing to that field.
+Find a field within a \link{mongo.bson} object by the name (key) of the field\cr
+and return a \link{mongo.bson.iterator} pointing to that field.
 }
 \usage{
 mongo.bson.find(b, name)
@@ -23,7 +23,7 @@ iter <- mongo.bson.find(b, "age")
 print(mongo.bson.iterator.value(iter)) # print 32
 }
 \seealso{
-\link{mongo.bson.iterator},
-\code{\link{mongo.bson.iterator.value}},
-\link{mongo.bson}
+\link{mongo.bson.iterator},\cr
+\code{\link{mongo.bson.iterator.value}},\cr
+\link{mongo.bson}.
 }

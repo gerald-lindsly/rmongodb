@@ -49,10 +49,10 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.update}},
-\code{\link{mongo.find}},
-\code{\link{mongo.find.one}},
-\code{\link{mongo.remove}},
-\link{mongo.bson},
-\link{mongo}
+\code{\link{mongo.update}},\cr
+\code{\link{mongo.find}},\cr
+\code{\link{mongo.find.one}},\cr
+\code{\link{mongo.remove}},\cr
+\link{mongo.bson},\cr
+\link{mongo}.
 }

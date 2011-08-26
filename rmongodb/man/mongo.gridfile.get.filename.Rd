@@ -22,7 +22,8 @@ if (mongo.is.connected(mongo)) {
 
     # find a GridFS file uploaded midnight July 4, 2008
     buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "uploadDate", strptime("07-04-2008", "\%m-\%d-\%Y"))
+    mongo.bson.buffer.append(buf, "uploadDate",
+        strptime("07-04-2008", "\%m-\%d-\%Y"))
     query <- mongo.bson.from.buffer(buf)
 
     gf <- mongo.gridfs.find(gridfs, query)
@@ -35,20 +36,20 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\code{\link{mongo.gridfs}},
-\code{\link{mongo.gridfs.find}},
-\link{mongo.gridfile},
-\code{\link{mongo.gridfile.get.descriptor}},
-\code{\link{mongo.gridfile.get.length}},
-\code{\link{mongo.gridfile.get.chunk.size}},
-\code{\link{mongo.gridfile.get.chunk.count}},
-\code{\link{mongo.gridfile.get.content.type}},
-\code{\link{mongo.gridfile.get.upload.date}},
-\code{\link{mongo.gridfile.get.md5}},
-\code{\link{mongo.gridfile.get.metadata}},
-\code{\link{mongo.gridfile.get.chunk}},
-\code{\link{mongo.gridfile.get.chunks}},
-\code{\link{mongo.gridfile.read}},
-\code{\link{mongo.gridfile.seek}},
-\code{\link{mongo.gridfile.pipe}}
+\code{\link{mongo.gridfs}},\cr
+\code{\link{mongo.gridfs.find}},\cr
+\link{mongo.gridfile},\cr
+\code{\link{mongo.gridfile.get.descriptor}},\cr
+\code{\link{mongo.gridfile.get.length}},\cr
+\code{\link{mongo.gridfile.get.chunk.size}},\cr
+\code{\link{mongo.gridfile.get.chunk.count}},\cr
+\code{\link{mongo.gridfile.get.content.type}},\cr
+\code{\link{mongo.gridfile.get.upload.date}},\cr
+\code{\link{mongo.gridfile.get.md5}},\cr
+\code{\link{mongo.gridfile.get.metadata}},\cr
+\code{\link{mongo.gridfile.get.chunk}},\cr
+\code{\link{mongo.gridfile.get.chunks}},\cr
+\code{\link{mongo.gridfile.read}},\cr
+\code{\link{mongo.gridfile.seek}},\cr
+\code{\link{mongo.gridfile.pipe}}.
 }

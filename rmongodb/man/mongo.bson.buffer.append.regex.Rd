@@ -11,7 +11,7 @@ mongo.bson.buffer.append.regex(buf, name, value)
 \arguments{
 \item{buf}{(\link{mongo.bson.buffer}) The buffer object to which to append.}
 \item{name}{(string) The name (key) of the field appended to the buffer.}
-\item{value}{(\link{mongo.regex}) A regular expression as created by \code{\link{mongo.regex.create}()}.}
+\item{value}{(\link{mongo.regex}) A regular expression as created\cr by \code{\link{mongo.regex.create}()}.}
 }
 \value{
 TRUE if successful; otherwise, FALSE if an error occured appending the data.
@@ -23,9 +23,9 @@ mongo.bson.buffer.append.regex(buf, "MatchAcme", regex)
 b <- mongo.bson.from.buffer(buf)
 }
 \seealso{
-\link{mongo.regex.create},
-\code{\link{mongo.bson.buffer.append.regex}},
-\code{\link{mongo.bson.buffer.append}},
-\link{mongo.bson},
-\link{mongo.bson.buffer}
+\link{mongo.regex.create},\cr
+\code{\link{mongo.bson.buffer.append.regex}},\cr
+\code{\link{mongo.bson.buffer.append}},\cr
+\link{mongo.bson},\cr
+\link{mongo.bson.buffer}.
 }

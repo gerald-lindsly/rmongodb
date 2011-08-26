@@ -16,9 +16,12 @@ mongo.bson.iterator.key(iter)
 }
 \examples{
 buf <- mongo.bson.buffer.create()
-mongo.bson.buffer.append(buf, "name", "Joe") #  Append a string
-mongo.bson.buffer.append(buf, "created", Sys.time()) #  Append a date/time
-mongo.bson.buffer.append(buf, "cars", NULL) #  Append a NULL
+# Append a string
+mongo.bson.buffer.append(buf, "name", "Joe")
+# Append a date/time
+mongo.bson.buffer.append(buf, "created", Sys.time())
+# Append a NULL
+mongo.bson.buffer.append(buf, "cars", NULL)
 b <- mongo.bson.from.buffer(buf)
 
 # iterate through all values and print them with their keys (names)
@@ -29,11 +32,11 @@ while (mongo.bson.iterator.next(iter)) { # eoo at end stops loop
 }
 }
 \seealso{
-\link{mongo.bson.iterator},
-\code{\link{mongo.bson.iterator.create}},
-\code{\link{mongo.bson.find}},
-\code{\link{mongo.bson.iterator.next}},
-\code{\link{mongo.bson.iterator.type}},
-\code{\link{mongo.bson.iterator.value}},
-\link{mongo.bson}
+\link{mongo.bson.iterator},\cr
+\code{\link{mongo.bson.iterator.create}},\cr
+\code{\link{mongo.bson.find}},\cr
+\code{\link{mongo.bson.iterator.next}},\cr
+\code{\link{mongo.bson.iterator.type}},\cr
+\code{\link{mongo.bson.iterator.value}},\cr
+\link{mongo.bson}.
 }

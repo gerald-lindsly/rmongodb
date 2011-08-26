@@ -7,12 +7,14 @@ Store a file into a GridFS on a MongoDB server.  This function stores the entire
 breaking it up into 256K chunks as necessary.
 }
 \usage{
-mongo.gridfs.store.file(gridfs, filename, remotename="", contenttype="")
+mongo.gridfs.store.file(gridfs, filename, remotename="",
+                        contenttype="")
 }
 \arguments{
 \item{gridfs}{A (\link{mongo.gridfs}) object.}
 \item{filename}{(string) The path/filename of the file to copy to the server.}
-\item{remotename}{(string) The name the file will be known as within the GridFS.  If remotename=="" (the default),
+\item{remotename}{(string) The name the file will be known as within the GridFS.\cr
+If remotename=="" (the default),
 the remote file will be known by the given \emph{filename}.}
 \item{contenttype}{(string) Optional MIME content type.}
 }
@@ -29,7 +31,7 @@ if (mongo.is.connected(mongo)) {
 }
 }
 \seealso{
-\link{mongo.gridfs},
-\code{\link{mongo.gridfs.create}},
-\code{\link{mongo.gridfs.remove.file}}
+\link{mongo.gridfs},\cr
+\code{\link{mongo.gridfs.create}},\cr
+\code{\link{mongo.gridfs.remove.file}}.
 }
