@@ -33,7 +33,7 @@ if (mongo.is.connected(mongo)) {
     mongo.gridfile.writer.write(gfw, charToRaw("test"))
 
     # store string & LF plus 0-byte terminator
-    buf <- writeBin("Test\n", as.raw(1))
+    buf <- writeBin("Test\\n", as.raw(1))
     mongo.gridfile.writer.write(gfw, buf)
 
     # store PI as a float

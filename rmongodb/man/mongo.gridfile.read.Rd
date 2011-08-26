@@ -22,7 +22,7 @@ mongo.gridfile.read(gridfile, size)
 The length of this vector may be less than the requested size
 if there was not enough data remaining to be read.
 This length could also be 0 if an error occured during the operation.
-  Check \code{\link{mongo.get.err}()} of the associated mongo connection object in this case.
+Check \code{\link{mongo.get.err}()} of the associated mongo connection object in this case.
 }
 \examples{
 mongo <- mongo.create()

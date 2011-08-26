@@ -12,7 +12,8 @@ Use \code{\link{mongo.gridfile.writer.create}} to create an object of this class
 
 mongo.gridfile.writer objects have "mongo.gridfile.writer" as their class and
 contain an externally managed pointer to the actual data used to manage operations on the GridFS.
-This pointer is stored in the "mongo.gridfile" attribute of the object.  The object also has a "mongo.gridfs" attribute
+This pointer is stored in the "mongo.gridfile" attribute of the object.
+The object also has a "mongo.gridfs" attribute
 holding a pointer to the mongo.gridfs object used in creation to prevent garbage collection on the mongo.gridfs
 object while the mongo.gridfile.writer is still active.
 }
@@ -27,7 +28,7 @@ if (mongo.is.connected(mongo)) {
     mongo.gridfile.writer.write(gfw, charToRaw("test"))
 
     # store string & LF plus 0-byte terminator
-    buf <- writeBin("Test\n", as.raw(1))
+    buf <- writeBin("Test\\n", as.raw(1))
     mongo.gridfile.writer.write(gfw, buf)
 
     # store PI as a float
