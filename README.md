@@ -6,8 +6,17 @@ The driver is installed into R with:
 
 `R CMD INSTALL rmongodb`
 
-Once this is done, the package may be loaded from within R like any other.
+If you have compile problems, this may be due to interface changes to mongo-c-driver.  
+In rmongodb/rmongodb/src is an archived copy of mongo-c-driver (mongo-c-driver-src.zip)
+that you can unpack there.  Since this is the version of the mongo-c-driver used in the
+development of rmongodb, you may have better results.
+
+Once you have installed the package, it may be loaded from within R like any other:
+
+`>library("rmongodb") # for instance`
 
 To run the unit tests:
 
 `R --no-save < test.R`
+
+
