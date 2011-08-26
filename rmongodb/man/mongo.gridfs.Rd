@@ -4,7 +4,7 @@
 \alias{mongo.gridfs}
 \title{The mongo.gridfs class}
 \description{
-Objects of class "mongo.gridfs" are used to store and/or access a \"Grid File System" (GridFS) on a 
+Objects of class "mongo.gridfs" are used to store and/or access a "Grid File System" (GridFS) on a 
 MongoDB server.  While primarily intended to store large documents that won't fit on the server as
 a single BSON object, GridFS may also be used to store large numbers of smaller files.
 
