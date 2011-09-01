@@ -38,7 +38,8 @@ mongo.bson.buffer.append.undefined(buf, "undefined1")
 undef <- mongo.undefined.create()
 mongo.bson.buffer.append(buf, "undefined2", undef)
 
-mongo.bson.buffer.append(buf, "regex", mongo.regex.create("pattern", "options"))
+mongo.bson.buffer.append(buf, "regex",
+    mongo.regex.create("pattern", "options"))
 
 bin <- raw(length=3)
 for (i in 0:2)
@@ -198,7 +199,7 @@ op  <- mongo.bson.from.buffer(buf)
 
 mongo.update(mongo, ns, query, op)
 
-cursor <- mongo.find(mongo, ns, limit=100L)
+cursor <- mongo.find(mongo, ns, sort=mongo.bson.from.list(list(city=1L)), limit=100L)
 print(mongo.cursor.value(cursor))
 while (mongo.cursor.next(cursor))
     print(mongo.cursor.value(cursor))
