@@ -17,6 +17,11 @@ mongo.insert(mongo, ns, b)
 
 Note that parameter b may also be a list of mongo.bson records to do a batch insert (See example).}
 }
+\value{
+TRUE if the command was successfully sent to the server; otherwise, FALSE.
+
+\code{\link{mongo.get.last.err}()} may be examined to verify that the insert was successful on the server if necessary.
+}
 \examples{
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {

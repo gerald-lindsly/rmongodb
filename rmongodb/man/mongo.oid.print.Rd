@@ -5,9 +5,8 @@
 \description{
 Display formatted output of a \link{mongo.oid} object.
 
-Output is tabbed (indented to show the nesting level of subobjects and arrays).
-
-This version is an alias of \code{\link{print.mongo.oid}()} while allows \code{print()} will properly handle the mongo.oid class.
+This version is an alias of \code{\link{print.mongo.oid}()} which allows \code{print()} 
+to properly handle the mongo.oid class.
 }
 \usage{
 mongo.oid.print(x)
