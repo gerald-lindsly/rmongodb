@@ -75,8 +75,7 @@ mongo.gridfile.pipe <- function(gridfile, con) {
     cursor <- mongo.gridfile.get.chunks(gridfile, 0, count)
     while (mongo.cursor.next(cursor)) {
         b <- mongo.cursor.value(cursor);
-        iter <- mongo.bson.find(b, "data")
-        data <- mongo.bson.iterator.value(iter)
+        data <- mongo.bson.value(b, "data")
         writeBin(data, con)
         mongo.bson.destroy(b)
     }
