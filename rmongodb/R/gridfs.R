@@ -77,7 +77,7 @@ mongo.gridfile.pipe <- function(gridfile, con) {
         b <- mongo.cursor.value(cursor);
         iter <- mongo.bson.find(b, "data")
         data <- mongo.bson.iterator.value(iter)
-        writeBin(as.vector(data), con)
+        writeBin(data, con)
         mongo.bson.destroy(b)
     }
     if (!wasOpen)
