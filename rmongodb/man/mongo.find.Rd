@@ -9,15 +9,17 @@ See \url{http://www.mongodb.org/display/DOCS/Querying}.
 }
 \usage{
 mongo.find(mongo, ns, query=mongo.bson.empty(),
-           fields=mongo.bson.empty(), limit=1L,
-           skip=0L, options=0L)
+           sort=mongo.bson.empty(), fields=mongo.bson.empty(),
+           limit=0L, skip=0L, options=0L)
 }
 \arguments{
 \item{mongo}{(\link{mongo}) a mongo connection object.}
 \item{ns}{(string) namespace of the collection from which to find records.}
 \item{query}{(\link{mongo.bson}) The criteria with which to match the records to be found.
     The default of mongo.bson.empty() will cause the the very first record in the collection to be returned. }
-\item{fields}{(\link{mongo.bson}) The desired fields which are to be returned frtom the matching record.
+\item{sort}{(\link{mongo.bson}) The desired fields by which to sort the returned records. The default of mongo.bson.empty()
+    indicates that no special sorting is to be done; the records will come back in the order that indexes locate them.}
+\item{fields}{(\link{mongo.bson}) The desired fields which are to be returned from the matching record.
     The default of mongo.bson.empty() will cause all fields of the matching record to be returned; 
     however, specific fields may be specified to cut down on network traffic and memory overhead.}
 \item{limit}{(as.integer) The maximum number of records to be returned. A limit of 0L will return all matching records not skipped.}

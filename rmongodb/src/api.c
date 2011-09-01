@@ -34,7 +34,7 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.update", (DL_FUNC) rmongo_update, 5 },
     { ".mongo.remove", (DL_FUNC) rmongo_remove, 3 },
     { ".mongo.find.one", (DL_FUNC) rmongo_find_one, 4 },
-    { ".mongo.find", (DL_FUNC) rmongo_find, 7 },
+    { ".mongo.find", (DL_FUNC) rmongo_find, 8 },
     { ".mongo.cursor.next", (DL_FUNC) rmongo_cursor_next, 1 },
     { ".mongo.cursor.value", (DL_FUNC) mongo_cursor_value, 1 },
     { ".mongo.cursor.destroy", (DL_FUNC) rmongo_cursor_destroy, 1 },
@@ -57,6 +57,7 @@ static const R_CallMethodDef callMethods[] = {
 
     { ".mongo.bson.iterator.create", (DL_FUNC) mongo_bson_iterator_create, 1},
     { ".mongo.bson.find", (DL_FUNC) mongo_bson_find, 2},
+    { ".mongo.bson.value", (DL_FUNC) mongo_bson_value, 2},
     { ".mongo.bson.iterator.next", (DL_FUNC) mongo_bson_iterator_next, 1},
     { ".mongo.bson.iterator.key", (DL_FUNC) mongo_bson_iterator_key, 1},
     { ".mongo.bson.iterator.type", (DL_FUNC) mongo_bson_iterator_type, 1},

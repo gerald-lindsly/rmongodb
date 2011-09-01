@@ -25,6 +25,9 @@ mongo.bson.iterator.create <- function(b)
 mongo.bson.find <- function(b, name)
     .Call(".mongo.bson.find", b, name)
 
+mongo.bson.value <- function(b, name)
+    .Call(".mongo.bson.value", b, name)
+
 
 mongo.bson.iterator.next <- function(iter)
     .Call(".mongo.bson.iterator.next", iter)

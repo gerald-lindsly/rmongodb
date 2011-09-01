@@ -248,10 +248,22 @@ mongo_cursor* _checkCursor(SEXP cursor) {
 }
 
 
-SEXP rmongo_find(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields, SEXP limit, SEXP skip, SEXP options) {
+SEXP rmongo_find(SEXP mongo_conn, SEXP ns, SEXP query, SEXP sort, SEXP fields, SEXP limit, SEXP skip, SEXP options) {
     mongo* conn = _checkMongo(mongo_conn);
     const char* _ns = CHAR(STRING_ELT(ns, 0));
     bson* _query = _checkBSON(query);
+    bson* _sort = _checkBSON(sort);
+
+    bson* q = _query;
+    bson sorted_query;
+    if (_sort != NULL && bson_size(_sort) > 5) {
+        q = &sorted_query;
+        bson_init(q);
+        bson_append_bson(q, "$query", _query);
+        bson_append_bson(q, "$orderby", _sort);
+        bson_finish(q);
+    }
+
     bson* _fields = _checkBSON(fields);
     int _limit = asInteger(limit);
     int _skip = asInteger(skip);
@@ -261,7 +273,11 @@ SEXP rmongo_find(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields, SEXP limit, 
     for (i = 0; i < len; i++)
         _options |= INTEGER(options)[i];
 
-    mongo_cursor* cursor = mongo_find(conn, _ns, _query, _fields, _limit, _skip, _options);
+    mongo_cursor* cursor = mongo_find(conn, _ns, q, _fields, _limit, _skip, _options);
+
+    if (q == &sorted_query)
+        bson_destroy(&sorted_query);
+
     return _mongo_cursor_create(cursor);
 }
 
@@ -616,7 +632,7 @@ SEXP mongo_get_database_collections(SEXP mongo_conn, SEXP db) {
     strcpy(ns+len, ".system.namespaces");
     bson empty;
     bson_empty(&empty);
-    mongo_cursor* cursor = mongo_find(conn, ns, &empty, &empty, 0, 0, 0);
+    mongo_cursor* cursor = mongo_find(conn, ns, NULL, &empty, 0, 0, 0);
     int count = 0;
     while (cursor && mongo_cursor_next(cursor) == MONGO_OK) {
         bson_iterator iter;

@@ -223,6 +223,38 @@ SEXP mongo_bson_buffer_create() {
     return ret;
 }
 
+
+static void bson_OIDfinalizer(SEXP ptr) {
+    if (!R_ExternalPtrAddr(ptr)) return;
+    bson_oid_t* oid = (bson_oid_t*)R_ExternalPtrAddr(ptr);
+    Free(oid);
+    R_ClearExternalPtr(ptr); /* not really needed */
+}
+
+
+SEXP _mongo_oid_create(bson_oid_t* oid) {
+    SEXP ret, ptr, cls;
+    PROTECT(ret = allocVector(INTSXP, 1));
+    ptr = R_MakeExternalPtr(oid, sym_mongo_oid, R_NilValue);
+    PROTECT(ptr);
+    R_RegisterCFinalizerEx(ptr, bson_OIDfinalizer, TRUE);
+    setAttrib(ret, sym_mongo_oid, ptr);
+    PROTECT(cls = allocVector(STRSXP, 1));
+    SET_STRING_ELT(cls, 0, mkChar("mongo.oid"));
+    classgets(ret, cls);
+    return ret;
+}
+
+
+SEXP mongo_oid_create() {
+    bson_oid_t* oid = Calloc(1, bson_oid_t);
+    bson_oid_gen(oid);
+    SEXP ret = _mongo_oid_create(oid);
+    UNPROTECT(3);
+    return ret;
+}
+
+
 SEXP mongo_bson_from_buffer(SEXP buf) {
     bson_buffer* _buf = _checkBuffer(buf);
     bson_finish(_buf);
@@ -307,36 +339,6 @@ SEXP mongo_bson_find(SEXP b, SEXP name) {
 }
 
 
-SEXP mongo_bson_iterator_next(SEXP iter) {
-    bson_iterator* _iter = _checkIterator(iter);
-    SEXP ret;
-    PROTECT(ret = allocVector(INTSXP, 1));
-    INTEGER(ret)[0] = bson_iterator_next(_iter);
-    UNPROTECT(1);
-    return ret;
-}
-
-
-SEXP mongo_bson_iterator_key(SEXP iter) {
-    bson_iterator* _iter = _checkIterator(iter);
-    SEXP ret;
-    PROTECT(ret = allocVector(STRSXP, 1));
-    SET_STRING_ELT(ret, 0, mkChar(bson_iterator_key(_iter)));
-    UNPROTECT(1);
-    return ret;
-}
-
-
-SEXP mongo_bson_iterator_type(SEXP iter) {
-    bson_iterator* _iter = _checkIterator(iter);
-    SEXP ret;
-    PROTECT(ret = allocVector(INTSXP, 1));
-    INTEGER(ret)[0] = bson_iterator_type(_iter);
-    UNPROTECT(1);
-    return ret;
-}
-
-
 SEXP _mongo_timestamp_create(int t, int i) {
     SEXP ret, cls, inc;
     PROTECT(ret = allocVector(INTSXP, 1));
@@ -372,81 +374,6 @@ SEXP mongo_timestamp_create(SEXP t, SEXP i) {
     SEXP ret = _mongo_timestamp_create(_getTime(t), asInteger(i));
     UNPROTECT(3);
     return ret;
-}
-
-
-static void bson_OIDfinalizer(SEXP ptr) {
-    if (!R_ExternalPtrAddr(ptr)) return;
-    bson_oid_t* oid = (bson_oid_t*)R_ExternalPtrAddr(ptr);
-    Free(oid);
-    R_ClearExternalPtr(ptr); /* not really needed */
-}
-
-
-SEXP _mongo_oid_create(bson_oid_t* oid) {
-    SEXP ret, ptr, cls;
-    PROTECT(ret = allocVector(INTSXP, 1));
-    ptr = R_MakeExternalPtr(oid, sym_mongo_oid, R_NilValue);
-    PROTECT(ptr);
-    R_RegisterCFinalizerEx(ptr, bson_OIDfinalizer, TRUE);
-    setAttrib(ret, sym_mongo_oid, ptr);
-    PROTECT(cls = allocVector(STRSXP, 1));
-    SET_STRING_ELT(cls, 0, mkChar("mongo.oid"));
-    classgets(ret, cls);
-    return ret;
-}
-
-
-SEXP mongo_oid_create() {
-    bson_oid_t* oid = Calloc(1, bson_oid_t);
-    bson_oid_gen(oid);
-    SEXP ret = _mongo_oid_create(oid);
-    UNPROTECT(3);
-    return ret;
-}
-
-
-SEXP mongo_oid_time(SEXP oid) {
-    _checkOID(oid);
-    bson_oid_t* _oid = (bson_oid_t*)R_ExternalPtrAddr(getAttrib(oid, sym_mongo_oid));
-    SEXP ret = _createPOSIXct(bson_oid_generated_time(_oid));
-    UNPROTECT(2);
-    return ret;
-}
-
-
-SEXP mongo_oid_from_string(SEXP hexstr) {
-    const char* _hexstr = CHAR(STRING_ELT(hexstr, 0));
-    if (strlen(_hexstr) != 24)
-        error("OID string length must be 24");
-    bson_oid_t* oid = Calloc(1, bson_oid_t);
-    bson_oid_from_string(oid, _hexstr);
-    SEXP ret = _mongo_oid_create(oid);
-    UNPROTECT(3);
-    return ret;
-}
-
-
-SEXP mongo_oid_to_string(SEXP oid) {
-    _checkOID(oid);
-    SEXP ret;
-    PROTECT(ret = allocVector(STRSXP, 1));
-    bson_oid_t* _oid = (bson_oid_t*)R_ExternalPtrAddr(getAttrib(oid, sym_mongo_oid));
-    char s[25];
-    bson_oid_to_string(_oid, s);
-    SET_STRING_ELT(ret, 0, mkChar(s));
-    UNPROTECT(1);
-    return ret;
-}
-
-
-SEXP mongo_oid_print(SEXP oid) {
-    _checkOID(oid);
-    bson_oid_t* _oid = (bson_oid_t*)R_ExternalPtrAddr(getAttrib(oid, sym_mongo_oid));
-    char s[25];
-    bson_oid_to_string(_oid, s);
-    Rprintf("{ $oid : \"%s\" }\n", s);
-    return oid;
 }
 
 
@@ -535,8 +462,7 @@ SEXP _array_to_object(bson_iterator* _iter) {
 }
 
 
-SEXP mongo_bson_iterator_value(SEXP iter) {
-    bson_iterator* _iter = _checkIterator(iter);
+SEXP _mongo_bson_value(bson_iterator* _iter) {
     SEXP ret;
     Rcomplex z;
     bson_type t = bson_iterator_type(_iter);
@@ -647,6 +573,97 @@ returnSubObject: {
     UNPROTECT(1);
     return ret;
 }
+
+
+SEXP mongo_bson_iterator_value(SEXP iter) {
+    bson_iterator* _iter = _checkIterator(iter);
+    return _mongo_bson_value(_iter);
+}
+
+
+SEXP mongo_bson_value(SEXP b, SEXP name) {
+    bson* _b = _checkBSON(b);
+    const char* _name = CHAR(STRING_ELT(name, 0));
+    bson_iterator iter;
+    if (bson_find(&iter, _b, _name) == BSON_EOO)
+        return R_NilValue;
+    return _mongo_bson_value(&iter);
+}
+
+
+SEXP mongo_bson_iterator_next(SEXP iter) {
+    bson_iterator* _iter = _checkIterator(iter);
+    SEXP ret;
+    PROTECT(ret = allocVector(INTSXP, 1));
+    INTEGER(ret)[0] = bson_iterator_next(_iter);
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP mongo_bson_iterator_key(SEXP iter) {
+    bson_iterator* _iter = _checkIterator(iter);
+    SEXP ret;
+    PROTECT(ret = allocVector(STRSXP, 1));
+    SET_STRING_ELT(ret, 0, mkChar(bson_iterator_key(_iter)));
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP mongo_bson_iterator_type(SEXP iter) {
+    bson_iterator* _iter = _checkIterator(iter);
+    SEXP ret;
+    PROTECT(ret = allocVector(INTSXP, 1));
+    INTEGER(ret)[0] = bson_iterator_type(_iter);
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP mongo_oid_time(SEXP oid) {
+    _checkOID(oid);
+    bson_oid_t* _oid = (bson_oid_t*)R_ExternalPtrAddr(getAttrib(oid, sym_mongo_oid));
+    SEXP ret = _createPOSIXct(bson_oid_generated_time(_oid));
+    UNPROTECT(2);
+    return ret;
+}
+
+
+SEXP mongo_oid_from_string(SEXP hexstr) {
+    const char* _hexstr = CHAR(STRING_ELT(hexstr, 0));
+    if (strlen(_hexstr) != 24)
+        error("OID string length must be 24");
+    bson_oid_t* oid = Calloc(1, bson_oid_t);
+    bson_oid_from_string(oid, _hexstr);
+    SEXP ret = _mongo_oid_create(oid);
+    UNPROTECT(3);
+    return ret;
+}
+
+
+SEXP mongo_oid_to_string(SEXP oid) {
+    _checkOID(oid);
+    SEXP ret;
+    PROTECT(ret = allocVector(STRSXP, 1));
+    bson_oid_t* _oid = (bson_oid_t*)R_ExternalPtrAddr(getAttrib(oid, sym_mongo_oid));
+    char s[25];
+    bson_oid_to_string(_oid, s);
+    SET_STRING_ELT(ret, 0, mkChar(s));
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP mongo_oid_print(SEXP oid) {
+    _checkOID(oid);
+    bson_oid_t* _oid = (bson_oid_t*)R_ExternalPtrAddr(getAttrib(oid, sym_mongo_oid));
+    char s[25];
+    bson_oid_to_string(_oid, s);
+    Rprintf("{ $oid : \"%s\" }\n", s);
+    return oid;
+}
+
 
 // passed an iterator to start of a bson object
 SEXP _mongo_bson_to_list(bson_iterator* _iter) {

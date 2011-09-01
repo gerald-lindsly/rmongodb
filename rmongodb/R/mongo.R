@@ -90,8 +90,8 @@ mongo.find.await.data        <- 32L
 mongo.find.exhaust           <- 64L
 mongo.find.partial.results   <- 128L
 
-mongo.find <- function(mongo, ns, query=mongo.bson.empty(), fields=mongo.bson.empty(), limit=1L, skip=0L, options=0L)
-    .Call(".mongo.find", mongo, ns, query, fields, limit, skip, options)
+mongo.find <- function(mongo, ns, query=mongo.bson.empty(), sort=mongo.bson.empty(), fields=mongo.bson.empty(), limit=0L, skip=0L, options=0L)
+    .Call(".mongo.find", mongo, ns, query, sort, fields, limit, skip, options)
 
 mongo.cursor.next <- function(cursor)
     .Call(".mongo.cursor.next", cursor)

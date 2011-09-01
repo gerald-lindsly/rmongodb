@@ -20,7 +20,7 @@ SEXP rmongo_insert(SEXP mongo_conn, SEXP ns, SEXP bson);
 SEXP rmongo_update(SEXP mongo_conn, SEXP ns, SEXP cond, SEXP op, SEXP flags);
 SEXP rmongo_remove(SEXP mongo_conn, SEXP ns, SEXP cond);
 SEXP rmongo_find_one(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields);
-SEXP rmongo_find(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields, SEXP limit, SEXP skip, SEXP options);
+SEXP rmongo_find(SEXP mongo_conn, SEXP ns, SEXP query, SEXP sort, SEXP fields, SEXP limit, SEXP skip, SEXP options);
 SEXP rmongo_cursor_next(SEXP cursor);
 SEXP mongo_cursor_value(SEXP cursor);
 SEXP rmongo_cursor_destroy(SEXP cursor);
