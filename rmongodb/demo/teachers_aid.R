@@ -13,11 +13,26 @@ if (!mongo.is.connected(mongo))
     error("No connection to MongoDB")
 
 db <- "rmongodb_sample"
-classes <- paste(db, "classes", sep=".")
-students <- paste (db, "students", sep=".")
+classes        <- paste(db, "classes",        sep=".")
+students       <- paste(db, "students",       sep=".")
 class_students <- paste(db, "class_students", sep=".")
-tests <- paste(db, "tests", sep=".")
-test_scores <- paste(db, "test_scores", sep=".")
+tests          <- paste(db, "tests",          sep=".")
+test_scores    <- paste(db, "test_scores",    sep=".")
+admin          <- paste(db, "admin",          sep=".")
+
+indexed = list(indexed=TRUE)
+b <- mongo.find.one(mongo, admin, indexed)
+if (is.null(b)) {
+    mongo.index.create(mongo, classes, "name")
+    mongo.index.create(mongo, students, "name")
+    mongo.index.create(mongo, class_students, "class_id")
+    mongo.index.create(mongo, class_students, "student_id")
+    mongo.index.create(mongo, tests, "class_id")
+    mongo.index.create(mongo, tests, "name")
+    mongo.index.create(mongo, test_scores, "test_id")
+    mongo.index.create(mongo, test_scores, "student_id")
+    mongo.insert(mongo, admin, indexed)
+}
 
 name_sort <- mongo.bson.from.list(list(name=1L))
 
