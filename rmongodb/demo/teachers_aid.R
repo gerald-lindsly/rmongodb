@@ -3,15 +3,64 @@ library("rmongodb")
 cat("\nSimple Teacher's Aid - A Sample Program Using rmongodb\n")
 cat("The grading functions will work only if a test has at least 2 students' scores entered.\n")
 
-rINDEX <- 1:13
-rLETS  <- c("F", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A", "A+")
-rPOINTS <- c(0,  0.33, 0.67, 1,   1.33, 1.67,2,    2.33, 2.67, 3,  3.33, 3.67, 4.0)
-rSCRS <- seq(from=52, by=4, length=13)
+# test scores of 0 are thrown out when calculating the grade curve
+#   but are taken into consideration of a student's class grade
+#   these 0's are 'absent' on mandatory tests
+#   -1 scores (which are not stored in the database) do not effect the test curve
+#   nor the student's class grade
+
+#------------------------------------------------------------------------------
+# The database looks like this:
+
+# classes
+#    _id  : (Object ID) class id
+#    name : (string) name of the class
+## one record exists in this collection for each class
+
+# students
+#    _id  : (Object ID) student id
+#    name : (string) name of the student
+## one record exists in this collection for each student
+
+# class_students - many-to-many relationship
+#    _id        : (Object ID) relationship id
+#    class_id   : (Object ID) class id
+#    student_id : (Object ID) student_id
+## one record exists in this collection for each enrollment
+##   of a student in a class
+
+# tests
+#    _id      : (Object ID) test id 
+#    class_id : (Object ID) the class to which this test belongs
+#    name     : (string) the name of the test (or 'gradable')
+#    weight   : (double) relative weight of this test to other tests in the class
+#    date     : (date)   date of the test
+#    mean     : (double) average score on test - calculated by gradeTest()
+#    sd       : (double) standard deviation of scores - calculated by gradeTest()
+## one record exists in this collection for each test of a class
+
+# test_scores
+#    _id        : (Object ID) test-score id
+#    test_id    : (Object ID) the test to which this score belongs
+#    student_id : (Object ID) the student to which this score belongs
+#    score      : (double) the student's raw score on the test
+#    curved     : (integer) curved score index into rLETS or rPOINTS
+#                             - calculated by gradeTest()
+## one record exists in this collection for each score given to a student
+##   on the indicated test
+
+# admin
+#    _id : (Object ID) arbitrary
+#    indexed : (boolean) true
+## one record exists in this collection if the indexes have been registered
+
+#------------------------------------------------------------------------------
 
 mongo <- mongo.create()
 if (!mongo.is.connected(mongo))
     error("No connection to MongoDB")
 
+# define the database name and the namespaces of the collections
 db <- "rmongodb_sample"
 classes        <- paste(db, "classes",        sep=".")
 students       <- paste(db, "students",       sep=".")
@@ -20,6 +69,7 @@ tests          <- paste(db, "tests",          sep=".")
 test_scores    <- paste(db, "test_scores",    sep=".")
 admin          <- paste(db, "admin",          sep=".")
 
+# register indexes with MongoDB to speed up the queries we'll be pulling
 indexed = list(indexed=TRUE)
 b <- mongo.find.one(mongo, admin, indexed)
 if (is.null(b)) {
@@ -34,8 +84,15 @@ if (is.null(b)) {
     mongo.insert(mongo, admin, indexed)
 }
 
+#define some constants
+rINDEX <- 1:13
+rLETS  <- c("F", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A", "A+")
+rPOINTS <- c(0,  0.33, 0.67, 1,   1.33, 1.67,2,    2.33, 2.67, 3,  3.33, 3.67, 4.0)
+rSCRS <- seq(from=52, by=4, length=13)
 name_sort <- mongo.bson.from.list(list(name=1L))
 
+# get a single char from the console (reads a whole line)
+#    used by YesNo() and for menu selections
 getch <- function(emptyOk=FALSE) {
     repeat {
         cat("? ")
@@ -48,7 +105,7 @@ getch <- function(emptyOk=FALSE) {
     choice
 }
 
-
+# get a yes/no choice from the console as a boolean (TRUE for yes)
 YesNo <- function(default="Y") {
     repeat {
         cat(if (default == "Y") " (Y/n)" else " (y/N)")
@@ -64,13 +121,15 @@ YesNo <- function(default="Y") {
 }
 
 
+# create a mongo.bson { _id : (Object ID) id }
+#   for searching a collection to find the record with given the id
 bson_id <- function(id) {
     buf <- mongo.bson.buffer.create()
     mongo.bson.buffer.append(buf, "_id", id)
     mongo.bson.from.buffer(buf)
 }
 
-
+# select a record from a collection by a prefix of its name field
 select <- function(prompt, table) {
     repeat {
         cat(prompt, "Name (prefix)? ")
@@ -99,11 +158,11 @@ select <- function(prompt, table) {
     match
 }
 
-
-grade <- function(grades) {
+# turn a vector of raw scores into a vector of curved indexes to rLETS or rPOINTS
+grade <- function(scores) {
     # borrowed from ProfessR
-    B <- boxplot(grades, plot=FALSE)
-    divs <- c(min(grades), B$stats[1:4] + diff(B$stats)/2, max(grades))
+    B <- boxplot(scores, plot=FALSE)
+    divs <- c(min(scores), B$stats[1:4] + diff(B$stats)/2, max(scores))
     M <- length(divs)
     adiff <- diff(divs)
     J <- rep(0, 13)
@@ -114,31 +173,38 @@ grade <- function(grades) {
         J[j+1] <- divs[i] + 1 * adiff[i] / 3
         J[j+2] <- divs[i] + 2 * adiff[i] / 3
     }
-    Jinval <- findInterval(grades, J, all.inside=TRUE)
+    Jinval <- findInterval(scores, J, all.inside=TRUE)
     index <- rINDEX[Jinval]
-    scores <- rSCRS[Jinval]+ 4*(grades-J[Jinval])/(J[Jinval+1]-J[Jinval])
+    scores <- rSCRS[Jinval]+ 4*(scores-J[Jinval])/(J[Jinval+1]-J[Jinval])
     scores[scores >= 100] <- 100
     index[scores >= 100] <- rINDEX[13]
     index
 }
 
-
+# grade a test given the mongo.bson record describing the test
+#   stores results in test_scores and test records
 gradeTest <- function(test) {
     test_id <- mongo.bson.value(test, "_id")
-    query <- mongo.bson.from.list(list(test_id=test_id))
-    count <- mongo.count(mongo, test_scores, query)
-    score <- rep(1.0, count)
+    score <- c()
     id <- list()
     i <- 1
-    cursor <- mongo.find(mongo, test_scores, query)
+    # find all test_scores belonging to this test
+    cursor <- mongo.find(mongo, test_scores, list(test_id=test_id))
     while (mongo.cursor.next(cursor)) {
         test_score <- mongo.cursor.value(cursor)
-        id[[i]] <- mongo.bson.value(test_score, "_id")
-        score[i] <- mongo.bson.value(test_score, "score")
-        i <- i + 1
+        s = mongo.bson.value(test_score, "score")
+        # don't allow 0 scores to throw the curve
+        if (s != 0) {
+            score <- append(score, s)
+            id[[i]] <- mongo.bson.value(test_score, "_id")
+            i <- i + 1
+        }
     }
+    count <- i - 1
     if (count > 1) {
+        # grade curve the test
         g <- grade(score)
+        # store the curved result in test_scores
         for (i in 1:count) {
             buf <- mongo.bson.buffer.create()
             mongo.bson.buffer.start.object(buf, "$set")
@@ -147,6 +213,7 @@ gradeTest <- function(test) {
             b <- mongo.bson.from.buffer(buf)
             mongo.update(mongo, test_scores, bson_id(id[[i]]), b)
         }
+        # calculate mean & std. dev. while we here and store them in test
         buf <- mongo.bson.buffer.create()
         mongo.bson.buffer.start.object(buf, "$set")
         mongo.bson.buffer.append(buf, "mean", mean(score))
@@ -155,28 +222,32 @@ gradeTest <- function(test) {
         b <- mongo.bson.from.buffer(buf)
         b_test_id <- bson_id(test_id)
         mongo.update(mongo, tests, b_test_id, b)
-        test <- mongo.find.one(mongo, tests, b_test_id)
     }
 }
 
-
+# calculate a student's final grade in a class
+#   assumes the tests have already been run through gradeTest()
 gradeClassStudent <- function(class_student, display=FALSE) {
     class_id <- mongo.bson.value(class_student, "class_id")
     student_id <- mongo.bson.value(class_student, "student_id")
-    query <- mongo.bson.from.list(list(class_id=class_id))
     total_weight <- 0
     i <- 1
     weight <- c()
     curved <- c()
     name <- c()
-    cursor <- mongo.find(mongo, tests, query)
+    cursor <- mongo.find(mongo, tests, list(class_id=class_id))
     while (mongo.cursor.next(cursor)) {
         test <- mongo.cursor.value(cursor)
         test_id <- mongo.bson.value(test, "_id")
-        q <- mongo.bson.from.list(list(test_id=test_id, student_id=student_id))
-        test_score <- mongo.find.one(mongo, test_scores, q)
+        test_score <- mongo.find.one(mongo, test_scores, 
+             list(test_id=test_id, student_id=student_id))
         if (!is.null(test_score)) {
-            curved <- append(curved, mongo.bson.value(test_score, "curved"))
+            score <- mongo.bson.value(test_score, "score")
+            if (score == 0)
+                c <- 1
+            else
+                c <- mongo.bson.value(test_score, "curved")
+            curved <- append(curved, c)
             name <- append(name, mongo.bson.value(test, "name"))
             weight <- append(weight, mongo.bson.value(test, "weight"))
             total_weight <- total_weight + weight[i]
@@ -202,11 +273,10 @@ gradeClassStudent <- function(class_student, display=FALSE) {
     grade
 }
 
-
+# precalculate grades for all tests in a class
 gradeClass <- function(cls) {
     class_id <- mongo.bson.value(cls, "_id")
-    query <- mongo.bson.from.list(list(class_id=class_id))
-    cursor <- mongo.find(mongo, tests, query)
+    cursor <- mongo.find(mongo, tests, list(class_id=class_id))
     while (mongo.cursor.next(cursor))
         gradeTest(mongo.cursor.value(cursor))
 }
@@ -225,8 +295,7 @@ studentMenu <- function(student) {
         if (choice == "Q")
             break
         else if (choice == "L") {
-            query <- mongo.bson.from.list(list(student_id=student_id))
-            cursor <- mongo.find(mongo, class_students, query)
+            cursor <- mongo.find(mongo, class_students, list(student_id=student_id))
             while (mongo.cursor.next(cursor)) {
                 class_student <- mongo.cursor.value(cursor)
                 class_id <- mongo.bson.value(class_student, "class_id")
@@ -247,8 +316,7 @@ studentMenu <- function(student) {
         else if (choice == "G") {
             cat("Include test results")
             display <- YesNo("N")
-            query <- mongo.bson.from.list(list(student_id=student_id))
-            cursor <- mongo.find(mongo, class_students, query)
+            cursor <- mongo.find(mongo, class_students, list(student_id=student_id))
             name <- c()
             class_student <- list()
             i <- 1
@@ -337,8 +405,7 @@ testMenu <- function(test) {
             cat("Delete this test?  Are you sure")
             if (YesNo("N")) {
                 mongo.remove(mongo, tests, bson_id(test_id))
-                query <- mongo.bson.from.list(list(test_id=test_id))
-                mongo.remove(mongo, test_scores, query)
+                mongo.remove(mongo, test_scores, list(test_id=test_id))
                 break
             }
         }
@@ -387,7 +454,6 @@ testMenu <- function(test) {
                     i <- i + 1
                 }
                 o <- order(name)
-                changed <- FALSE
                 for (i in 1:count) {
                     j <- o[i]
                     query <- mongo.bson.from.list(list(test_id=test_id, student_id=id[[j]]))
@@ -407,10 +473,13 @@ testMenu <- function(test) {
                             break
                         }
                     }
-                    if (newscore != -1 && newscore != score) {
-                        b <- mongo.bson.from.list(list(test_id=test_id, student_id=id[[j]], score=newscore))
-                        mongo.update(mongo, test_scores, query, b, mongo.update.upsert)
-                        Changed <- TRUE
+                    if (newscore != score) {
+                        if (newscore == -1)
+                            mongo.remove(mongo, test_scores, query)
+                        else
+                            mongo.update(mongo, test_scores, query, 
+                                list(test_id=test_id, student_id=id[[j]], score=newscore), 
+                                mongo.update.upsert)
                     }
                 }
             }
@@ -527,7 +596,7 @@ classMenu <- function(cls) {
             cat("Name? ")
             name <- readLines(n=1)
             if (name != "") {
-                test <- mongo.find.one(mongo, tests, mongo.bson.from.list(list(name=name, class_id=class_id)))
+                test <- mongo.find.one(mongo, tests, list(name=name, class_id=class_id))
                 if (!is.null(test))
                     cat("A test by that name already exists\n")
                 else {
@@ -558,8 +627,7 @@ classMenu <- function(cls) {
                         }
                         break
                     }
-                    b <- mongo.bson.from.list(list(class_id=class_id, name=name, weight=weight, date=date))
-                    mongo.insert(mongo, tests, b)
+                    mongo.insert(mongo, tests, list(class_id=class_id, name=name, weight=weight, date=date))
                 }
             }
         }
@@ -592,8 +660,7 @@ classesMenu <- function()
             cat("Name? ")
             name <- readLines(n=1)
             if (name != "") {
-                b <- mongo.bson.from.list(list(name=name))
-                mongo.insert(mongo, classes, b)
+                mongo.insert(mongo, classes, list(name=name))
                 cat(name, "added.\n")
             }
         } else if (choice == "S") {
