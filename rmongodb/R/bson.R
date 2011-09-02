@@ -7,8 +7,11 @@ mongo.bson.size <- function(b)
 mongo.bson.destroy <- function(b)
     .Call(".mongo.bson.destroy", b)
 
-mongo.bson.print <- function(x, ...)
+mongo.bson.print <- function(x, ...) {
+    if (typeof(x) == "list")
+        x <- mongo.bson.from.list(x)
     invisible(.Call(".mongo.bson.print", x))
+}
 
 print.mongo.bson <- function(x, ...)
     invisible(.Call(".mongo.bson.print", x))

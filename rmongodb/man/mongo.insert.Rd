@@ -15,7 +15,8 @@ mongo.insert(mongo, ns, b)
 \item{ns}{(string) namespace of the collection to which to add the record.}
 \item{b}{(\link{mongo.bson}) The record to add.
 
-Note that parameter b may also be a list of mongo.bson records to do a batch insert (See example).}
+In addition, \code{b} may be a list which will be converted to a mongo.bson object 
+by \code{\link{mongo.bson.from.list}()}.}
 }
 \value{
 TRUE if the command was successfully sent to the server; otherwise, FALSE.
@@ -31,29 +32,14 @@ if (mongo.is.connected(mongo)) {
     mongo.bson.buffer.append(buf, "name", "Joe")
     mongo.bson.buffer.append(buf, "age", 22L)
     b <- mongo.bson.from.buffer(buf)
-
     mongo.insert(mongo, ns, b)
 
-    # do a batch insert
-    buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "name", "Dave")
-    mongo.bson.buffer.append(buf, "age", 27L)
-    x <- mongo.bson.from.buffer(buf)
-
-    buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "name", "Fred")
-    mongo.bson.buffer.append(buf, "age", 31L)
-    y <- mongo.bson.from.buffer(buf)
-
-    buf <- mongo.bson.buffer.create()
-    mongo.bson.buffer.append(buf, "name", "Silvia")
-    mongo.bson.buffer.append(buf, "city", 24L)
-    z <- mongo.bson.from.buffer(buf)
-    mongo.insert(mongo, ns, list(x, y, z))
-
+    # do the same thing in shorthand:
+    mongo.insert(mongo, ns, list(name="Joe", age=22L))
 }
 }
 \seealso{
+\code{\link{mongo.insert.batch}},\cr
 \code{\link{mongo.update}},\cr
 \code{\link{mongo.find}},\cr
 \code{\link{mongo.find.one}},\cr

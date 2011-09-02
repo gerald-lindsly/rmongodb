@@ -9,7 +9,6 @@ mongo.create <- function(host="127.0.0.1", name="", username="", password="", db
     .Call(".mongo.connect", mongo)
 }
 
-
 mongo.get.err <- function(mongo)
     .Call(".mongo.get.err", mongo)
 
@@ -64,23 +63,41 @@ mongo.get.server.err <- function(mongo)
 mongo.get.server.err.string <- function(mongo)
     .Call(".mongo.get.server.err.string", mongo)
 
-mongo.insert <- function(mongo, ns, b)
+mongo.insert <- function(mongo, ns, b) {
+    if (typeof(b) == "list")
+        b <- mongo.bson.from.list(b)
     .Call(".mongo.insert", mongo, ns, b)
+}
+
+mongo.insert.batch <- function(mongo, ns, lst)
+    .Call(".mongo.insert.batch", mongo, ns, lst)
+
 
 mongo.update.upsert <- 1L
 mongo.update.multi  <- 2L
 mongo.update.basic  <- 4L
 
-mongo.update <- function(mongo, ns, criteria, objNew, flags=0L)
+mongo.update <- function(mongo, ns, criteria, objNew, flags=0L) {
+    if (typeof(criteria) == "list")
+        criteria <- mongo.bson.from.list(criteria)
+    if (typeof(objNew) == "list")
+        objNew <- mongo.bson.from.list(objNew)
     .Call(".mongo.update", mongo, ns, criteria, objNew, flags)
+}
 
-mongo.remove <- function(mongo, ns, criteria=mongo.bson.empty())
+mongo.remove <- function(mongo, ns, criteria=mongo.bson.empty()) {
+    if (typeof(criteria) == "list")
+        criteria <- mongo.bson.from.list(criteria)
     .Call(".mongo.remove", mongo, ns, criteria)
+}
 
-
-mongo.find.one <- function(mongo, ns, query=mongo.bson.empty(), fields=mongo.bson.empty())
+mongo.find.one <- function(mongo, ns, query=mongo.bson.empty(), fields=mongo.bson.empty()) {
+    if (typeof(query) == "list")
+        query <- mongo.bson.from.list(query)
+    if (typeof(fields) == "list")
+        fields <- mongo.bson.from.list(fields)
     .Call(".mongo.find.one", mongo, ns, query, fields)
-
+}
 
 mongo.find.cursor.tailable   <- 2L
 mongo.find.slave.ok          <- 4L
@@ -90,8 +107,15 @@ mongo.find.await.data        <- 32L
 mongo.find.exhaust           <- 64L
 mongo.find.partial.results   <- 128L
 
-mongo.find <- function(mongo, ns, query=mongo.bson.empty(), sort=mongo.bson.empty(), fields=mongo.bson.empty(), limit=0L, skip=0L, options=0L)
+mongo.find <- function(mongo, ns, query=mongo.bson.empty(), sort=mongo.bson.empty(), fields=mongo.bson.empty(), limit=0L, skip=0L, options=0L) {
+    if (typeof(query) == "list")
+        query <- mongo.bson.from.list(query)
+    if (typeof(sort) == "list")
+        sort <- mongo.bson.from.list(sort)
+    if (typeof(fields) == "list")
+        fields <- mongo.bson.from.list(fields)
     .Call(".mongo.find", mongo, ns, query, sort, fields, limit, skip, options)
+}
 
 mongo.cursor.next <- function(cursor)
     .Call(".mongo.cursor.next", cursor)
@@ -108,15 +132,23 @@ mongo.index.drop.dups  <- 4L
 mongo.index.background <- 8L
 mongo.index.sparse     <- 16L
 
-mongo.index.create <- function(mongo, ns, key, options=0L)
+mongo.index.create <- function(mongo, ns, key, options=0L) {
+    if (typeof(key) == "list")
+        key <- mongo.bson.from.list(key)
     .Call(".mongo.index.create", mongo, ns, key, options)
+}
 
-
-mongo.count <- function(mongo, ns, query=mongo.bson.empty())
+mongo.count <- function(mongo, ns, query=mongo.bson.empty()) {
+    if (typeof(query) == "list")
+        query <- mongo.bson.from.list(query)
     .Call(".mongo.count", mongo, ns, query)
+}
 
-mongo.command <- function(mongo, db, command)
+mongo.command <- function(mongo, db, command) {
+   if (typeof(command) == "list")
+        command <- mongo.bson.from.list(command)
     .Call(".mongo.command", mongo, db, command)
+}
 
 mongo.simple.command <- function(mongo, db, cmdstr, arg)
     .Call(".mongo.simple.command", mongo, db, cmdstr, arg)

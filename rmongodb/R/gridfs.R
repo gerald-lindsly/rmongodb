@@ -22,8 +22,11 @@ mongo.gridfile.writer.write <- function(gfw, raw)
 mongo.gridfile.writer.finish <- function(gfw)
     .Call(".mongo.gridfile.writer.finish", gfw)
 
-mongo.gridfs.find <- function(gridfs, query)
+mongo.gridfs.find <- function(gridfs, query) {
+    if (typeof(query) == "list")
+        query <- mongo.bson.from.list(query)
     .Call(".mongo.gridfs.find", gridfs, query)
+}
 
 mongo.gridfile.destroy <- function(gridfile)
     .Call(".mongo.gridfile.destroy", gridfile)

@@ -14,8 +14,11 @@ mongo.index.create(mongo, ns, key, options=0L)
 \item{mongo}{(\link{mongo}) A mongo connection object.}
 \item{ns}{(string) The namespace of the collection to which to add an index.}
 \item{key}{An object enumerating the fields in order which are to participate in the index.
-    This object may be a vector of strings listing the key fields or 
-    a \link{mongo.bson} object containing the key fields in the desired order.}
+This object may be a vector of strings listing the key fields or 
+a \link{mongo.bson} object containing the key fields in the desired order.
+    
+Alternately, \code{key} may be a list which will be converted to a mongo.bson object
+by \code{\link{mongo.bson.from.list}()}.}
 \item{options}{(integer vector) Optional flags governing the operation:
     \itemize{
         \item{\code{\link{mongo.index.unique}}}
@@ -34,6 +37,10 @@ mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
     # Add a city index to collection people in database test
     b <- mongo.index.create(mongo, "test.people", "city")
+    if (!is.null(b)) {
+        print(b)
+        stop("Server error")
+    }
 
     # Add an index to collection people in database test
     # which will speed up queries of age followed by name
@@ -46,6 +53,9 @@ if (mongo.is.connected(mongo)) {
 
     # add an index using an alternate method of specifying the key fields
     b <- mongo.index.create(mongo, "test.people", key)
+
+    # create an index using list of that enumerates the key fields
+    b <- mongo.index.create(mongo, "test.cars", list(make=1L, model=1L))
 }
 }
 \seealso{

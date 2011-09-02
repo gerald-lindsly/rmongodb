@@ -14,7 +14,10 @@ mongo.remove(mongo, ns, criteria=mongo.bson.empty())
 \item{mongo}{(\link{mongo}) a mongo connection object.}
 \item{ns}{(string) namespace of the collection from which to remove records.}
 \item{criteria}{(\link{mongo.bson}) The criteria with which to match records that are to be removed.
-The default of mongo.bson.empty() will cause \emph{all} records in the given collection to be removed.}
+The default of mongo.bson.empty() will cause \emph{all} records in the given collection to be removed.
+
+Alternately, \code{criteria} may be a list which will be converted to a mongo.bson object 
+by \code{\link{mongo.bson.from.list}()}.}
 }
 \examples{
 mongo <- mongo.create()
@@ -29,6 +32,9 @@ if (mongo.is.connected(mongo)) {
 
     # remove all records from collection cars in database test
     mongo.remove(mongo, "test.cars")
+
+    # shorthand: remove all records where name is "Fred"
+    mongo.remove(mongo, "test.people", list(name="Fred"))
 }
 }
 \seealso{

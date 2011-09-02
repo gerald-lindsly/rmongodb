@@ -21,6 +21,7 @@ export(mongo.get.last.err)
 export(mongo.get.prev.err)
 
 export(mongo.insert)
+export(mongo.insert.batch)
 
 export(mongo.update.upsert)
 export(mongo.update.multi)

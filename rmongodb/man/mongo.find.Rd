@@ -16,12 +16,21 @@ mongo.find(mongo, ns, query=mongo.bson.empty(),
 \item{mongo}{(\link{mongo}) a mongo connection object.}
 \item{ns}{(string) namespace of the collection from which to find records.}
 \item{query}{(\link{mongo.bson}) The criteria with which to match the records to be found.
-    The default of mongo.bson.empty() will cause the the very first record in the collection to be returned. }
+    The default of mongo.bson.empty() will cause the the very first record in the collection to be returned.
+    
+Alternately, \code{query} may be a list which will be converted to a mongo.bson object
+by \code{\link{mongo.bson.from.list}()}.}
 \item{sort}{(\link{mongo.bson}) The desired fields by which to sort the returned records. The default of mongo.bson.empty()
-    indicates that no special sorting is to be done; the records will come back in the order that indexes locate them.}
+    indicates that no special sorting is to be done; the records will come back in the order that indexes locate them.
+    
+Alternately, \code{sort} may be a list which will be converted to a mongo.bson object
+by \code{\link{mongo.bson.from.list}()}.}
 \item{fields}{(\link{mongo.bson}) The desired fields which are to be returned from the matching record.
     The default of mongo.bson.empty() will cause all fields of the matching record to be returned; 
-    however, specific fields may be specified to cut down on network traffic and memory overhead.}
+    however, specific fields may be specified to cut down on network traffic and memory overhead.
+    
+Alternately, \code{fields} may be a list which will be converted to a mongo.bson object
+by \code{\link{mongo.bson.from.list}()}.}
 \item{limit}{(as.integer) The maximum number of records to be returned. A limit of 0L will return all matching records not skipped.}
 \item{skip}{(as.integer) The number of matching records to skip before returning subsequent matching records.}
 \item{options}{(integer vector) Flags governing the requested operation as follows:
@@ -55,6 +64,12 @@ if (mongo.is.connected(mongo)) {
     while (mongo.cursor.next(cursor))
         print(mongo.cursor.value(cursor))
     mongo.cursor.destroy(cursor)
+
+
+    # shorthand: find all records where age=32, sorted by name, 
+    # and only return the name & address fields:
+    cursor <- mongo.find(mongo, "test.people", list(age=32),
+                         list(name=1L), list(name=1L, address=1L))
 }
 }
 \seealso{

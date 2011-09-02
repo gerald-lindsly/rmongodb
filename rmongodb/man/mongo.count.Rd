@@ -13,7 +13,10 @@ mongo.count(mongo, ns, query=mongo.bson.empty())
 \item{mongo}{(\link{mongo}) A mongo connection object.}
 \item{ns}{(string) The namespace of the collection in which to add count records.}
 \item{query}{\link{mongo.bson} The criteria with which to match records that are to be counted.
-    The default of mongo.bson.empty() matches all records in the collection}
+    The default of mongo.bson.empty() matches all records in the collection.
+    
+Alternately, \code{query} may be
+a list which will be converted to a mongo.bson object by \code{\link{mongo.bson.from.list}()}.}
 }
 \value{
 (double) The number of matching records.
@@ -47,6 +50,9 @@ if (mongo.is.connected(mongo)) {
     total.legal.count <- mongo.count(mongo, "test.people", query)
     print("people of age 21 or greater")
     print(total.legal.count)
+
+    # shorthand using a list:
+    ford.count <- mongo.count(mongo, "test.cars", list(make="Ford"))
 }
 }
 \seealso{

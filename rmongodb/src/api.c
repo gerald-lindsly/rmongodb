@@ -31,6 +31,7 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.get.server.err", (DL_FUNC) mongo_get_server_err, 1 },
     { ".mongo.get.server.err.string", (DL_FUNC) mongo_get_server_err_string, 1 },
     { ".mongo.insert", (DL_FUNC) rmongo_insert, 3 },
+    { ".mongo.insert.batch", (DL_FUNC) rmongo_insert_batch, 3 },
     { ".mongo.update", (DL_FUNC) rmongo_update, 5 },
     { ".mongo.remove", (DL_FUNC) rmongo_remove, 3 },
     { ".mongo.find.one", (DL_FUNC) rmongo_find_one, 4 },

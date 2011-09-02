@@ -159,29 +159,36 @@ SEXP rmongo_insert(SEXP mongo_conn, SEXP ns, SEXP b) {
     const char* _ns = CHAR(STRING_ELT(ns, 0));
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
-    if (TYPEOF(b) == VECSXP) {
-        int len = LENGTH(b);
-        bson** blist = Calloc(len, bson*);
-        int i;
-        int success = 1;
-        for (i = 0; i < len && success; i++) {
-            SEXP _b = VECTOR_ELT(b, i);
-            if (!_isBSON(_b))
-                success = 0;
-            else
-                blist[i] = _checkBSON(_b);
-        }
-        if (success)
-            LOGICAL(ret)[0] = (mongo_insert_batch(conn, _ns, blist, len) == MONGO_OK);
-        Free(blist);
-        if (!success)
-            error("Expected list of mongo.bson class objects");
+    bson* _b = _checkBSON(b);
+    LOGICAL(ret)[0] = (mongo_insert(conn, _ns, _b) == MONGO_OK);
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP rmongo_insert_batch(SEXP mongo_conn, SEXP ns, SEXP b) {
+    mongo* conn = _checkMongo(mongo_conn);
+    const char* _ns = CHAR(STRING_ELT(ns, 0));
+    SEXP ret;
+    PROTECT(ret = allocVector(LGLSXP, 1));
+    if (TYPEOF(b) != VECSXP)
+        error("Expected a list of mongo.bson class objects");
+    int len = LENGTH(b);
+    bson** blist = Calloc(len, bson*);
+    int i;
+    int success = 1;
+    for (i = 0; i < len && success; i++) {
+        SEXP _b = VECTOR_ELT(b, i);
+        if (!_isBSON(_b))
+            success = 0;
+        else
+            blist[i] = _checkBSON(_b);
     }
-    else {
-        ;
-        bson* _b = _checkBSON(b);
-        LOGICAL(ret)[0] = (mongo_insert(conn, _ns, _b) == MONGO_OK);
-    }
+    if (success)
+        LOGICAL(ret)[0] = (mongo_insert_batch(conn, _ns, blist, len) == MONGO_OK);
+    Free(blist);
+    if (!success)
+        error("Expected list of mongo.bson class objects");
     UNPROTECT(1);
     return ret;
 }

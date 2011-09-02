@@ -150,7 +150,7 @@ buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append(buf, "name", "Silvia")
 mongo.bson.buffer.append(buf, "city", "Cincinnati")
 z <- mongo.bson.from.buffer(buf)
-mongo.insert(mongo, ns, list(x, y, z))
+mongo.insert.batch(mongo, ns, list(x, y, z))
 
 print("index create x2")
 print(mongo.index.create(mongo, ns, "city"))

@@ -12,7 +12,8 @@ mongo.gridfs.find(gridfs, query)
 \item{query}{(string) The name of the GridFS file to locate.
 
 This parameter may also be a \link{mongo.bson} query object and is used to search 
-the GridFS "files" collection documents for matches.}
+the GridFS "files" collection documents for matches.  Alternately, \code{query} may be
+a list which will be converted to a mongo.bson object by \code{\link{mongo.bson.from.list}()}.}
 }
 \value{
 NULL, if not found; otherwise, a \link{mongo.gridfile} object corresponding to the found GridFS file.

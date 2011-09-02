@@ -18,10 +18,16 @@ mongo.find.one(mongo, ns, query=mongo.bson.empty(),
 \item{mongo}{(\link{mongo}) A mongo connection object.}
 \item{ns}{(string) The namespace of the collection from in which to find a record.}
 \item{query}{(\link{mongo.bson}) The criteria with which to match the record that is to be found.
-    The default of mongo.bson.empty() will cause the the very first record in the collection to be returned. }
+The default of mongo.bson.empty() will cause the the very first record in the collection to be returned.
+
+Alternately, \code{query} may be a list which will be converted to a mongo.bson object 
+by \code{\link{mongo.bson.from.list}()}.}
 \item{fields}{(\link{mongo.bson}) The desired fields which are to be returned frtom the matching record.
     The default of mongo.bson.empty() will cause all fields of the matching record to be returned; 
-    however, specific fields may be specified to cut down on network traffic and memory overhead.}
+    however, specific fields may be specified to cut down on network traffic and memory overhead.
+    
+Alternately, \code{fields} may be a list which will be converted to a mongo.bson object
+by \code{\link{mongo.bson.from.list}()}.}
 }
 \value{
 NULL if no record matching the criteria is found; otherwise,
@@ -58,6 +64,9 @@ if (mongo.is.connected(mongo)) {
 
     # find the first record in collection cars of database test
     have.car <- !is.null(mongo.find.one(mongo, "test.cars"))
+
+    # shorthand using a list:
+    b <- mongo.find.one(mongo, "test.people", list(name="Jose"))
 }
 }
 \seealso{

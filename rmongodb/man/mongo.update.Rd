@@ -13,8 +13,14 @@ mongo.update(mongo, ns, criteria, objNew, flags=0L)
 \arguments{
 \item{mongo}{(\link{mongo}) a mongo connection object.}
 \item{ns}{(string) namespace of the collection to which to update.}
-\item{criteria}{(\link{mongo.bson}) The criteria with which to match records that are to be updated.}
-\item{objNew}{(\link{mongo.bson}) The replacement object.}
+\item{criteria}{(\link{mongo.bson}) The criteria with which to match records that are to be updated.
+
+Alternately, \code{criteria} may be a list which will be converted to a mongo.bson object
+by \code{\link{mongo.bson.from.list}()}.}
+\item{objNew}{(\link{mongo.bson}) The replacement object.
+
+Alternately, \code{objNew} may be a list which will be converted to a mongo.bson object
+by \code{\link{mongo.bson.from.list}()}.}
 \item{flags}{(integer vector) A list of optional flags governing the operation:
     \itemize{
         \item{\code{\link{mongo.update.upsert}}: insert ObjNew into the database if no record matching criteria is found.}
@@ -26,6 +32,8 @@ mongo.update(mongo, ns, criteria, objNew, flags=0L)
 \examples{
 mongo <- mongo.create()
 if (mongo.is.connected(mongo)) {
+    ns <- "test.people"
+
     buf <- mongo.bson.buffer.create()
     mongo.bson.buffer.append(buf, "name", "Joe")
     criteria <- mongo.bson.from.buffer(buf)
@@ -37,7 +45,7 @@ if (mongo.is.connected(mongo)) {
     objNew <- mongo.bson.from.buffer(buf)
 
     # increment the age field of the first record matching name "Joe"
-    mongo.update(mongo, "test.people", criteria, objNew)
+    mongo.update(mongo, ns, criteria, objNew)
 
     buf <- mongo.bson.buffer.create()
     mongo.bson.buffer.append(buf, "name", "Jeff")
@@ -51,8 +59,11 @@ if (mongo.is.connected(mongo)) {
     # update the entire record to { name: "Jeff", age: 27 }
     # where name equals "Jeff"
     # if such a record exists; otherwise, insert this as a new reord
-    mongo.update(mongo, "test.people", criteria, objNew,
+    mongo.update(mongo, ns, criteria, objNew,
         mongo.update.upsert)
+
+    # do a shorthand update:
+    mongo.update(mongo, ns, list(name="John"), list(name="John", age=25))
 }
 }
 \seealso{

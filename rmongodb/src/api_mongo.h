@@ -16,7 +16,8 @@ SEXP mongo_get_timeout(SEXP mongo_conn);
 SEXP mongo_get_server_err(SEXP mongo_conn);
 SEXP mongo_get_server_err_string(SEXP mongo_conn);
 
-SEXP rmongo_insert(SEXP mongo_conn, SEXP ns, SEXP bson);
+SEXP rmongo_insert(SEXP mongo_conn, SEXP ns, SEXP b);
+SEXP rmongo_insert_batch(SEXP mongo_conn, SEXP ns, SEXP b);
 SEXP rmongo_update(SEXP mongo_conn, SEXP ns, SEXP cond, SEXP op, SEXP flags);
 SEXP rmongo_remove(SEXP mongo_conn, SEXP ns, SEXP cond);
 SEXP rmongo_find_one(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields);
