@@ -20,16 +20,17 @@ This mapping to values is as follows:
 \code{\link{mongo.bson.eoo}} \tab 0L \cr
 \code{\link{mongo.bson.double}} \tab A double \cr
 \code{\link{mongo.bson.string}} \tab A string \cr
-\code{\link{mongo.bson.object}} \tab If the object is recognized as a complex value\cr 
-(of the form \{ "r" : double, "i" : double \}),\cr
- a complex value is returned; otherwise,\cr
+\code{\link{mongo.bson.object}} \tab If the object is recognized as a complex value
+(of the form \{ "r" : double, "i" : double \}),
+ a complex value is returned.  If the special wrapper as output by \code{\link{mongo.bson.buffer.append.object}()}
+ is detected, an appropriately attributed R object is returned; otherwise,
 a list is returned containing the subfields.\cr
-\code{\link{mongo.bson.array}} \tab If all fields of the array are of the same atomic type,\cr
-a vector of that type is returned.\cr
-Arrays of complex values are also detected as above.\cr
-otherwise, a list is returned containing the subfields.\cr
-\code{\link{mongo.bson.binary}} \tab A raw object.\cr
-The subtype of the binary data is stored in the attribute "subtype".\cr
+\code{\link{mongo.bson.array}} \tab If all fields of the array are of the same atomic type,
+a vector of that type is returned.
+Arrays of complex values are also detected as above.
+Otherwise, a list is returned containing the subfields.\cr
+\code{\link{mongo.bson.binary}} \tab A raw object.
+If non-zero, the subtype of the binary data is stored in the attribute "subtype".
 See \code{\link{mongo.bson.buffer.append.raw}()}.\cr
 \code{\link{mongo.bson.undefined}} \tab A \link{mongo.undefined} object \cr
 \code{\link{mongo.bson.oid}} \tab A \link{mongo.oid} object \cr
