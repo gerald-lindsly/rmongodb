@@ -13,7 +13,7 @@ mongo.gridfs.create(mongo, db, prefix="fs")
 \item{db}{(string) The name of the database in which to access and/or store the gridfs-related collections. }
 \item{prefix}{(string) The prefix to use constructing the gridfs-related collection names. 
 There are two collections used for this purpose:\cr
-\"\emph{db}.\emph{prefix}.files\" and  \"\emph{db}.\emph{prefix}.chunks\".}
+\"\code{db}.\code{prefix}.files\" and  \"\code{db}.\code{prefix}.chunks\".}
 }
 \value{
 (\link{mongo.gridfs}) An object to be used for subsequent operations on the grid file store.

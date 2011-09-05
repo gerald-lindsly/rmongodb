@@ -15,8 +15,8 @@ mongo.get.database.collections(mongo, db)
 \value{
 (string vector) List of collection namespaces in the given database.
 
- Note this will not include the system collection \emph{db}.system.indexes nor the indexes attached to the database.
-Use mongo.find(mongo, '\emph{db}.system.indexes", limit=0L) for information on any indexes.
+Note this will not include the system collection \code{db}.system.indexes nor the indexes attached to the database.
+Use \code{mongo.find(mongo, "db.system.indexes", limit=0L)} for information on any indexes.
 }
 \examples{
 mongo <- mongo.create()

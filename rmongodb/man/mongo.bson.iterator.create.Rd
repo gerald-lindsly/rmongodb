@@ -12,7 +12,7 @@ mongo.bson.iterator.create(b)
 \arguments{
 \item{b}{(\link{mongo.bson}) The mongo.bson object through which to iterate.
 
-\emph{b} may also be a mongo.bson.iterator and is expected to point to a subobject or array.
+\code{b} may also be a mongo.bson.iterator and is expected to point to a subobject or array.
 The iterator returned may be used to step through the subobject or array.}
 }
 \value{

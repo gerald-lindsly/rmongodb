@@ -12,7 +12,7 @@ mongo.gridfile.get.length(gridfile)
 \item{gridfile}{A (\link{mongo.gridfile}) object.}
 }
 \value{
-(double) The length of \emph{gridfile}.
+(double) The length of \code{gridfile}.
 }
 \examples{
 mongo <- mongo.create()

@@ -14,9 +14,9 @@ mongo.gridfile.get.chunk(gridfile, i)
 This should be in the range 0 to \code{\link{mongo.gridfile.get.chunk.count}(gridfile) - 1}.}
 }
 \value{
-(\link{mongo.bson}) the \emph{i}th chunk of \emph{gridfile} if successful; otherwise, NULL.
+(\link{mongo.bson}) the \code{i}th chunk of \code{gridfile} if successful; otherwise, NULL.
 
-The value returned is the \emph{i}th document in the 'chunks' collection of the GridFS.  The 'data' field of this
+The value returned is the \code{i}th document in the 'chunks' collection of the GridFS.  The 'data' field of this
 document contains the actual data belonging to the chunk.\cr
 See \url{http://www.mongodb.org/display/DOCS/GridFS+Specification}.
 }

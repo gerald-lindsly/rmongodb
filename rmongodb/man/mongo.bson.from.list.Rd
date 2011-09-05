@@ -22,7 +22,7 @@ This \emph{must} be a list, \emph{not} a vector of atomic types; otherwise, an e
 use \code{as.list()} as necessary.}
 }
 \value{
-(\link{mongo.bson}) A mongo.bson object serialized from \emph{lst}.
+(\link{mongo.bson}) A mongo.bson object serialized from \code{lst}.
 }
 \examples{
 lst <- list(name="John", age=32)

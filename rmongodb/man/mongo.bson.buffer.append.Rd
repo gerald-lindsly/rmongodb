@@ -5,7 +5,7 @@
 \description{
 Append a name/value pair into a \link{mongo.bson.buffer}.
 
-This function is a generic version of many 'append' functions.  It will detect the type of the \emph{value} parameter
+This function is a generic version of many 'append' functions.  It will detect the type of the \code{value} parameter
 and perform the same action as the specific functions.  These functions are:
 \itemize{
 \item \code{\link{mongo.bson.buffer.append.int}()}

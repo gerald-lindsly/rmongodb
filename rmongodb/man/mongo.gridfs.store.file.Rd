@@ -15,7 +15,7 @@ mongo.gridfs.store.file(gridfs, filename, remotename="",
 \item{filename}{(string) The path/filename of the file to copy to the server.}
 \item{remotename}{(string) The name the file will be known as within the GridFS.\cr
 If remotename=="" (the default),
-the remote file will be known by the given \emph{filename}.}
+the remote file will be known by the given \code{filename}.}
 \item{contenttype}{(string) Optional MIME content type.}
 }
 \value{

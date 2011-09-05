@@ -12,7 +12,7 @@ mongo.bson.iterator.key(iter)
 \item{iter}{A \link{mongo.bson.iterator}.}
 }
 \value{
-(string) The key (name) of the field pointed to by \emph{iter}
+(string) The key (name) of the field pointed to by \code{iter}
 }
 \examples{
 buf <- mongo.bson.buffer.create()

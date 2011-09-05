@@ -14,7 +14,7 @@ mongo.gridfile.seek(gridfile, offset)
 \item{offset}{(as.double) The position to which to seek.}
 }
 \value{
-(double) The position set.  This may be at the length of the GridFS file if \emph{offset} was greater than that.
+(double) The position set.  This may be at the length of the GridFS file if \code{offset} was greater than that.
 }
 \examples{
 mongo <- mongo.create()

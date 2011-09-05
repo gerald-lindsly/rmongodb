@@ -13,7 +13,7 @@ mongo.gridfile.get.chunk.count(gridfile)
 \item{gridfile}{A (\link{mongo.gridfile}) object.}
 }
 \value{
-(integer) The chunk count of \emph{gridfile}
+(integer) The chunk count of \code{gridfile}
 }
 \examples{
 mongo <- mongo.create()

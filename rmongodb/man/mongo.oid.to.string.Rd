@@ -18,7 +18,7 @@ mongo.oid.to.string(oid)
 \item{oid}{(\link{mongo.oid}) The OID to be converted.}
 }
 \value{
-(string) A string of 24 hex digits representing the bits of \emph{oid}.
+(string) A string of 24 hex digits representing the bits of \code{oid}.
 }
 \examples{
 oid <- mongo.oid.create()

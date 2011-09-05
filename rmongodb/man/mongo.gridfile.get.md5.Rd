@@ -12,7 +12,7 @@ mongo.gridfile.get.md5(gridfile)
 \item{gridfile}{A (\link{mongo.gridfile}) object.}
 }
 \value{
-(string) The MD5 hash (32 hex digits) of \emph{gridfile}.
+(string) The MD5 hash (32 hex digits) of \code{gridfile}.
 }
 \examples{
 mongo <- mongo.create()

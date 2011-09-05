@@ -15,7 +15,7 @@ mongo.gridfile.get.descriptor(gridfile)
 \item{gridfile}{A (\link{mongo.gridfile}) object.}
 }
 \value{
-(\link{mongo.bson}) The descriptor of \emph{gridfile}.
+(\link{mongo.bson}) The descriptor of \code{gridfile}.
 }
 \examples{
 mongo <- mongo.create()

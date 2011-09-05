@@ -14,7 +14,7 @@ mongo.oid.time(oid)
 \item{oid}{(\link{mongo.oid}) The OID to be examined.}
 }
 \value{
-(integer) ("POSIXct") The time portion of the given \emph{oid}.
+(integer) ("POSIXct") The time portion of the given \code{oid}.
 }
 \examples{
 oid <- mongo.oid.create()

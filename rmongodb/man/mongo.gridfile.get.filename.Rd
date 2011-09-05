@@ -13,7 +13,7 @@ mongo.gridfile.get.filename(gridfile)
 \item{gridfile}{A (\link{mongo.gridfile}) object.}
 }
 \value{
-(string) The filename (remote name) of \emph{gridfile}
+(string) The filename (remote name) of \code{gridfile}
 }
 \examples{
 mongo <- mongo.create()

@@ -19,7 +19,7 @@ as.character.mongo.oid(x, ...)
 \item{...}{Parameters passed from generic.}
 }
 \value{
-(string) A string of 24 hex digits representing the bits of \emph{oid}.
+(string) A string of 24 hex digits representing the bits of oid \code{x}.
 }
 \examples{
 oid <- mongo.oid.create()

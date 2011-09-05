@@ -13,7 +13,7 @@ mongo.gridfile.get.metadata(gridfile)
 \item{gridfile}{A (\link{mongo.gridfile}) object.}
 }
 \value{
-(\link{mongo.bson}) The metadata of \emph{gridfile} if present; otherwise, NULL.
+(\link{mongo.bson}) The metadata of \code{gridfile} if present; otherwise, NULL.
 }
 \examples{
 mongo <- mongo.create()

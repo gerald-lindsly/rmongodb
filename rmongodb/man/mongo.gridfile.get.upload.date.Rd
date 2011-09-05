@@ -12,7 +12,7 @@ mongo.gridfile.get.upload.date(gridfile)
 \item{gridfile}{A (\link{mongo.gridfile}) object.}
 }
 \value{
-(POSIXct) The upload date/time of \emph{gridfile}.
+(POSIXct) The upload date/time of \code{gridfile}.
 }
 \examples{
 mongo <- mongo.create()

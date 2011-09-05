@@ -12,7 +12,7 @@ mongo.gridfile.get.chunk.size(gridfile)
 \item{gridfile}{A (\link{mongo.gridfile}) object.}
 }
 \value{
-(integer) The chunk size of \emph{gridfile}.
+(integer) The chunk size of \code{gridfile}.
 }
 \examples{
 mongo <- mongo.create()

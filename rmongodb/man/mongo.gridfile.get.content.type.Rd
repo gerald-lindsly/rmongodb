@@ -12,7 +12,7 @@ mongo.gridfile.get.content.type(gridfile)
 \item{gridfile}{A (\link{mongo.gridfile}) object.}
 }
 \value{
-(string) The content.type (remote name) of \emph{gridfile}.
+(string) The content.type (remote name) of \code{gridfile}.
 This may be an empty string if no content type is associated with the gridfile.
 }
 \examples{
