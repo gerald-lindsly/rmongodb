@@ -1,5 +1,37 @@
 library("rmongodb")
 
+age <- c(5, 8)
+height <- c(35, 47)
+d <- data.frame(age=age,height=height)
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append.object(buf, "table", d)
+b <- mongo.bson.from.buffer(buf)
+print(b)
+
+
+age=18:29
+height=c(76.1,77,78.1,78.2,78.8,79.7,79.9,81.1,81.2,81.8,82.8,83.5)
+village=data.frame(age=age,height=height)
+unclass(village)
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append.object(buf, "village", village)
+b <- mongo.bson.from.buffer(buf)
+print(b)
+
+v <- mongo.bson.value(b, "village")
+v
+unclass(v)
+
+m <- matrix(c(1,0,0, 0,1,0, 0,0,1), nrow=3, ncol=3, dimnames=list(c("X","Y","Z"),c("x","y","z")))
+m
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append.object(buf, "mat", m)
+b <- mongo.bson.from.buffer(buf)
+print(b)
+v <- mongo.bson.value(b, "mat")
+v
+attributes(v)
+
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append(buf, "x", 5L)
 scope <- mongo.bson.from.buffer(buf)

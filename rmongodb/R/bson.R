@@ -171,6 +171,9 @@ mongo.bson.buffer.append <- function(buf, name, value)
 mongo.bson.buffer.append.list <- function(buf, name, value)
     .Call(".mongo.bson.buffer.append.list", buf, name, value)
 
+mongo.bson.buffer.append.object <- function(buf, name, value)
+    .Call(".mongo.bson.buffer.append.object", buf, name, value)
+
 mongo.bson.buffer.start.object <- function(buf, name)
     .Call(".mongo.bson.buffer.start.object", buf, name)
 

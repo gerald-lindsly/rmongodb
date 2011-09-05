@@ -24,13 +24,11 @@ This mapping to values is as follows:
 \code{\link{mongo.bson.object}} \tab If the object is recognized as a complex value\cr 
 (of the form \{ "r" : double, "i" : double \}),\cr
  a complex value is returned; otherwise,\cr
-a \link{mongo.bson} object is returned which may be further\cr
-iterated through for the values of subfields.\cr
+a list is returned containing the subfields.\cr
 \code{\link{mongo.bson.array}} \tab If all fields of the array are of the same atomic type,\cr
 a vector of that type is returned.\cr
 Arrays of complex values are also detected as above.\cr
-otherwise, a \link{mongo.bson} object is returned which\cr
-may be examined similarly as for mongo.bson.object. \cr
+otherwise, a list is returned containing the subfields.\cr
 \code{\link{mongo.bson.binary}} \tab A raw object.\cr
 The subtype of the binary data is stored in the attribute "subtype".\cr
 See \code{\link{mongo.bson.buffer.append.raw}()}.\cr

@@ -99,6 +99,7 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.bson.buffer.append.element", (DL_FUNC) mongo_bson_buffer_append_element, 3},
     { ".mongo.bson.buffer.append", (DL_FUNC) mongo_bson_buffer_append, 3},
     { ".mongo.bson.buffer.append.list", (DL_FUNC) mongo_bson_buffer_append_list, 3},
+    { ".mongo.bson.buffer.append.object", (DL_FUNC) mongo_bson_buffer_append_object, 3},
     { ".mongo.bson.buffer.start.object", (DL_FUNC) mongo_bson_buffer_start_object, 2},
     { ".mongo.bson.buffer.start.array", (DL_FUNC) mongo_bson_buffer_start_array, 2},
     { ".mongo.bson.buffer.finish.object", (DL_FUNC) mongo_bson_buffer_finish_object, 1},

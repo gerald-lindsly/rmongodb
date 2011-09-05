@@ -53,6 +53,7 @@ SEXP mongo_bson_buffer_append_oid(SEXP buf, SEXP name, SEXP value);
 SEXP mongo_bson_buffer_append_bson(SEXP buf, SEXP name, SEXP value);
 SEXP mongo_bson_buffer_append_element(SEXP buf, SEXP name, SEXP value);
 SEXP mongo_bson_buffer_append_list(SEXP buf, SEXP name, SEXP value);
+SEXP mongo_bson_buffer_append_object(SEXP buf, SEXP name, SEXP value);
 SEXP mongo_bson_buffer_append(SEXP buf, SEXP name, SEXP value);
 SEXP mongo_bson_buffer_start_array(SEXP buf, SEXP name);
 SEXP mongo_bson_buffer_start_object(SEXP buf, SEXP name);

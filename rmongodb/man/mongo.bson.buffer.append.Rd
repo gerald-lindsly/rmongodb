@@ -31,6 +31,11 @@ and perform the same action as the specific functions.  These functions are:
 \code{\link{mongo.bson.buffer.append.long}()} is missing from the above list since R has 
 no 64-bit long integer type.  If you wish a value to be stored in the BSON data as a long
 you must explicity call that function.
+
+All of the above functions will lose the attributes of the object other than "names".
+When vectors of length > 1 are appended, "names" are preserved.\cr
+\code{\link{mongo.bson.buffer.append.object}()} gets around this shortcoming and allows
+most R objects to be stored in a database without loss of attributes.
 }
 \usage{
 mongo.bson.buffer.append(buf, name, value)

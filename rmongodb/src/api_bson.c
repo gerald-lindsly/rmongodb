@@ -45,11 +45,6 @@ void _checkOID(SEXP oid) {
 }
 
 
-void _checkBinary(SEXP bin) {
-    _checkClass(bin, "mongo.binary");
-}
-
-
 const char* numstr(int i) {
     extern const char bson_numstrs[1000][4];
     if (i < 1000)
@@ -60,6 +55,7 @@ const char* numstr(int i) {
         return s;
     }
 }
+
 
 SEXP _mongo_code_create(const char* code) {
     SEXP ret, cls;
@@ -216,6 +212,7 @@ SEXP _mongo_bson_buffer_create() {
     classgets(ret, cls);
     return ret;
 }
+
 
 SEXP mongo_bson_buffer_create() {
     SEXP ret = _mongo_bson_buffer_create();
@@ -442,7 +439,7 @@ SEXP _array_to_object(bson_iterator* _iter) {
     case BSON_STRING:
         PROTECT(ret = allocVector(STRSXP, count));
         while (bson_iterator_next(&sub))
-            SET_STRING_ELT(ret, i++, mkChar(bson_iterator_string(_iter)));
+            SET_STRING_ELT(ret, i++, mkChar(bson_iterator_string(&sub)));
         break;
     case BSON_BOOL:
         PROTECT(ret = allocVector(LGLSXP, count));
@@ -461,6 +458,8 @@ SEXP _array_to_object(bson_iterator* _iter) {
     return ret;
 }
 
+
+SEXP _mongo_bson_to_list(bson* b);
 
 SEXP _mongo_bson_value(bson_iterator* _iter) {
     SEXP ret;
@@ -494,6 +493,13 @@ SEXP _mongo_bson_value(bson_iterator* _iter) {
 
     case BSON_CODE:
         return _mongo_code_create(bson_iterator_string(_iter));
+
+    case BSON_CODEWSCOPE: {
+        const char* code = bson_iterator_code(_iter);
+        bson b;
+        bson_iterator_code_scope(_iter, &b);
+        return _mongo_code_w_scope_create(code, &b);
+    }
 
     case BSON_SYMBOL:
         return _mongo_symbol_create(bson_iterator_string(_iter));
@@ -549,17 +555,8 @@ SEXP _mongo_bson_value(bson_iterator* _iter) {
 returnSubObject: {
             bson b;
             bson_iterator_subobject(_iter, &b);
-            ret = _mongo_bson_create(&b);
-            UNPROTECT(3);
-            return ret;
+            return _mongo_bson_to_list(&b);
         }
-
-    case BSON_CODEWSCOPE: {
-        const char* code = bson_iterator_code(_iter);
-        bson b;
-        bson_iterator_code_scope(_iter, &b);
-        return _mongo_code_w_scope_create(code, &b);
-    }
 
     case 0:
         PROTECT(ret = allocVector(INTSXP, 1));
@@ -588,6 +585,174 @@ SEXP mongo_bson_value(SEXP b, SEXP name) {
     if (bson_find(&iter, _b, _name) == BSON_EOO)
         return R_NilValue;
     return _mongo_bson_value(&iter);
+}
+
+
+SEXP installAttrib(SEXP vec, SEXP name, SEXP val)
+{
+    SEXP s, t;
+    PROTECT(vec);
+    PROTECT(name);
+    PROTECT(val);
+    for (s = ATTRIB(vec); s != R_NilValue; s = CDR(s)) {
+	    if (TAG(s) == name) {
+	        SETCAR(s, val);
+	        UNPROTECT(3);
+	        return val;
+	    }
+    }
+    s = allocList(1);
+    SETCAR(s, val);
+    SET_TAG(s, name);
+    if (ATTRIB(vec) == R_NilValue)
+    	SET_ATTRIB(vec, s);
+    else {
+	    t = nthcdr(ATTRIB(vec), length(ATTRIB(vec)) - 1);
+	    SETCDR(t, s);
+    }
+    if (name == R_ClassSymbol)
+    	SET_OBJECT(vec, 1);
+
+    UNPROTECT(3);
+    return val;
+}
+
+
+SEXP _get_R_object(bson* b) {
+    bson_iterator iter;
+    bson_iterator_init(&iter, b);
+    if (bson_iterator_next(&iter) != BSON_BOOL ||
+        strcmp(bson_iterator_key(&iter), "R_OBJ") != 0)
+        return R_NilValue;
+    if (bson_iterator_next(&iter) == BSON_EOO ||
+        strcmp(bson_iterator_key(&iter), "value") != 0)
+        return R_NilValue;
+    SEXP ret;
+    PROTECT(ret = _mongo_bson_value(&iter));
+    if (bson_iterator_next(&iter) == BSON_OBJECT &&
+        strcmp(bson_iterator_key(&iter), "attr") == 0) {
+        bson_iterator sub;
+        bson_iterator_subiterator(&iter, &sub);
+        while (bson_iterator_next(&sub) != BSON_EOO) {
+            SEXP attr;
+            PROTECT(attr = _mongo_bson_value(&sub));
+            SEXP name = install(bson_iterator_key(&sub));
+            if (name == R_DimNamesSymbol)
+                setAttrib(attr, R_NamesSymbol, R_NilValue);
+            installAttrib(ret, name, attr);
+            UNPROTECT(1);
+        }
+    }
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP _mongo_bson_to_list(bson* b) {
+    SEXP names, ret;
+    ret = _get_R_object(b);
+    if (ret != R_NilValue)
+        return ret;
+    int count = 0;
+    bson_iterator iter;
+    bson_iterator_init(&iter, b);
+
+    int common_type = BSON_EOO;
+    bson_type sub_type;
+    Rcomplex z;
+    while ((sub_type = bson_iterator_next(&iter))) {
+        count++;
+        if (sub_type == BSON_LONG)
+            sub_type = BSON_DOUBLE;
+        if (common_type == BSON_EOO) {
+            switch ((common_type = sub_type)) {
+            case BSON_INT: ;
+            case BSON_DOUBLE: ;
+            case BSON_STRING: ;
+            case BSON_BOOL: ;
+                continue;
+            case BSON_OBJECT:
+                if (_iterator_getComplex(&iter, &z))
+                    continue;
+                // fall thru to default
+            default:
+                common_type = -1;
+            }
+        }
+        else if (sub_type != common_type)
+            common_type = -1;
+    }
+
+    bson_iterator_init(&iter, b);
+    PROTECT(names = allocVector(STRSXP, count));
+    int i = 0;
+    if (common_type != -1) {
+        switch (common_type) {
+        case BSON_EOO:
+        case BSON_INT:
+            PROTECT(ret = allocVector(INTSXP, count));
+            while (bson_iterator_next(&iter)) {
+                SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
+                INTEGER(ret)[i++] = bson_iterator_int(&iter);
+            }
+            break;
+        case BSON_DOUBLE:
+            PROTECT(ret = allocVector(REALSXP, count));
+            while ((sub_type = bson_iterator_next(&iter))) {
+                SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
+                REAL(ret)[i++] = (sub_type == BSON_LONG ?
+                                  bson_iterator_long(&iter) :
+                                  bson_iterator_double(&iter));
+            }
+            break;
+        case BSON_STRING:
+            PROTECT(ret = allocVector(STRSXP, count));
+            while (bson_iterator_next(&iter)) {
+                SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
+                SET_STRING_ELT(ret, i++, mkChar(bson_iterator_string(&iter)));
+            }
+            break;
+        case BSON_BOOL:
+            PROTECT(ret = allocVector(LGLSXP, count));
+            while (bson_iterator_next(&iter)) {
+                SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
+                LOGICAL(ret)[i++] = bson_iterator_int(&iter);
+            }
+            break;
+        case BSON_OBJECT: // complex
+            PROTECT(ret = allocVector(CPLXSXP, count));
+            while (bson_iterator_next(&iter)) {
+                SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
+                _iterator_getComplex(&iter, &COMPLEX(ret)[i++]);
+            }
+            break;
+        default: // never reaches here - avoid compiler warning
+            ret = R_NilValue;
+            break;
+        }
+        setAttrib(ret, R_NamesSymbol, names);
+        UNPROTECT(2);
+        return ret;
+    }
+
+    SEXP el;
+    PROTECT(ret = allocVector(VECSXP, count));
+    for (; (sub_type = bson_iterator_next(&iter)); i++) {
+        SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
+        el = _mongo_bson_value(&iter);
+        SET_VECTOR_ELT(ret, i, el);
+    }
+    setAttrib(ret, R_NamesSymbol, names);
+    UNPROTECT(2);
+    return ret;
+}
+
+
+SEXP mongo_bson_to_list(SEXP b) {
+    if (b == R_NilValue)
+        return R_NilValue;
+    bson* _b = _checkBSON(b);
+    return _mongo_bson_to_list(_b);
 }
 
 
@@ -662,222 +827,6 @@ SEXP mongo_oid_print(SEXP oid) {
     bson_oid_to_string(_oid, s);
     Rprintf("{ $oid : \"%s\" }\n", s);
     return oid;
-}
-
-
-// passed an iterator to start of a bson object
-SEXP _mongo_bson_to_list(bson_iterator* _iter) {
-    SEXP names, ret;
-    int count = 0;
-    bson_iterator iter;
-    memcpy(&iter, _iter, sizeof(bson_iterator));
-    int common_type = BSON_EOO;
-    bson_type sub_type;
-    Rcomplex z;
-    while ((sub_type = bson_iterator_next(&iter))) {
-        count++;
-        if (sub_type == BSON_LONG)
-            sub_type = BSON_DOUBLE;
-        if (common_type == BSON_EOO) {
-            switch ((common_type = sub_type)) {
-            case BSON_INT: ;
-            case BSON_DOUBLE: ;
-            case BSON_STRING: ;
-            case BSON_BOOL: ;
-                continue;
-            case BSON_OBJECT:
-                if (_iterator_getComplex(&iter, &z))
-                    continue;
-                // fall thru to default
-            default:
-                common_type = -1;
-            }
-        }
-        else if (sub_type != common_type)
-            common_type = -1;
-    }
-
-    memcpy(&iter, _iter, sizeof(bson_iterator));
-    PROTECT(names = allocVector(STRSXP, count));
-    int i = 0;
-    if (common_type != -1) {
-        switch (common_type) {
-        case BSON_EOO:
-        case BSON_INT:
-            PROTECT(ret = allocVector(INTSXP, count));
-            while (bson_iterator_next(&iter)) {
-                SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
-                INTEGER(ret)[i++] = bson_iterator_int(&iter);
-            }
-            break;
-        case BSON_DOUBLE:
-            PROTECT(ret = allocVector(REALSXP, count));
-            while ((sub_type = bson_iterator_next(&iter))) {
-                SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
-                REAL(ret)[i++] = (sub_type == BSON_LONG ?
-                                  bson_iterator_long(&iter) :
-                                  bson_iterator_double(&iter));
-            }
-            break;
-        case BSON_STRING:
-            PROTECT(ret = allocVector(STRSXP, count));
-            while (bson_iterator_next(&iter)) {
-                SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
-                SET_STRING_ELT(ret, i++, mkChar(bson_iterator_string(&iter)));
-            }
-            break;
-        case BSON_BOOL:
-            PROTECT(ret = allocVector(LGLSXP, count));
-            while (bson_iterator_next(&iter)) {
-                SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
-                LOGICAL(ret)[i++] = bson_iterator_int(&iter);
-            }
-            break;
-        case BSON_OBJECT: // complex
-            PROTECT(ret = allocVector(CPLXSXP, count));
-            while (bson_iterator_next(&iter)) {
-                SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
-                _iterator_getComplex(&iter, &COMPLEX(ret)[i++]);
-            }
-            break;
-        default: // never reaches here - avoid compiler warning
-            ret = R_NilValue;
-            break;
-        }
-        setAttrib(ret, R_NamesSymbol, names);
-        UNPROTECT(2);
-        return ret;
-    }
-
-    SEXP el;
-    PROTECT(ret = allocVector(VECSXP, count));
-    for (; (sub_type = bson_iterator_next(&iter)); i++) {
-        SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
-        switch (sub_type) {
-        case BSON_INT:
-            el = allocVector(INTSXP, 1);
-            INTEGER(el)[0] = bson_iterator_int(&iter);
-            break;
-
-        case BSON_DOUBLE:
-            el = allocVector(REALSXP, 1);
-            REAL(el)[0] = bson_iterator_double(&iter);
-            break;
-
-        case BSON_LONG:
-            el = allocVector(REALSXP, 1);
-            REAL(el)[0] = bson_iterator_long(&iter);
-            break;
-
-        case BSON_BOOL:
-            el = allocVector(LGLSXP, 1);
-            LOGICAL(el)[0] = bson_iterator_bool(&iter);
-            break;
-
-        case BSON_STRING:
-            el = allocVector(STRSXP, 1);
-            SET_STRING_ELT(el, 0, mkChar(bson_iterator_string(&iter)));
-            break;
-
-        case BSON_NULL:
-            el =  R_NilValue;
-            break;
-
-        case BSON_OID: {
-            bson_oid_t* oid = Calloc(1, bson_oid_t);
-            memcpy(oid, bson_iterator_oid(&iter), sizeof(bson_oid_t));
-            el = _mongo_oid_create(oid);
-            UNPROTECT(3);
-            break;
-        }
-
-        case BSON_DATE:
-            el = _createPOSIXct(bson_iterator_date(&iter));
-            UNPROTECT(2);
-            break;
-
-        case BSON_TIMESTAMP: {
-            bson_timestamp_t ts = bson_iterator_timestamp(&iter);
-            el = _mongo_timestamp_create(ts.t, ts.i);
-            UNPROTECT(3);
-            break;
-        }
-
-        case BSON_CODE:
-            el = _mongo_code_create(bson_iterator_string(&iter));
-            break;
-
-        case BSON_SYMBOL:
-            el = _mongo_symbol_create(bson_iterator_string(&iter));
-            break;
-
-        case BSON_UNDEFINED:
-            el = mongo_undefined_create();
-            break;
-
-        case BSON_REGEX:
-            el = _mongo_regex_create(bson_iterator_regex(&iter), bson_iterator_regex_opts(&iter));
-            break;
-
-        case BSON_BINDATA:
-            el = _raw_create(bson_iterator_bin_type(&iter),
-                             bson_iterator_bin_data(&iter),
-                             bson_iterator_bin_len(&iter));
-            break;
-
-        case BSON_ARRAY: {
-            el = _array_to_object(&iter);
-            if (el == R_NilValue)
-                goto returnSubObject;
-            break;
-        }
-
-        case BSON_OBJECT:
-            if (_iterator_getComplex(&iter, &z)) {
-                el = allocVector(CPLXSXP, 1);
-                COMPLEX(el)[0] = z;
-                break;
-            }
-            // fall thru to returnSubObject
-returnSubObject: {
-                bson_iterator sub;
-                bson_iterator_subiterator(&iter, &sub);
-                el = _mongo_bson_to_list(&sub);
-                break;
-            }
-
-        case BSON_CODEWSCOPE: {
-            const char* code = bson_iterator_code(&iter);
-            bson b;
-            bson_iterator_code_scope(&iter, &b);
-            el =  _mongo_code_w_scope_create(code, &b);
-            break;
-        }
-
-        case 0:
-            el = allocVector(INTSXP, 1);
-            INTEGER(el)[0] = 0;
-            break;
-
-        default:
-            error("Unhandled BSON type %d\n", sub_type);
-            el = R_NilValue;  // uninitialized el avoid warning
-        }
-        SET_VECTOR_ELT(ret, i, el);
-    }
-    setAttrib(ret, R_NamesSymbol, names);
-    UNPROTECT(2);
-    return ret;
-}
-
-
-SEXP mongo_bson_to_list(SEXP b) {
-    if (b == R_NilValue)
-        return R_NilValue;
-    bson* _b = _checkBSON(b);
-    bson_iterator iter;
-    bson_iterator_init(&iter, _b);
-    return _mongo_bson_to_list(&iter);
 }
 
 
@@ -1253,6 +1202,48 @@ SEXP mongo_bson_buffer_append_raw(SEXP buf, SEXP name, SEXP value, SEXP subtype)
         _subtype = INTEGER(subtype)[0];
     char* data = (char*)RAW(value);
     LOGICAL(ret)[0] = (bson_append_binary(_buf, _name, _subtype, data, len) == BSON_OK);
+    UNPROTECT(1);
+    return ret;
+}
+
+
+SEXP mongo_bson_buffer_append_object(SEXP buf, SEXP name, SEXP value) {
+    if (LENGTH(value) == 0)
+        error("object's length must be > 0");
+    bson_buffer* _buf = _checkBuffer(buf);
+    const char* _name = CHAR(STRING_ELT(name, 0));
+    SEXP ret;
+    PROTECT(ret = allocVector(LGLSXP, 1));
+    int success = (bson_append_start_object(_buf, _name) == BSON_OK);
+    if (success)
+        success = (bson_append_bool(_buf, "R_OBJ", 1) == BSON_OK);
+    if (success) {
+        SEXP R_value;
+        PROTECT(R_value = allocVector(STRSXP, 1));
+        SET_STRING_ELT(R_value, 0, mkChar("value"));
+        success = LOGICAL(mongo_bson_buffer_append(buf, R_value, value))[0];
+        UNPROTECT(1);
+        SEXP s = ATTRIB(value);
+        if (s != R_NilValue) {
+            if (success)
+                success = (bson_append_start_object(_buf, "attr") == BSON_OK);
+            for (; success && s != R_NilValue; s = CDR(s)) {
+                SEXP t = TAG(s);
+                if (t != R_NamesSymbol) {
+                    SEXP name;
+                    PROTECT(name = allocVector(STRSXP, 1));
+                    SET_STRING_ELT(name, 0, PRINTNAME(t));
+                    success = LOGICAL(mongo_bson_buffer_append(buf, name, CAR(s)))[0];
+                    UNPROTECT(1);
+                }
+            }
+            if (success)
+                success = (bson_append_finish_object(_buf) == BSON_OK);
+        }
+    }
+    if (success)
+        success = (bson_append_finish_object(_buf) == BSON_OK);
+    LOGICAL(ret)[0] = success;
     UNPROTECT(1);
     return ret;
 }
