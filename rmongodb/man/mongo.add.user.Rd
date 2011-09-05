@@ -3,7 +3,7 @@
 \alias{mongo.add.user}
 \title{Add a user and password}
 \description{
-Add a user and password against to the given database on a MongoDB server for authentication purposes.
+Add a user and password to the given database on a MongoDB server for authentication purposes.
 
 See \url{http://www.mongodb.org/display/DOCS/Security+and+Authentication}.
 

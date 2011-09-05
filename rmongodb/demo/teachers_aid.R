@@ -3,7 +3,7 @@ library("rmongodb")
 cat("\nSimple Teacher's Aid - A Sample Program Using rmongodb\n")
 cat("The grading functions will work only if a test has at least 2 students' scores entered.\n")
 
-# test scores of 0 are thrown out when calculating the grade curve
+# test scores of 0 are thrown out when calculating the grade curve of a test
 #   but are taken into consideration of a student's class grade
 #   these 0's are 'absent' on mandatory tests
 #   -1 scores (which are not stored in the database) do not effect the test curve

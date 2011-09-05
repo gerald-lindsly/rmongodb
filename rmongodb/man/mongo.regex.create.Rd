@@ -5,7 +5,7 @@
 \description{
 Create a \link{mongo.regex} object for appending to a buffer with\cr
 \code{\link{mongo.bson.buffer.append.regex}()} or \code{\link{mongo.bson.buffer.append}()}, or
-for embedding in a list such that \code{\link{mongo.bson.buffer.append.list}()} will properly insert a regular expression value
+for embedding in a list such that \code{\link{mongo.bson.buffer.append.list}()} will properly insert a regular expression
 value into a mongo.bson.buffer object.
 
 See \url{http://www.mongodb.org/display/DOCS/Advanced+Queries#AdvancedQueries-RegularExpressions}

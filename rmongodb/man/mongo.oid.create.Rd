@@ -6,8 +6,7 @@
 Create a \link{mongo.oid} object for appending to a buffer with\cr
 \code{\link{mongo.bson.buffer.append.oid}()} or \code{\link{mongo.bson.buffer.append}()}, or
 for embedding in a list such that \code{\link{mongo.bson.buffer.append.list}()}
-will properly insert a regular expression value
-value into a mongo.bson.buffer object.
+will properly insert an Object ID value into a mongo.bson.buffer object.
 
 See \url{http://www.mongodb.org/display/DOCS/Object+IDs}
 }
