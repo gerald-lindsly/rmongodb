@@ -40,12 +40,15 @@ This mapping to values is as follows:
 
 Special handling:
 
-\code{\link{mongo.bson.object}}: If the object is recognized as a complex value (of the form \{ "r" : double, "i" : double \}),
-a complex value is returned.  If the special wrapper as output by\cr
-\code{\link{mongo.bson.buffer.append.object}()} is detected, an appropriately attributed R object is returned; otherwise, a list is returned containing the subfields.
+\code{\link{mongo.bson.object}}: If the object is recognized as a complex value
+(of the form \{ "r" : double, "i" : double \}), a complex value is returned.
+If the special wrapper as output by\cr
+\code{\link{mongo.bson.buffer.append.object}()} is detected, an appropriately attributed R object is returned;
+otherwise, a list is returned containing the subfields.
 
 \code{\link{mongo.bson.array}}: If all fields of the array are of the same atomic type,
-a vector of that type is returned.  Arrays of complex values are also detected as above.
+a vector of that type is returned.  (Multidimensinal arrays are detected and the \code{dims} attribute 
+will be set accordingly.  Arrays of complex values are also detected as above).
 Otherwise, a list is returned containing the subfields.
 
 \code{\link{mongo.bson.binary}}: If non-zero, the subtype of the binary data is stored in the attribute "subtype".

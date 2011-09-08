@@ -20,9 +20,14 @@ mongo.bson.buffer.append.long(buf, name, value)
 \item{name}{(string) The name (key) of the field appended to the buffer. }
 \item{value}{(double vector) The values(s) to append to the buffer.
 
+If value has a \code{dims} attribute of length > 1, any \code{names} or \code{dimnames} attribute
+is ignored and a nested array is appended.\cr
+(Use \code{\link{mongo.bson.buffer.append.object}()} if you want to preserve \code{dimnames}; however, this can't
+append value as longs).
+
 If value has a names attribute, a subobject is appended and the subfields are given the indicated names.
 
-Othersize, if more than one element is present in value, the values are appended as a subarray.
+Otherwise, if more than one element is present in value, the values are appended as a subarray.
 
 In the last case, a single long is appended as the value of the field.}
 }

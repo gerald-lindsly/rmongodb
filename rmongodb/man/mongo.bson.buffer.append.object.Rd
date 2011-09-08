@@ -9,6 +9,9 @@ This function allows you to store higher level R objects in the database without
 losing their attribute information.  It will correctly handle data frames, matrices and arrays
 for instance; although, empty objects, such as a data frame with no rows, are not permitted.
 
+Note that the names attribute will not be preserved if the object is multidimensional (although
+dimnames will be).
+
 The object's value will look like this in the buffer:
 \preformatted{
     {

@@ -52,7 +52,8 @@ or by name, in the same fashion as above, like so
 
 
 Note that \code{mongo.bson.to.list()} operates recursively on subobjects and arrays and 
-you'll get lists whose members are lists or vectors themselves.
+you'll get lists whose members are lists or vectors themselves.  See \code{\link{mongo.bson.value}()} 
+for more information on the conversion of component types.
 
 This function also detects the special wrapper as output by \code{\link{mongo.bson.buffer.append.object}()} and
 will return an appropriately attributed object.

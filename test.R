@@ -1,5 +1,38 @@
 library("rmongodb")
 
+r <- as.integer(c(1,2,3,4,5,6,7,8))
+dim(r) <- c(2,2,2)
+r
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append.int(buf, "test", r)
+b <- mongo.bson.from.buffer(buf)
+b
+
+mongo.bson.value(b, "test")
+
+r <- as.raw(r)
+dim(r) <- c(2,4)
+r
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append(buf, "test", r)
+b <- mongo.bson.from.buffer(buf)
+b
+
+q <- mongo.bson.value(b, "test")
+q
+typeof(q)
+
+r <- 1:24
+dim(r) <- c(3,2,4)
+r
+buf <- mongo.bson.buffer.create()
+mongo.bson.buffer.append.int(buf, "test", r)
+b <- mongo.bson.from.buffer(buf)
+b
+
+mongo.bson.value(b, "test")
+
+
 age <- c(5, 8)
 height <- c(35, 47)
 d <- data.frame(age=age,height=height)
@@ -334,5 +367,5 @@ mongo.gridfile.pipe(gridfile, test.out)
 
 mongo.gridfile.destroy(gridfile)
 
-##mongo.disconnect(mongo)
-##mongo.destroy(mongo)
+mongo.disconnect(mongo)
+mongo.destroy(mongo)

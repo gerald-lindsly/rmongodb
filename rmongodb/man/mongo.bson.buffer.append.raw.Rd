@@ -7,6 +7,10 @@ Append raw (binary) data onto a \link{mongo.bson.buffer}.
 
 BSON has a special field type to indicate binary data.
 This function appends such an indicator as the type of a field with its value.
+
+If value has a \code{dims} attribute of length > 1, any \code{names} or \code{dimnames} attribute
+is ignored and a nested array is appended.\cr
+(Use \code{\link{mongo.bson.buffer.append.object}()} if you want to preserve \code{dimnames}).
 }
 \usage{
 mongo.bson.buffer.append.raw(buf, name, value, subtype=NULL)
