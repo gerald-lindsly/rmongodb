@@ -353,7 +353,7 @@ SEXP _mongo_timestamp_create(int t, int i) {
 }
 
 
-time_t _getTime(SEXP value) {
+SEXP _getTime(SEXP value) {
     if (_objHasClass(value, "POSIXlt")) {
         SEXP s, t;
         PROTECT(t = s = allocList(2));
@@ -364,12 +364,12 @@ time_t _getTime(SEXP value) {
         value = eval(s, R_GlobalEnv);
         UNPROTECT(1);
     }
-    return asInteger(value);
+    return value;
 }
 
 
 SEXP mongo_timestamp_create(SEXP t, SEXP i) {
-    SEXP ret = _mongo_timestamp_create(_getTime(t), asInteger(i));
+    SEXP ret = _mongo_timestamp_create(asInteger(_getTime(t)), asInteger(i));
     UNPROTECT(3);
     return ret;
 }
@@ -392,8 +392,7 @@ int _iterator_getComplex(bson_iterator* iter, Rcomplex* z) {
 }
 
 
-SEXP _nestedArray(bson_iterator* iter)
-{
+SEXP _nestedArray(bson_iterator* iter) {
     bson_type sub_type;
     bson_type common_type;
     Rcomplex z;
@@ -409,7 +408,8 @@ SEXP _nestedArray(bson_iterator* iter)
         if (++dims > MAXDIM)
             error("Max dimensions (%d) exceeded. Use an iterator\n");
         sub_type = bson_iterator_next(&sub[dims]);
-    } while (sub_type == BSON_ARRAY);
+    }
+    while (sub_type == BSON_ARRAY);
 
     /* get what should be the common type */
     if (sub_type == BSON_LONG)
@@ -418,7 +418,8 @@ SEXP _nestedArray(bson_iterator* iter)
     case BSON_INT: ;
     case BSON_DOUBLE: ;
     case BSON_STRING: ;
-    case BSON_BOOL:
+    case BSON_BOOL: ;
+    case BSON_DATE:
         break;
     case BSON_BINDATA:
         if (bson_iterator_bin_len(&sub[dims]) == 1) {
@@ -446,9 +447,9 @@ SEXP _nestedArray(bson_iterator* iter)
             return R_NilValue;
         if (sub_type == BSON_OBJECT && !_iterator_getComplex(&sub[dims], &z))
             return R_NilValue;
-        if (sub_type == BSON_BINDATA && 
-            (bson_iterator_bin_len(&sub[dims]) != 1 ||
-             bson_iterator_bin_type(&sub[dims]) != bin_type))
+        if (sub_type == BSON_BINDATA &&
+                (bson_iterator_bin_len(&sub[dims]) != 1 ||
+                 bson_iterator_bin_type(&sub[dims]) != bin_type))
             return R_NilValue;
         ++count[dims];
     }
@@ -478,15 +479,16 @@ SEXP _nestedArray(bson_iterator* iter)
         case BSON_DOUBLE: ;
         case BSON_STRING: ;
         case BSON_BOOL: ;
+        case BSON_DATE: ;
 GotEl:  {
-            if (depth != dims || sub_type != common_type)
-                return R_NilValue;
-            count[depth]++;
-            break;
-        }
+                if (depth != dims || sub_type != common_type)
+                    return R_NilValue;
+                count[depth]++;
+                break;
+            }
         case BSON_BINDATA:
             if (bson_iterator_bin_len(&sub[depth]) == 1 &&
-                bson_iterator_bin_type(&sub[depth]) == bin_type)
+                    bson_iterator_bin_type(&sub[depth]) == bin_type)
                 goto GotEl;
             return R_NilValue;
         case BSON_OBJECT:
@@ -504,13 +506,14 @@ GotEl:  {
 
     SEXP ret;
     switch (common_type) {
-    case BSON_INT:     ret = allocVector(INTSXP,  len); break;
+    case BSON_INT: ;
+    case BSON_DATE:    ret = allocVector(INTSXP,  len); break;
     case BSON_DOUBLE:  ret = allocVector(REALSXP, len); break;
     case BSON_STRING:  ret = allocVector(STRSXP,  len); break;
     case BSON_BOOL:    ret = allocVector(LGLSXP,  len); break;
     case BSON_BINDATA: ret = allocVector(RAWSXP,  len); break;
     case BSON_OBJECT:  ret = allocVector(CPLXSXP, len); break;
-    default: 
+    default:
         // never reaches here
         ret = R_NilValue;
     }
@@ -530,8 +533,11 @@ GotEl:  {
             bson_iterator_subiterator(&sub[depth], &sub[depth+1]);
             ++depth;
             break;
-        case BSON_INT: 
+        case BSON_INT:
             INTEGER(ret)[i++] = bson_iterator_int(&sub[depth]);
+            break;
+        case BSON_DATE:
+            INTEGER(ret)[i++] = bson_iterator_date(&sub[depth]);
             break;
         case BSON_DOUBLE:
             REAL(ret)[i++] = bson_iterator_double(&sub[depth]);
@@ -554,6 +560,14 @@ GotEl:  {
         default: ;
             // never reaches here
         }
+    }
+    if (common_type == BSON_DATE) {
+        SEXP cls;
+        PROTECT(cls = allocVector(STRSXP, 2));
+        SET_STRING_ELT(cls, 0, mkChar("POSIXct"));
+        SET_STRING_ELT(cls, 1, mkChar("POSIXt"));
+        classgets(ret, cls);
+        UNPROTECT(1);
     }
     SEXP rdims;
     PROTECT(rdims = allocVector(INTSXP, dims));
@@ -589,6 +603,7 @@ SEXP _array_to_object(bson_iterator* iter) {
             case BSON_DOUBLE: ;
             case BSON_STRING: ;
             case BSON_BOOL: ;
+            case BSON_DATE: ;
             case BSON_ARRAY:
                 continue;
             case BSON_OBJECT:
@@ -615,6 +630,17 @@ SEXP _array_to_object(bson_iterator* iter) {
         PROTECT(ret = allocVector(INTSXP, count));
         while (bson_iterator_next(&sub))
             INTEGER(ret)[i++] = bson_iterator_int(&sub);
+        break;
+    case BSON_DATE:
+        PROTECT(ret = allocVector(INTSXP, count));
+        while (bson_iterator_next(&sub))
+            INTEGER(ret)[i++] = bson_iterator_date(&sub);
+        SEXP cls;
+        PROTECT(cls = allocVector(STRSXP, 2));
+        SET_STRING_ELT(cls, 0, mkChar("POSIXct"));
+        SET_STRING_ELT(cls, 1, mkChar("POSIXt"));
+        classgets(ret, cls);
+        UNPROTECT(1);
         break;
     case BSON_DOUBLE:
         PROTECT(ret = allocVector(REALSXP, count));
@@ -775,30 +801,29 @@ SEXP mongo_bson_value(SEXP b, SEXP name) {
 }
 
 
-SEXP installAttrib(SEXP vec, SEXP name, SEXP val)
-{
+SEXP installAttrib(SEXP vec, SEXP name, SEXP val) {
     SEXP s, t;
     PROTECT(vec);
     PROTECT(name);
     PROTECT(val);
     for (s = ATTRIB(vec); s != R_NilValue; s = CDR(s)) {
-	    if (TAG(s) == name) {
-	        SETCAR(s, val);
-	        UNPROTECT(3);
-	        return val;
-	    }
+        if (TAG(s) == name) {
+            SETCAR(s, val);
+            UNPROTECT(3);
+            return val;
+        }
     }
     s = allocList(1);
     SETCAR(s, val);
     SET_TAG(s, name);
     if (ATTRIB(vec) == R_NilValue)
-    	SET_ATTRIB(vec, s);
+        SET_ATTRIB(vec, s);
     else {
-	    t = nthcdr(ATTRIB(vec), length(ATTRIB(vec)) - 1);
-	    SETCDR(t, s);
+        t = nthcdr(ATTRIB(vec), length(ATTRIB(vec)) - 1);
+        SETCDR(t, s);
     }
     if (name == R_ClassSymbol)
-    	SET_OBJECT(vec, 1);
+        SET_OBJECT(vec, 1);
 
     UNPROTECT(3);
     return val;
@@ -809,15 +834,15 @@ SEXP _get_R_object(bson* b) {
     bson_iterator iter;
     bson_iterator_init(&iter, b);
     if (bson_iterator_next(&iter) != BSON_BOOL ||
-        strcmp(bson_iterator_key(&iter), "R_OBJ") != 0)
+            strcmp(bson_iterator_key(&iter), "R_OBJ") != 0)
         return R_NilValue;
     if (bson_iterator_next(&iter) == BSON_EOO ||
-        strcmp(bson_iterator_key(&iter), "value") != 0)
+            strcmp(bson_iterator_key(&iter), "value") != 0)
         return R_NilValue;
     SEXP ret;
     PROTECT(ret = _mongo_bson_value(&iter));
     if (bson_iterator_next(&iter) == BSON_OBJECT &&
-        strcmp(bson_iterator_key(&iter), "attr") == 0) {
+            strcmp(bson_iterator_key(&iter), "attr") == 0) {
         bson_iterator sub;
         bson_iterator_subiterator(&iter, &sub);
         while (bson_iterator_next(&sub) != BSON_EOO) {
@@ -857,6 +882,7 @@ SEXP _mongo_bson_to_list(bson* b) {
             case BSON_DOUBLE: ;
             case BSON_STRING: ;
             case BSON_BOOL: ;
+            case BSON_DATE:
                 continue;
             case BSON_OBJECT:
                 if (_iterator_getComplex(&iter, &z))
@@ -882,6 +908,19 @@ SEXP _mongo_bson_to_list(bson* b) {
                 SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
                 INTEGER(ret)[i++] = bson_iterator_int(&iter);
             }
+            break;
+        case BSON_DATE:
+            PROTECT(ret = allocVector(INTSXP, count));
+            while (bson_iterator_next(&iter)) {
+                SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
+                INTEGER(ret)[i++] = bson_iterator_date(&iter);
+            }
+            SEXP cls;
+            PROTECT(cls = allocVector(STRSXP, 2));
+            SET_STRING_ELT(cls, 0, mkChar("POSIXct"));
+            SET_STRING_ELT(cls, 1, mkChar("POSIXt"));
+            classgets(ret, cls);
+            UNPROTECT(1);
             break;
         case BSON_DOUBLE:
             PROTECT(ret = allocVector(REALSXP, count));
@@ -1043,13 +1082,15 @@ SEXP mongo_bson_buffer_append_int(SEXP buf, SEXP name, SEXP value) {
                 }
                 else
                     success = (bson_append_int(_buf, _name, INTEGER(value)[i++]) == BSON_OK);
-            } else {
+            }
+            else {
                 ijk[depth] = 0;
                 success = (bson_append_finish_object(_buf) == BSON_OK);
                 depth--;
             }
         }
-    } else {
+    }
+    else {
         SEXP names = getAttrib(value, R_NamesSymbol);
         if (names == R_NilValue)
             if (len == 1)
@@ -1105,13 +1146,15 @@ SEXP mongo_bson_buffer_append_bool(SEXP buf, SEXP name, SEXP value) {
                 }
                 else
                     success = (bson_append_bool(_buf, _name, LOGICAL(value)[i++]) == BSON_OK);
-            } else {
+            }
+            else {
                 ijk[depth] = 0;
                 success = (bson_append_finish_object(_buf) == BSON_OK);
                 depth--;
             }
         }
-    } else {
+    }
+    else {
         SEXP names = getAttrib(value, R_NamesSymbol);
         if (names == R_NilValue)
             if (len == 1)
@@ -1167,13 +1210,15 @@ SEXP mongo_bson_buffer_append_double(SEXP buf, SEXP name, SEXP value) {
                 }
                 else
                     success = (bson_append_double(_buf, _name, REAL(value)[i++]) == BSON_OK);
-            } else {
+            }
+            else {
                 ijk[depth] = 0;
                 success = (bson_append_finish_object(_buf) == BSON_OK);
                 depth--;
             }
         }
-    } else {
+    }
+    else {
         SEXP names = getAttrib(value, R_NamesSymbol);
         if (names == R_NilValue)
             if (len == 1)
@@ -1237,13 +1282,15 @@ SEXP mongo_bson_buffer_append_complex(SEXP buf, SEXP name, SEXP value) {
                 }
                 else
                     success = (_bson_append_complex(_buf, _name, &COMPLEX(value)[i++]) == BSON_OK);
-            } else {
+            }
+            else {
                 ijk[depth] = 0;
                 success = (bson_append_finish_object(_buf) == BSON_OK);
                 depth--;
             }
         }
-    } else {
+    }
+    else {
         SEXP names = getAttrib(value, R_NamesSymbol);
         if (names == R_NilValue)
             if (len == 1)
@@ -1295,13 +1342,15 @@ SEXP mongo_bson_buffer_append_string(SEXP buf, SEXP name, SEXP value) {
                 }
                 else
                     success = (bson_append_string(_buf, _name, CHAR(STRING_ELT(value, i++))) == BSON_OK);
-            } else {
+            }
+            else {
                 ijk[depth] = 0;
                 success = (bson_append_finish_object(_buf) == BSON_OK);
                 depth--;
             }
         }
-    } else {
+    }
+    else {
         SEXP names = getAttrib(value, R_NamesSymbol);
         if (names == R_NilValue)
             if (len == 1)
@@ -1364,13 +1413,15 @@ SEXP mongo_bson_buffer_append_raw(SEXP buf, SEXP name, SEXP value, SEXP subtype)
                 }
                 else
                     success = (bson_append_binary(_buf, _name, _subtype, (char*)(RAW(value) + i++), 1) == BSON_OK);
-            } else {
+            }
+            else {
                 ijk[depth] = 0;
                 success = (bson_append_finish_object(_buf) == BSON_OK);
                 depth--;
             }
         }
-    } else
+    }
+    else
         success = (bson_append_binary(_buf, _name, _subtype, data, len) == BSON_OK);
     UNPROTECT(1);
     return ret;
@@ -1403,13 +1454,15 @@ SEXP mongo_bson_buffer_append_long(SEXP buf, SEXP name, SEXP value) {
                 }
                 else
                     success = (bson_append_long(_buf, _name, REAL(value)[i++]) == BSON_OK);
-            } else {
+            }
+            else {
                 ijk[depth] = 0;
                 success = (bson_append_finish_object(_buf) == BSON_OK);
                 depth--;
             }
         }
-    } else {
+    }
+    else {
         SEXP names = getAttrib(value, R_NamesSymbol);
         if (names == R_NilValue)
             if (len == 1)
@@ -1505,10 +1558,86 @@ SEXP mongo_bson_buffer_append_element(SEXP buf, SEXP name, SEXP value) {
 SEXP mongo_bson_buffer_append_time(SEXP buf, SEXP name, SEXP value) {
     bson_buffer* _buf = _checkBuffer(buf);
     const char* _name = CHAR(STRING_ELT(name, 0));
-    time_t _value = _getTime(value);
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
-    LOGICAL(ret)[0] = (bson_append_date(_buf, _name, _value) == BSON_OK);
+    int success;
+    value = _getTime(value);
+    SEXP names = getAttrib(value, R_NamesSymbol);
+    int len = LENGTH(value);
+    SEXP dim = getAttrib(value, R_DimSymbol);
+    int dims;
+    int t = TYPEOF(value);
+    if (dim != R_NilValue && (dims = LENGTH(dim)) > 1) {
+        if (dims > MAXDIM)
+            error("only %d dimensions supported", MAXDIM);
+        int ijk[MAXDIM];
+        memset(ijk, 0, dims * sizeof(int));
+        int depth = 0;
+        int i = 0;
+        success = (bson_append_start_array(_buf, _name) == BSON_OK);
+        while (success && depth >= 0) {
+            if (ijk[depth] < INTEGER(dim)[depth]) {
+                _name = numstr(ijk[depth]++);
+                if (depth < dims - 1) {
+                    depth++;
+                    success = (bson_append_start_array(_buf, _name) == BSON_OK);
+                }
+                else {
+                    if (t == INTSXP)
+                        success = (bson_append_date(_buf, _name, INTEGER(value)[i++]) == BSON_OK);
+                    else
+                        success = (bson_append_date(_buf, _name, REAL(value)[i++]) == BSON_OK);
+                }
+            }
+            else {
+                ijk[depth] = 0;
+                success = (bson_append_finish_object(_buf) == BSON_OK);
+                depth--;
+            }
+        }
+    } else {
+        if (TYPEOF(value) == INTSXP) {
+            if (names == R_NilValue) {
+                if (len == 1)
+                    success = (bson_append_date(_buf, _name, asInteger(value)) == BSON_OK);
+                else {
+                    success = (bson_append_start_array(_buf, _name) == BSON_OK);
+                    int i;
+                    for (i = 0; i < len && success; i++)
+                        success &= (bson_append_date(_buf, numstr(i), INTEGER(value)[i]) == BSON_OK);
+                    success &= (bson_append_finish_object(_buf) == BSON_OK);
+                }
+            }
+            else {
+                success = (bson_append_start_object(_buf, _name) == BSON_OK);
+                int i;
+                for (i = 0; i < len && success; i++)
+                    success &= (bson_append_date(_buf, CHAR(STRING_ELT(names, i)), INTEGER(value)[i]) == BSON_OK);
+                success &= (bson_append_finish_object(_buf) == BSON_OK);
+            }
+        }
+        else {
+            if (names == R_NilValue) {
+                if (len == 1)
+                    success = (bson_append_date(_buf, _name, asInteger(value)) == BSON_OK);
+                else {
+                    success = (bson_append_start_array(_buf, _name) == BSON_OK);
+                    int i;
+                    for (i = 0; i < len && success; i++)
+                        success &= (bson_append_date(_buf, numstr(i), REAL(value)[i]) == BSON_OK);
+                    success &= (bson_append_finish_object(_buf) == BSON_OK);
+                }
+            }
+            else {
+                success = (bson_append_start_object(_buf, _name) == BSON_OK);
+                int i;
+                for (i = 0; i < len && success; i++)
+                    success &= (bson_append_date(_buf, CHAR(STRING_ELT(names, i)), REAL(value)[i]) == BSON_OK);
+                success &= (bson_append_finish_object(_buf) == BSON_OK);
+            }
+        }
+    }
+    LOGICAL(ret)[0] = success;
     UNPROTECT(1);
     return ret;
 }
