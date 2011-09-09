@@ -3,12 +3,17 @@ library("rmongodb")
 r <- as.integer(c(1,2,3,4,5,6,7,8))
 dim(r) <- c(2,2,2)
 r
+t <- Sys.time()
+t <- c(t, t+10, t+60, t+120)
+dim(t) <- c(2,2)
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append.int(buf, "test", r)
+mongo.bson.buffer.append(buf, "times", t)
 b <- mongo.bson.from.buffer(buf)
 b
 
 mongo.bson.value(b, "test")
+mongo.bson.value(b, "times")
 
 r <- as.raw(r)
 dim(r) <- c(2,4)
@@ -115,6 +120,11 @@ mongo.bson.buffer.append.time(buf, "Now", Sys.time())
 ts <- mongo.timestamp.create(Sys.time() + 24 * 60 * 60, 25L)
 mongo.bson.buffer.append.timestamp(buf, "Later", ts)
 
+mongo.bson.buffer.start.object(buf, "data")
+mongo.bson.buffer.append(buf, "sub1", 1L)
+mongo.bson.buffer.append(buf, "sub2", Sys.time())
+mongo.bson.buffer.finish.object(buf)
+
 b <- mongo.bson.from.buffer(buf)
 print(b)
 
@@ -124,6 +134,12 @@ while (mongo.bson.iterator.next(iter)) {
     print(mongo.bson.iterator.value(iter))
 }
 print(attr(ts, "increment"))
+
+iter <- mongo.bson.find(b, "code")
+print(mongo.bson.iterator.value(iter))
+
+sub2 <- mongo.bson.value(b, "data.sub2")
+print(sub2)
 
 print(mongo.bson.to.list(b))
 mongo <- mongo.create()

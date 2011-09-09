@@ -5,6 +5,8 @@
 \description{
 Find a field within a \link{mongo.bson} object by the name (key) of the field\cr
 and return a \link{mongo.bson.iterator} pointing to that field.
+
+The search parameter may also be a 'dotted' reference to a field in a subobject or array. See example.
 }
 \usage{
 mongo.bson.find(b, name)
@@ -18,9 +20,18 @@ mongo.bson.find(b, name)
 among the names of the fields; otherwise, NULL.
 }
 \examples{
-b <- mongo.bson.from.list(list(name="John", age=32))
+b <- mongo.bson.from.list(list(name="John", age=32L, 
+     address=list(street="Vine", city="Denver", state="CO")))
 iter <- mongo.bson.find(b, "age")
 print(mongo.bson.iterator.value(iter)) # print 32
+
+iter <- mongo.bson.find(b, "address.city")
+print(mongo.bson.iterator.value(iter)) # print Denver
+
+x <- c(1,1,2,3,5)
+b <- mongo.bson.from.list(list(fib=x))
+iter <- mongo.bson.find(b, "fib.4")
+print(mongo.bson.iterator.value(iter)) # print 3
 }
 \seealso{
 \link{mongo.bson.iterator},\cr

@@ -4,6 +4,8 @@
 \title{Return the value of a mongo.bson field}
 \description{
 Search a \link{mongo.bson} object for a field by name and retrieve its value.
+
+The search parameter may also be a 'dotted' reference to a field in a subobject or array. See example.
 }
 \usage{
 mongo.bson.value(b, name)
@@ -67,6 +69,15 @@ b <- mongo.bson.from.buffer(buf)
 
 # Display the date appended above
 print(mongo.bson.value(b, "created"))
+
+b <- mongo.bson.from.list(list(name="John", age=32L, 
+     address=list(street="Vine", city="Denver", state="CO")))
+print(mongo.bson.value(b, "age")) # print 32
+print(mongo.bson.value(b, "address.state")) # print CO
+
+x <- c(1,1,2,3,5)
+b <- mongo.bson.from.list(list(fib=x))
+print(mongo.bson.value(b, "fib.3")) # print 2
 }
 \seealso{
 \link{mongo.bson.iterator.value},\cr

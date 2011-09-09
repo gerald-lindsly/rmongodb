@@ -327,13 +327,44 @@ SEXP mongo_bson_iterator_create(SEXP b) {
 }
 
 
-SEXP mongo_bson_find(SEXP b, SEXP name) {
+int _mongo_bson_find(SEXP b, SEXP name, bson_iterator* iter) {
     bson* _b = _checkBSON(b);
     const char* _name = CHAR(STRING_ELT(name, 0));
+    bson sub;
+    const char* next = _name;
+    do {
+        if (bson_find(iter, _b, next) != BSON_EOO)
+            return 1;
+        char* p = strchr((char*)next, '.');
+        if (!p)
+            return 0;
+        char prefix[2048];
+        int len = p - next;
+        strncpy(prefix, next, len);
+        prefix[len] = '\0';
+        int t;
+        if ((t = bson_find(iter, _b, prefix)) == BSON_EOO)
+            return 0;
+        if (t == BSON_ARRAY || t == BSON_OBJECT) {
+            bson_iterator_subobject(iter, &sub);
+            _b = &sub;
+            next = p + 1;
+        }
+        else
+            return 0;
+    }
+    while (1);
+    // never gets here
+    return 0;
+}
+
+
+SEXP mongo_bson_find(SEXP b, SEXP name) {
     bson_iterator iter;
-    if (bson_find(&iter, _b, _name) == BSON_EOO)
+    if (_mongo_bson_find(b, name, &iter))
+        return _mongo_bson_iterator_create(&iter);
+    else
         return R_NilValue;
-    return _mongo_bson_iterator_create(&iter);
 }
 
 
@@ -792,10 +823,8 @@ SEXP mongo_bson_iterator_value(SEXP iter) {
 
 
 SEXP mongo_bson_value(SEXP b, SEXP name) {
-    bson* _b = _checkBSON(b);
-    const char* _name = CHAR(STRING_ELT(name, 0));
     bson_iterator iter;
-    if (bson_find(&iter, _b, _name) == BSON_EOO)
+    if (!_mongo_bson_find(b, name, &iter))
         return R_NilValue;
     return _mongo_bson_value(&iter);
 }
