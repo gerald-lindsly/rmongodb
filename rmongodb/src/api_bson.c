@@ -410,9 +410,8 @@ SEXP _nestedArray(bson_iterator* iter)
             error("Max dimensions (%d) exceeded. Use an iterator\n");
         sub_type = bson_iterator_next(&sub[dims]);
     } while (sub_type == BSON_ARRAY);
-    if (sub_type == BSON_EOO)
-       // empty multidimensioned array
-        return R_NilValue;
+
+    /* get what should be the common type */
     if (sub_type == BSON_LONG)
         sub_type = BSON_DOUBLE;
     switch (common_type = sub_type) {
@@ -432,6 +431,7 @@ SEXP _nestedArray(bson_iterator* iter)
             break;
         // fall thru to default
     default:
+        /* including empty array */
         return R_NilValue;
     }
     // initial lowest level count
@@ -453,6 +453,7 @@ SEXP _nestedArray(bson_iterator* iter)
         ++count[dims];
     }
 
+    /* step through rest of array -- checking common type and dimensions */
     int depth = dims;
     while (depth >= 1) {
         sub_type = bson_iterator_next(&sub[depth]);
@@ -496,6 +497,7 @@ GotEl:  {
             return R_NilValue;
         }
     }
+
     int len = 1;
     for (depth = 1; depth <= dims; depth++)
         len *= dim[depth];
@@ -514,13 +516,12 @@ GotEl:  {
     }
     PROTECT(ret);
 
+    /* step through array(s) again, pulling out values */
     bson_iterator_subiterator(&sub[0], &sub[1]);
     depth = 1;
     i = 0;
     while (depth >= 1) {
         sub_type = bson_iterator_next(&sub[depth]);
-        if (sub_type == BSON_LONG)
-            sub_type = BSON_DOUBLE;
         switch (sub_type) {
         case BSON_EOO:
             depth--;
@@ -1640,7 +1641,7 @@ SEXP mongo_bson_buffer_append(SEXP buf, SEXP name, SEXP value) {
             return mongo_bson_buffer_append_time(buf, name, value);
         if (_hasClass(cls, "POSIXlt"))
             return mongo_bson_buffer_append_time(buf, name, value);
-        if (_hasClass(cls, "mongo.code.w.scope"))
+        if (_hasClass(cls, "mongo.code.w.scope")) /* should be before code */
             return mongo_bson_buffer_append_code_w_scope(buf, name, value);
         if (_hasClass(cls, "mongo.code"))
             return mongo_bson_buffer_append_code(buf, name, value);
