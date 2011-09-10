@@ -423,7 +423,7 @@ int _iterator_getComplex(bson_iterator* iter, Rcomplex* z) {
 }
 
 
-SEXP _nestedArray(bson_iterator* iter) {
+SEXP _array_to_object(bson_iterator* iter) {
     bson_type sub_type;
     bson_type common_type;
     Rcomplex z;
@@ -502,8 +502,8 @@ SEXP _nestedArray(bson_iterator* iter) {
         case BSON_ARRAY:
             count[depth]++;
             bson_iterator_subiterator(&sub[depth], &sub[depth+1]);
-            if (++depth > MAXDIM)
-                error("Max dimensions (%d) exceeded. Use an iterator\n");
+            if (++depth > dims)
+                return R_NilValue;
             count[depth] = 0;
             break;
         case BSON_INT: ;
@@ -612,93 +612,6 @@ GotEl:  {
         UNPROTECT(1);
     }
     UNPROTECT(2);
-    return ret;
-}
-
-
-SEXP _array_to_object(bson_iterator* iter) {
-    SEXP ret;
-    Rcomplex z;
-    bson_iterator sub;
-    bson_iterator_subiterator(iter, &sub);
-    bson_type common_type = BSON_EOO;
-    bson_type sub_type;
-    int count = 0;
-    while ((sub_type = bson_iterator_next(&sub))) {
-        count++;
-        if (sub_type == BSON_LONG)
-            sub_type = BSON_DOUBLE;
-        if (common_type == BSON_EOO) {
-            switch (common_type = sub_type) {
-            case BSON_INT: ;
-            case BSON_DOUBLE: ;
-            case BSON_STRING: ;
-            case BSON_BOOL: ;
-            case BSON_DATE: ;
-            case BSON_ARRAY:
-                continue;
-            case BSON_OBJECT:
-                if (_iterator_getComplex(&sub, &z))
-                    continue;
-                // fall thru to default
-            default:
-                return R_NilValue;
-            }
-        }
-        else if (sub_type != common_type)
-            return R_NilValue;
-    }
-
-    if (count == 0)
-        return allocVector(INTSXP, 0); // no way to know type :(
-
-    if (common_type == BSON_ARRAY)
-        return _nestedArray(iter);
-    bson_iterator_subiterator(iter, &sub);
-    int i = 0;
-    switch (common_type) {
-    case BSON_INT:
-        PROTECT(ret = allocVector(INTSXP, count));
-        while (bson_iterator_next(&sub))
-            INTEGER(ret)[i++] = bson_iterator_int(&sub);
-        break;
-    case BSON_DATE:
-        PROTECT(ret = allocVector(INTSXP, count));
-        while (bson_iterator_next(&sub))
-            INTEGER(ret)[i++] = bson_iterator_date(&sub);
-        SEXP cls;
-        PROTECT(cls = allocVector(STRSXP, 2));
-        SET_STRING_ELT(cls, 0, mkChar("POSIXct"));
-        SET_STRING_ELT(cls, 1, mkChar("POSIXt"));
-        classgets(ret, cls);
-        UNPROTECT(1);
-        break;
-    case BSON_DOUBLE:
-        PROTECT(ret = allocVector(REALSXP, count));
-        while ((sub_type = bson_iterator_next(&sub)))
-            REAL(ret)[i++] = (sub_type == BSON_LONG ?
-                              bson_iterator_long(&sub) :
-                              bson_iterator_double(&sub));
-        break;
-    case BSON_STRING:
-        PROTECT(ret = allocVector(STRSXP, count));
-        while (bson_iterator_next(&sub))
-            SET_STRING_ELT(ret, i++, mkChar(bson_iterator_string(&sub)));
-        break;
-    case BSON_BOOL:
-        PROTECT(ret = allocVector(LGLSXP, count));
-        while (bson_iterator_next(&sub))
-            LOGICAL(ret)[i++] = bson_iterator_int(&sub);
-        break;
-    case BSON_OBJECT: // complex
-        PROTECT(ret = allocVector(CPLXSXP, count));
-        while (bson_iterator_next(&sub))
-            _iterator_getComplex(&sub, &COMPLEX(ret)[i++]);
-
-    default: // never reaches here - avoid compiler warning
-        ret = R_NilValue;
-    }
-    UNPROTECT(1);
     return ret;
 }
 
