@@ -30,7 +30,7 @@ print(mongo.bson.iterator.value(iter)) # print Denver
 
 x <- c(1,1,2,3,5)
 b <- mongo.bson.from.list(list(fib=x))
-iter <- mongo.bson.find(b, "fib.4")
+iter <- mongo.bson.find(b, "fib.3")  # BSON arrays are 0-based
 print(mongo.bson.iterator.value(iter)) # print 3
 }
 \seealso{
