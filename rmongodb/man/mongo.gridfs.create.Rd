@@ -34,5 +34,6 @@ if (mongo.is.connected(mongo)) {
 \code{\link{mongo.gridfs.remove.file}},\cr
 \code{\link{mongo.gridfs.store}},\cr
 \code{\link{mongo.gridfile.writer.create}},\cr
-\code{\link{mongo.gridfs.find}}.
+\code{\link{mongo.gridfs.find}},
+\code{link{mongo.shorthand}}.
 }

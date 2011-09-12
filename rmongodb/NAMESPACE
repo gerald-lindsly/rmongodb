@@ -147,3 +147,5 @@ export(mongo.gridfile.pipe)
 export(mongo.gridfile.writer.create)
 export(mongo.gridfile.writer.write)
 export(mongo.gridfile.writer.finish)
+
+export(mongo.shorthand)
