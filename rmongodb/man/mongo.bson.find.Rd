@@ -6,7 +6,7 @@
 Find a field within a \link{mongo.bson} object by the name (key) of the field\cr
 and return a \link{mongo.bson.iterator} pointing to that field.
 
-The search parameter may also be a 'dotted' reference to a field in a subobject or array. See example.
+The search parameter may also be a 'dotted' reference to a field in a subobject or array. See examples.
 }
 \usage{
 mongo.bson.find(b, name)

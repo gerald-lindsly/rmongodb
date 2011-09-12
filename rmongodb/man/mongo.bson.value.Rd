@@ -5,14 +5,14 @@
 \description{
 Search a \link{mongo.bson} object for a field by name and retrieve its value.
 
-The search parameter may also be a 'dotted' reference to a field in a subobject or array. See example.
+The search parameter may also be a 'dotted' reference to a field in a subobject or array. See examples.
 }
 \usage{
 mongo.bson.value(b, name)
 }
 \arguments{
 \item{b}{A \link{mongo.bson} object.}
-\item{name}{(string) The name of a field within \code{b}}
+\item{name}{(string) The name of a field within \code{b}.}
 }
 \value{
 NULL if name is not found;\cr
@@ -76,8 +76,8 @@ print(mongo.bson.value(b, "age")) # print 32
 print(mongo.bson.value(b, "address.state")) # print CO
 
 x <- c(1,1,2,3,5)
-b <- mongo.bson.from.list(list(fib=x))
-print(mongo.bson.value(b, "fib.3")) # print 2
+b <- mongo.bson.from.list(list(fib=x)) # BSON arrays are 0-based
+print(mongo.bson.value(b, "fib.4")) # print 5
 }
 \seealso{
 \link{mongo.bson.iterator.value},\cr

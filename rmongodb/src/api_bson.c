@@ -354,7 +354,7 @@ int _mongo_bson_find(SEXP b, SEXP name, bson_iterator* iter) {
             return 0;
     }
     while (1);
-    // never gets here
+    /* never gets here */
     return 0;
 }
 
@@ -461,12 +461,12 @@ SEXP _array_to_object(bson_iterator* iter) {
     case BSON_OBJECT:
         if (_iterator_getComplex(&sub[dims], &z))
             break;
-        // fall thru to default
+        /* fall thru to default */
     default:
         /* including empty array */
         return R_NilValue;
     }
-    // initial lowest level count
+    /* initial lowest level count */
     int count[MAXDIM+1];
     int i;
     for (i = 0; i <= dims; i++)
@@ -525,7 +525,7 @@ GotEl:  {
         case BSON_OBJECT:
             if (_iterator_getComplex(&sub[depth], &z))
                 goto GotEl;
-            // fall thru to default
+            /* fall thru to default */
         default:
             return R_NilValue;
         }
@@ -545,7 +545,7 @@ GotEl:  {
     case BSON_BINDATA: ret = allocVector(RAWSXP,  len); break;
     case BSON_OBJECT:  ret = allocVector(CPLXSXP, len); break;
     default:
-        // never reaches here
+        /* never reaches here */
         ret = R_NilValue;
     }
     PROTECT(ret);
@@ -589,7 +589,7 @@ GotEl:  {
             _iterator_getComplex(&sub[dims], &COMPLEX(ret)[i++]);
             break;
         default: ;
-            // never reaches here
+            /* never reaches here */
         }
     }
     if (common_type == BSON_DATE) {
@@ -708,7 +708,7 @@ SEXP _mongo_bson_value(bson_iterator* _iter) {
             COMPLEX(ret)[0] = z;
             break;
         }
-        // fall thru to returnSubObject
+        /* fall thru to returnSubObject */
 returnSubObject: {
             bson b;
             bson_iterator_subobject(_iter, &b);
@@ -722,7 +722,7 @@ returnSubObject: {
 
     default:
         error("Unhandled BSON type %d\n", t);
-        ret = R_NilValue;  // uninitialized ret avoid warning
+        ret = R_NilValue;  /* uninitialized ret avoid warning */
     }
     UNPROTECT(1);
     return ret;
@@ -776,7 +776,8 @@ SEXP _get_R_object(bson* b) {
     bson_iterator iter;
     bson_iterator_init(&iter, b);
     if (bson_iterator_next(&iter) != BSON_BOOL ||
-            strcmp(bson_iterator_key(&iter), "R_OBJ") != 0)
+            strcmp(bson_iterator_key(&iter), "R_OBJ") != 0 ||
+            !bson_iterator_bool(&iter))
         return R_NilValue;
     if (bson_iterator_next(&iter) == BSON_EOO ||
             strcmp(bson_iterator_key(&iter), "value") != 0)
@@ -829,7 +830,7 @@ SEXP _mongo_bson_to_list(bson* b) {
             case BSON_OBJECT:
                 if (_iterator_getComplex(&iter, &z))
                     continue;
-                // fall thru to default
+                /* fall thru to default */
             default:
                 common_type = -1;
             }
@@ -887,14 +888,14 @@ SEXP _mongo_bson_to_list(bson* b) {
                 LOGICAL(ret)[i++] = bson_iterator_int(&iter);
             }
             break;
-        case BSON_OBJECT: // complex
+        case BSON_OBJECT: /* complex */
             PROTECT(ret = allocVector(CPLXSXP, count));
             while (bson_iterator_next(&iter)) {
                 SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
                 _iterator_getComplex(&iter, &COMPLEX(ret)[i++]);
             }
             break;
-        default: // never reaches here - avoid compiler warning
+        default: /* never reaches here - avoid compiler warning */
             ret = R_NilValue;
             break;
         }
@@ -1538,7 +1539,7 @@ SEXP mongo_bson_buffer_append_time(SEXP buf, SEXP name, SEXP value) {
             }
         }
     } else {
-        if (TYPEOF(value) == INTSXP) {
+        if (t == INTSXP) {
             if (names == R_NilValue) {
                 if (len == 1)
                     success = (bson_append_date(_buf, _name, asInteger(value)) == BSON_OK);
@@ -1734,7 +1735,7 @@ SEXP mongo_bson_buffer_append(SEXP buf, SEXP name, SEXP value) {
     case RAWSXP:  return mongo_bson_buffer_append_raw(buf, name, value, R_NilValue);
     default:
         error("Unhandled R type (%d) in mongo.bson.buffer.append\n", t);
-        return R_NilValue; // never reached
+        return R_NilValue; /* never reached */
     }
 }
 
