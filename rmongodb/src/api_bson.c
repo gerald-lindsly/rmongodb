@@ -568,7 +568,7 @@ GotEl:  {
             INTEGER(ret)[i++] = bson_iterator_int(&sub[depth]);
             break;
         case BSON_DATE:
-            INTEGER(ret)[i++] = bson_iterator_date(&sub[depth]);
+            INTEGER(ret)[i++] = bson_iterator_date(&sub[depth]) / 1000;
             break;
         case BSON_DOUBLE:
             REAL(ret)[i++] = bson_iterator_double(&sub[depth]);
@@ -684,7 +684,7 @@ SEXP _mongo_bson_value(bson_iterator* _iter) {
     }
 
     case BSON_DATE:
-        ret = _createPOSIXct(bson_iterator_date(_iter));
+        ret = _createPOSIXct(bson_iterator_date(_iter) / 1000);
         UNPROTECT(2);
         return ret;
 
@@ -856,7 +856,7 @@ SEXP _mongo_bson_to_list(bson* b) {
             PROTECT(ret = allocVector(INTSXP, count));
             while (bson_iterator_next(&iter)) {
                 SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
-                INTEGER(ret)[i++] = bson_iterator_date(&iter);
+                INTEGER(ret)[i++] = bson_iterator_date(&iter) / 1000;
             }
             SEXP cls;
             PROTECT(cls = allocVector(STRSXP, 2));
@@ -1527,9 +1527,9 @@ SEXP mongo_bson_buffer_append_time(SEXP buf, SEXP name, SEXP value) {
                 }
                 else {
                     if (t == INTSXP)
-                        success = (bson_append_date(_buf, _name, INTEGER(value)[i++]) == BSON_OK);
+                        success = (bson_append_date(_buf, _name, (int64_t)(INTEGER(value)[i++]) * 1000) == BSON_OK);
                     else
-                        success = (bson_append_date(_buf, _name, REAL(value)[i++]) == BSON_OK);
+                        success = (bson_append_date(_buf, _name, REAL(value)[i++] * 1000) == BSON_OK);
                 }
             }
             else {
@@ -1542,12 +1542,12 @@ SEXP mongo_bson_buffer_append_time(SEXP buf, SEXP name, SEXP value) {
         if (t == INTSXP) {
             if (names == R_NilValue) {
                 if (len == 1)
-                    success = (bson_append_date(_buf, _name, asInteger(value)) == BSON_OK);
+                    success = (bson_append_date(_buf, _name, (int64_t)(asInteger(value)) * 1000) == BSON_OK);
                 else {
                     success = (bson_append_start_array(_buf, _name) == BSON_OK);
                     int i;
                     for (i = 0; i < len && success; i++)
-                        success &= (bson_append_date(_buf, numstr(i), INTEGER(value)[i]) == BSON_OK);
+                        success &= (bson_append_date(_buf, numstr(i), (int64_t)(INTEGER(value)[i]) * 1000) == BSON_OK);
                     success &= (bson_append_finish_object(_buf) == BSON_OK);
                 }
             }
@@ -1555,19 +1555,19 @@ SEXP mongo_bson_buffer_append_time(SEXP buf, SEXP name, SEXP value) {
                 success = (bson_append_start_object(_buf, _name) == BSON_OK);
                 int i;
                 for (i = 0; i < len && success; i++)
-                    success &= (bson_append_date(_buf, CHAR(STRING_ELT(names, i)), INTEGER(value)[i]) == BSON_OK);
+                    success &= (bson_append_date(_buf, CHAR(STRING_ELT(names, i)), (int64_t)(INTEGER(value)[i]) * 1000) == BSON_OK);
                 success &= (bson_append_finish_object(_buf) == BSON_OK);
             }
         }
         else {
             if (names == R_NilValue) {
                 if (len == 1)
-                    success = (bson_append_date(_buf, _name, asInteger(value)) == BSON_OK);
+                    success = (bson_append_date(_buf, _name, (int64_t)(asInteger(value)) * 1000) == BSON_OK);
                 else {
                     success = (bson_append_start_array(_buf, _name) == BSON_OK);
                     int i;
                     for (i = 0; i < len && success; i++)
-                        success &= (bson_append_date(_buf, numstr(i), REAL(value)[i]) == BSON_OK);
+                        success &= (bson_append_date(_buf, numstr(i), REAL(value)[i] * 1000) == BSON_OK);
                     success &= (bson_append_finish_object(_buf) == BSON_OK);
                 }
             }
@@ -1575,7 +1575,7 @@ SEXP mongo_bson_buffer_append_time(SEXP buf, SEXP name, SEXP value) {
                 success = (bson_append_start_object(_buf, _name) == BSON_OK);
                 int i;
                 for (i = 0; i < len && success; i++)
-                    success &= (bson_append_date(_buf, CHAR(STRING_ELT(names, i)), REAL(value)[i]) == BSON_OK);
+                    success &= (bson_append_date(_buf, CHAR(STRING_ELT(names, i)), REAL(value)[i] * 1000) == BSON_OK);
                 success &= (bson_append_finish_object(_buf) == BSON_OK);
             }
         }
