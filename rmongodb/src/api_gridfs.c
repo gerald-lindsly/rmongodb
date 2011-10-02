@@ -261,7 +261,7 @@ SEXP mongo_gridfile_get_content_type(SEXP gfile) {
 
 SEXP mongo_gridfile_get_upload_date(SEXP gfile) {
     gridfile* _gfile = _checkGridfile(gfile);
-    SEXP ret = _createPOSIXct(gridfile_get_uploaddate(_gfile) / 1000 / 1000);
+    SEXP ret = _createPOSIXct(gridfile_get_uploaddate(_gfile) / 1000);
     UNPROTECT(2);
     return ret;
 }
