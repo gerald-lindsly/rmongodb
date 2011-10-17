@@ -16,9 +16,7 @@ mongo.rename(mongo, from.ns, to.ns)
 \item{to.ns}{(string) The new namespace of the collection.}
 }
 \value{
-NULL if unsuccessful; otherwise,
-
-(\link{mongo.bson}) Server response.
+TRUE if successful; otherwise, FALSE.
 }
 \examples{
 mongo <- mongo.create()

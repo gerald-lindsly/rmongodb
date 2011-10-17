@@ -586,7 +586,7 @@ GotEl:  {
             RAW(ret)[i++] = *bson_iterator_bin_data(&sub[depth]);
             break;
         case BSON_OBJECT:
-            _iterator_getComplex(&sub[dims], &COMPLEX(ret)[i++]);
+            _iterator_getComplex(&sub[depth], &COMPLEX(ret)[i++]);
             break;
         default: ;
             /* never reaches here */

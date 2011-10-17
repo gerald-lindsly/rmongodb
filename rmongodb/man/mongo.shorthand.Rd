@@ -1,9 +1,9 @@
 % File rmongodb/man/mongo.shorthand.Rd
 \name{mongo.shorthand}
 \alias{mongo.shorthand}
-\title{Define shorthand names for bson and gridfs functions}
+\title{Define shorthand for BSON and GridFS}
 \description{
-Define shorthand names for bson and gridfs functions and constants.
+Define shorthand names for BSON and GridFS functions and constants.
 
 All symbols dealing with BSON and GridFS are defined by this function excluding the "mongo." prefix.  
 They will still be available by the orginal names also.  For clarity, the symbols in the mongo module
@@ -23,7 +23,8 @@ bson.buffer.append(buf, "name", "Alice")
 b <- bson.from.buffer(buf)
 }
 \seealso{
-\link{mongo},\cr
+\link{mongo.bson},\cr
+\link{mongo.gridfs},\cr
 \code{\link{mongo.bson.buffer.create}},\cr
 \code{\link{mongo.bson.buffer.append}},\cr
 \code{\link{mongo.bson.from.buffer}}.

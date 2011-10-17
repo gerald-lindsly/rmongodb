@@ -580,16 +580,11 @@ SEXP mongo_rename(SEXP mongo_conn, SEXP from_ns, SEXP to_ns) {
     bson_append_string(&cmd, "renameCollection", _from_ns);
     bson_append_string(&cmd, "to", _to_ns);
     bson_finish(&cmd);
-    bson out;
-    if (mongo_run_command(conn, "admin", &cmd, &out) == MONGO_OK) {
-        bson_destroy(&cmd);
-        bson_destroy(&out);
-        return R_NilValue;
-    }
+    SEXP ret;
+    PROTECT(ret = allocVector(LGLSXP, 1));
+    LOGICAL(ret)[0] = (mongo_run_command(conn, "admin", &cmd, NULL) == MONGO_OK);
     bson_destroy(&cmd);
-    SEXP ret = _mongo_bson_create(&out);
-    bson_destroy(&out);
-    UNPROTECT(3);
+    UNPROTECT(1);
     return ret;
 }
 
