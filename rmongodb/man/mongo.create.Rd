@@ -40,7 +40,8 @@ mongo.create(host="127.0.0.1", name="",
 }
 \examples{
 mongo <- mongo.create()
-mongo <- mongo.create("192.168.0.3")
+\dontrun{
+    mongo <- mongo.create("192.168.0.3")}
 }
 \seealso{
 \link{mongo},\cr
