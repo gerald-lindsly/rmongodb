@@ -305,6 +305,7 @@ SEXP mongo_gridfile_get_chunk(SEXP gfile, SEXP i) {
     if (bson_size(&chunk) <= 5)
         return R_NilValue;
     SEXP ret = _mongo_bson_create(&chunk);
+    bson_destroy(&chunk);
     UNPROTECT(3);
     return ret;
 }
