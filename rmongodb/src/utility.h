@@ -9,5 +9,5 @@ int    _isBSON(SEXP b);
 bson*  _checkBSON(SEXP b);
 mongo* _checkMongo(SEXP mongo_conn);
 SEXP   _mongo_bson_create(bson* b);
-SEXP   _createPOSIXct(int t);
+SEXP   _createPOSIXct(double t);
 SEXP   _mongo_cursor_create(mongo_cursor* cursor);

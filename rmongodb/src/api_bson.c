@@ -537,8 +537,8 @@ GotEl:  {
 
     SEXP ret;
     switch (common_type) {
-    case BSON_INT: ;
-    case BSON_DATE:    ret = allocVector(INTSXP,  len); break;
+    case BSON_INT:     ret = allocVector(INTSXP,  len); break;
+    case BSON_DATE: ;   
     case BSON_DOUBLE:  ret = allocVector(REALSXP, len); break;
     case BSON_STRING:  ret = allocVector(STRSXP,  len); break;
     case BSON_BOOL:    ret = allocVector(LGLSXP,  len); break;
@@ -568,7 +568,7 @@ GotEl:  {
             INTEGER(ret)[i++] = bson_iterator_int(&sub[depth]);
             break;
         case BSON_DATE:
-            INTEGER(ret)[i++] = bson_iterator_date(&sub[depth]) / 1000;
+            REAL(ret)[i++] = (double)bson_iterator_date(&sub[depth]) / 1000;
             break;
         case BSON_DOUBLE:
             REAL(ret)[i++] = bson_iterator_double(&sub[depth]);
@@ -684,7 +684,7 @@ SEXP _mongo_bson_value(bson_iterator* _iter) {
     }
 
     case BSON_DATE:
-        ret = _createPOSIXct(bson_iterator_date(_iter) / 1000);
+        ret = _createPOSIXct((double)bson_iterator_date(_iter) / 1000);
         UNPROTECT(2);
         return ret;
 
@@ -853,10 +853,10 @@ SEXP _mongo_bson_to_list(bson* b) {
             }
             break;
         case BSON_DATE:
-            PROTECT(ret = allocVector(INTSXP, count));
+            PROTECT(ret = allocVector(REALSXP, count));
             while (bson_iterator_next(&iter)) {
                 SET_STRING_ELT(names, i, mkChar(bson_iterator_key(&iter)));
-                INTEGER(ret)[i++] = bson_iterator_date(&iter) / 1000;
+                REAL(ret)[i++] = (double)bson_iterator_date(&iter) / 1000;
             }
             SEXP cls;
             PROTECT(cls = allocVector(STRSXP, 2));
@@ -1562,7 +1562,7 @@ SEXP mongo_bson_buffer_append_time(SEXP buf, SEXP name, SEXP value) {
         else {
             if (names == R_NilValue) {
                 if (len == 1)
-                    success = (bson_append_date(_buf, _name, (int64_t)(asInteger(value)) * 1000) == BSON_OK);
+                    success = (bson_append_date(_buf, _name, REAL(value) * 1000) == BSON_OK);
                 else {
                     success = (bson_append_start_array(_buf, _name) == BSON_OK);
                     int i;

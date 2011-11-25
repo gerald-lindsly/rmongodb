@@ -577,7 +577,7 @@ classMenu <- function(cls) {
                 cursor <- mongo.find(mongo, tests, query)
                 name <- rep("X", count)
                 weight <- rep(1.0, count)
-                date <- rep(1L, count)
+                date <- rep(1.0, count)
                 i <- 1
                 while (mongo.cursor.next(cursor)) {
                     test <- mongo.cursor.value(cursor)

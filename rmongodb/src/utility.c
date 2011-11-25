@@ -58,10 +58,10 @@ mongo* _checkMongo(SEXP mongo_conn) {
 }
 
 
-SEXP _createPOSIXct(int t) {
+SEXP _createPOSIXct(double t) {
     SEXP ret, cls;
-    PROTECT(ret = allocVector(INTSXP, 1));
-    INTEGER(ret)[0] = t;
+    PROTECT(ret = allocVector(REALSXP, 1));
+    REAL(ret)[0] = t;
     PROTECT(cls = allocVector(STRSXP, 2));
     SET_STRING_ELT(cls, 0, mkChar("POSIXct"));
     SET_STRING_ELT(cls, 1, mkChar("POSIXt"));
