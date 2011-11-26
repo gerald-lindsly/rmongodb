@@ -1562,7 +1562,7 @@ SEXP mongo_bson_buffer_append_time(SEXP buf, SEXP name, SEXP value) {
         else {
             if (names == R_NilValue) {
                 if (len == 1)
-                    success = (bson_append_date(_buf, _name, REAL(value) * 1000) == BSON_OK);
+                    success = (bson_append_date(_buf, _name, REAL(value)[0] * 1000) == BSON_OK);
                 else {
                     success = (bson_append_start_array(_buf, _name) == BSON_OK);
                     int i;
