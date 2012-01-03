@@ -12,9 +12,9 @@ Provides an interface to MongoDB for R
 \tabular{ll}{
 Package: \tab rmongodb\cr
 Type: \tab Package\cr
-Version: \tab 1.0.1\cr
-Date: \tab 2011-11-05\cr
-License: \tab GPL (>=2)\cr
+Version: \tab 1.0.2\cr
+Date: \tab 2011-11-25\cr
+License: \tab Apache 2\cr
 LazyLoad: \tab yes\cr
 }
 Overview
