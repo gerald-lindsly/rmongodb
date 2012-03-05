@@ -20,19 +20,18 @@
 #include "api_mongo.h"
 #include "api_gridfs.h"
 #include "symbols.h"
-
-int sock_init();
+#include "net.h"
 
 static const R_CallMethodDef callMethods[] = {
-    { ".mongo.create", (DL_FUNC) mongo_create, 0 },
+    { ".mongo.create", (DL_FUNC) mmongo_create, 0 },
     { ".mongo.connect", (DL_FUNC) rmongo_connect, 1 },
-    { ".mongo.is.connected", (DL_FUNC) mongo_is_connected, 1 },
-    { ".mongo.get.err", (DL_FUNC) mongo_get_err, 1 },
+    { ".mongo.is.connected", (DL_FUNC) mmongo_is_connected, 1 },
+    { ".mongo.get.err", (DL_FUNC) mmongo_get_err, 1 },
     { ".mongo.reconnect", (DL_FUNC) rmongo_reconnect, 1 },
     { ".mongo.disconnect", (DL_FUNC) rmongo_disconnect, 1 },
     { ".mongo.destroy", (DL_FUNC) rmongo_destroy, 1 },
-    { ".mongo.get.socket", (DL_FUNC) mongo_get_socket, 1 },
-    { ".mongo.get.primary", (DL_FUNC) mongo_get_primary, 1 },
+    { ".mongo.get.socket", (DL_FUNC) mmongo_get_socket, 1 },
+    { ".mongo.get.primary", (DL_FUNC) mmongo_get_primary, 1 },
     { ".mongo.get.hosts", (DL_FUNC) mongo_get_hosts, 1 },
     { ".mongo.set.timeout", (DL_FUNC) mongo_set_timeout, 2 },
     { ".mongo.get.timeout", (DL_FUNC) mongo_get_timeout, 1 },
@@ -42,8 +41,8 @@ static const R_CallMethodDef callMethods[] = {
     { ".mongo.is.master", (DL_FUNC) mongo_is_master, 1 },
     { ".mongo.add.user", (DL_FUNC) mongo_add_user, 4 },
     { ".mongo.authenticate", (DL_FUNC) mongo_authenticate, 4 },
-    { ".mongo.get.server.err", (DL_FUNC) mongo_get_server_err, 1 },
-    { ".mongo.get.server.err.string", (DL_FUNC) mongo_get_server_err_string, 1 },
+    { ".mongo.get.server.err", (DL_FUNC) mmongo_get_server_err, 1 },
+    { ".mongo.get.server.err.string", (DL_FUNC) mmongo_get_server_err_string, 1 },
     { ".mongo.insert", (DL_FUNC) rmongo_insert, 3 },
     { ".mongo.insert.batch", (DL_FUNC) rmongo_insert_batch, 3 },
     { ".mongo.update", (DL_FUNC) rmongo_update, 5 },
@@ -169,7 +168,7 @@ static void _err_handler(const char* errmsg) {
 void attribute_visible R_init_rmongodb(DllInfo *dll) {
     R_registerRoutines(dll, NULL, callMethods, NULL, NULL);
 
-    sock_init();
+    mongo_sock_init();
     install_mongo_symbols();
     bson_malloc_func = _malloc;
     bson_realloc_func = _realloc;

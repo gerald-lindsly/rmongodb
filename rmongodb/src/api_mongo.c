@@ -34,7 +34,7 @@ SEXP rmongo_destroy(SEXP mongo_conn) {
 }
 
 
-SEXP mongo_create() {
+SEXP mmongo_create() {
     SEXP ret, ptr, cls;
     PROTECT(ret = allocVector(INTSXP, 1));
     INTEGER(ret)[0] = 0;
@@ -118,7 +118,7 @@ SEXP rmongo_disconnect(SEXP mongo_conn) {
 }
 
 
-SEXP mongo_get_socket(SEXP mongo_conn) {
+SEXP mmongo_get_socket(SEXP mongo_conn) {
     mongo* conn = _checkMongo(mongo_conn);
     SEXP ret;
     PROTECT(ret = allocVector(INTSXP, 1));
@@ -128,7 +128,7 @@ SEXP mongo_get_socket(SEXP mongo_conn) {
 }
 
 
-SEXP mongo_is_connected(SEXP mongo_conn) {
+SEXP mmongo_is_connected(SEXP mongo_conn) {
     mongo* conn = _checkMongo(mongo_conn);
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
@@ -138,7 +138,7 @@ SEXP mongo_is_connected(SEXP mongo_conn) {
 }
 
 
-SEXP mongo_get_err(SEXP mongo_conn) {
+SEXP mmongo_get_err(SEXP mongo_conn) {
     mongo* conn = _checkMongo(mongo_conn);
     SEXP ret;
     PROTECT(ret = allocVector(INTSXP, 1));
@@ -148,7 +148,7 @@ SEXP mongo_get_err(SEXP mongo_conn) {
 }
 
 
-SEXP mongo_get_server_err(SEXP mongo_conn) {
+SEXP mmongo_get_server_err(SEXP mongo_conn) {
     mongo* conn = _checkMongo(mongo_conn);
     SEXP ret;
     PROTECT(ret = allocVector(INTSXP, 1));
@@ -158,7 +158,7 @@ SEXP mongo_get_server_err(SEXP mongo_conn) {
 }
 
 
-SEXP mongo_get_server_err_string(SEXP mongo_conn) {
+SEXP mmongo_get_server_err_string(SEXP mongo_conn) {
     mongo* conn = _checkMongo(mongo_conn);
     SEXP ret;
     PROTECT(ret = allocVector(STRSXP, 1));
@@ -532,18 +532,18 @@ SEXP mongo_authenticate(SEXP mongo_conn, SEXP user, SEXP pass, SEXP db) {
 }
 
 
-const char* _get_host_port(mongo_host_port* hp) {
+const char* get_host_port_(mongo_host_port* hp) {
     static char _hp[sizeof(hp->host)+12];
     sprintf(_hp, "%s:%d", hp->host, hp->port);
     return _hp;
 }
 
 
-SEXP mongo_get_primary(SEXP mongo_conn) {
+SEXP mmongo_get_primary(SEXP mongo_conn) {
     mongo* conn = _checkMongo(mongo_conn);
     SEXP ret;
     PROTECT(ret = allocVector(STRSXP, 1));
-    SET_STRING_ELT(ret, 0, mkChar(_get_host_port(conn->primary)));
+    SET_STRING_ELT(ret, 0, mkChar(get_host_port_(conn->primary)));
     UNPROTECT(1);
     return ret;
 }
@@ -561,7 +561,7 @@ SEXP mongo_get_hosts(SEXP mongo_conn) {
     PROTECT(ret = allocVector(STRSXP, count));
     int i = 0;
     for (hp = r->hosts; hp; hp = hp->next, i++)
-        SET_STRING_ELT(ret, i, mkChar(_get_host_port(hp)));
+        SET_STRING_ELT(ret, i, mkChar(get_host_port_(hp)));
     UNPROTECT(1);
     return ret;
 }

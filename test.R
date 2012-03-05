@@ -199,7 +199,7 @@ mongo.simple.command(mongo, db, "badcommand", 0L)
 print(mongo.get.err(mongo))
 
 print("insert")
-print(mongo.insert(mongo, ns, b))
+#print(mongo.insert(mongo, ns, b))  #
 
 buf <- mongo.bson.buffer.create()
 mongo.bson.buffer.append(buf, "name", "Dwight")
@@ -335,17 +335,17 @@ print(mongo.bson.to.list(b))
 
 gfs <- mongo.gridfs.create(mongo, "grid")
 if (!mongo.gridfs.store.file(gfs, "test.R"))
-    error("unable to store test.R")
+    stop("unable to store test.R")
 if (!mongo.gridfs.store.file(gfs, "rmongodb.pdf"))
-    error("unable to store rmongodb.pdf")
+    stop("unable to store rmongodb.pdf")
 if (!mongo.gridfs.store.file(gfs, "check.bat"))
-    error("unable to store check.bat")
+    stop("unable to store check.bat")
 if (!mongo.gridfs.store.file(gfs, "test.bat"))
-    error("unable to store test.bat")
+    stop("unable to store test.bat")
 
 mongo.gridfs.remove.file(gfs, "test.bat")
 if (!is.null(mongo.gridfs.find(gfs, "test.bat")))
-    error("mongo.gridfs.remove.file didn't work.")
+    stop("mongo.gridfs.remove.file didn't work.")
 
 gridfile <- mongo.gridfs.find(gfs, "check.bat")
 print(mongo.gridfile.get.descriptor(gridfile))

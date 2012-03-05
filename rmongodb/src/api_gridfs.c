@@ -303,7 +303,8 @@ SEXP mongo_gridfile_get_descriptor(SEXP gfile) {
 
 SEXP mongo_gridfile_get_metadata(SEXP gfile) {
     gridfile* _gfile = _checkGridfile(gfile);
-    bson meta = gridfile_get_metadata(_gfile);
+    bson meta;
+    gridfile_get_metadata(_gfile, &meta);
     if (bson_size(&meta) <= 5)
         return R_NilValue;
     SEXP ret = _mongo_bson_create(&meta);
@@ -315,7 +316,8 @@ SEXP mongo_gridfile_get_metadata(SEXP gfile) {
 SEXP mongo_gridfile_get_chunk(SEXP gfile, SEXP i) {
     gridfile* _gfile = _checkGridfile(gfile);
     int _i = asInteger(i);
-    bson chunk = gridfile_get_chunk(_gfile, _i);
+    bson chunk;
+    gridfile_get_chunk(_gfile, _i, &chunk);
     if (bson_size(&chunk) <= 5)
         return R_NilValue;
     SEXP ret = _mongo_bson_create(&chunk);

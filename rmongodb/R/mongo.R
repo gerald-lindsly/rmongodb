@@ -182,3 +182,16 @@ mongo.get.databases <- function(mongo)
 mongo.get.database.collections <- function(mongo, db)
     .Call(".mongo.get.database.collections", mongo, db)
 
+mongo.distinct <- function(mongo, ns, key) {
+    pos <- regexpr('\\.', ns)
+    if (pos == 0) {
+        print("mongo.distict: No '.' in namespace")
+        return(NULL)
+    }
+    db <- substr(ns, 1, pos-1)
+    collection <- substr(ns, pos+1, nchar(ns))
+    b <- mongo.command(mongo, db, list(distinct=collection, key=key))
+    if (!is.null(b))
+        b <- mongo.bson.value(b, "values")
+    b
+}

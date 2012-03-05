@@ -14,21 +14,21 @@
 */
 #include <Rinternals.h>
 
-SEXP mongo_create();
+SEXP mmongo_create();
 SEXP rmongo_connect(SEXP mongo_conn);
 SEXP rmongo_reconnect(SEXP mongo_conn);
 SEXP rmongo_disconnect(SEXP mongo_conn);
 SEXP rmongo_destroy(SEXP mongo_conn);
-SEXP mongo_is_connected(SEXP mongo_conn);
-SEXP mongo_get_socket(SEXP mongo_conn);
-SEXP mongo_get_primary(SEXP mongo_conn);
+SEXP mmongo_is_connected(SEXP mongo_conn);
+SEXP mmongo_get_socket(SEXP mongo_conn);
+SEXP mmongo_get_primary(SEXP mongo_conn);
 SEXP mongo_get_hosts(SEXP mongo_conn);
-SEXP mongo_get_err(SEXP mongo_conn);
+SEXP mmongo_get_err(SEXP mongo_conn);
 SEXP mongo_set_timeout(SEXP mongo_conn, SEXP timeout);
 SEXP mongo_get_timeout(SEXP mongo_conn);
 
-SEXP mongo_get_server_err(SEXP mongo_conn);
-SEXP mongo_get_server_err_string(SEXP mongo_conn);
+SEXP mmongo_get_server_err(SEXP mongo_conn);
+SEXP mmongo_get_server_err_string(SEXP mongo_conn);
 
 SEXP rmongo_insert(SEXP mongo_conn, SEXP ns, SEXP b);
 SEXP rmongo_insert_batch(SEXP mongo_conn, SEXP ns, SEXP b);
