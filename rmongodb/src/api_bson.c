@@ -1,11 +1,11 @@
 /* Copyright (C) 2008-2011 10gen Inc.
- 
+
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
- 
+
       http://www.apache.org/licenses/LICENSE-2.0
- 
+
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -552,7 +552,7 @@ GotEl:  {
     SEXP ret;
     switch (common_type) {
     case BSON_INT:     ret = allocVector(INTSXP,  len); break;
-    case BSON_DATE: ;   
+    case BSON_DATE: ;
     case BSON_DOUBLE:  ret = allocVector(REALSXP, len); break;
     case BSON_STRING:  ret = allocVector(STRSXP,  len); break;
     case BSON_BOOL:    ret = allocVector(LGLSXP,  len); break;
@@ -1552,7 +1552,8 @@ SEXP mongo_bson_buffer_append_time(SEXP buf, SEXP name, SEXP value) {
                 depth--;
             }
         }
-    } else {
+    }
+    else {
         if (t == INTSXP) {
             if (names == R_NilValue) {
                 if (len == 1)
