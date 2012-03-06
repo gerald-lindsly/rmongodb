@@ -10,7 +10,7 @@ Output is tabbed (indented to show the nesting level of subobjects and arrays).
 This version is an alias of mongo.bson.print() so that print() will properly handle the mongo.bson class.
 }
 \usage{
-print.mongo.bson(x, ...)
+\method{print}{mongo.bson}(x, ...)
 }
 \arguments{
 \item{x}{(\link{mongo.bson} The object to display.}

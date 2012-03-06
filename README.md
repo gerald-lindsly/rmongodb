@@ -1,6 +1,8 @@
 This is an R extension supporting access to MongoDB.
 
-After cloning the repo, drop [mongo-c-driver](http://github.com/mongodb/mongo-c-driver)'s src directory into rmongodb/rmongodb/src
+After cloning the repo, 
+drop [mongo-c-driver](http://github.com/mongodb/mongo-c-driver)'s src directory 
+into rmongodb/rmongodb/src.  Alternately, unpack mongo-c-driver-src.zip into rmongodb/
 
 The driver is installed into R with:
 

@@ -12,7 +12,7 @@ allows it to be called simply by \code{as.character(oid)}.
 See \url{http://www.mongodb.org/display/DOCS/Object+IDs}
 }
 \usage{
-as.character.mongo.oid(x, ...)
+\method{as.character}{mongo.oid}(x, ...)
 }
 \arguments{
 \item{x}{(\link{mongo.oid}) The OID to be converted.}

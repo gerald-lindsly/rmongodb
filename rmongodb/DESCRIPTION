@@ -6,5 +6,5 @@ Date: 2012-3-5
 Author: Gerald Lindsly & 10gen, Inc. (mongo-c-driver)
 Maintainer: Gerald Lindsly <gerald.lindsly@gmail.com>
 Description: Provides an interface to MongoDB for R
-License: file LICENSE
+License: Apache License 2.0
 LazyLoad: yes

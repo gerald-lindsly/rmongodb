@@ -14,7 +14,7 @@ Package: \tab rmongodb\cr
 Type: \tab Package\cr
 Version: \tab 1.0.3\cr
 Date: \tab 2012-3-5\cr
-License: \tab Apache 2\cr
+License: \tab Apache License 2.0\cr
 LazyLoad: \tab yes\cr
 }
 Overview

@@ -174,7 +174,7 @@ void attribute_visible R_init_rmongodb(DllInfo *dll) {
     bson_realloc_func = _realloc;
     bson_free = _free;
     bson_printf = (bson_printf_func)Rprintf;
-    bson_errprintf = (bson_printf_func)Rprintf;
+    bson_errprintf = (bson_printf_func)REprintf;
     set_bson_err_handler(_err_handler);
 
     Rprintf("rmongodb package (mongo-r-driver) loaded\n"

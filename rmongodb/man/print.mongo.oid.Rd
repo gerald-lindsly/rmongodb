@@ -10,7 +10,7 @@ Output is tabbed (indented to show the nesting level of subobjects and arrays).
 This version is an alias of \code{\link{mongo.oid.print}()} so that \code{print()} will properly handle the mongo.oid class.
 }
 \usage{
-print.mongo.oid(x, ...)
+\method{print}{mongo.oid}(x, ...)
 }
 \arguments{
 \item{x}{\link{mongo.oid} The object to display.}
