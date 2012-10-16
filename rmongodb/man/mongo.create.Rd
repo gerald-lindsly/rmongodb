@@ -16,8 +16,8 @@ mongo.create(host="127.0.0.1", name="",
              username="", password="", db="admin", timeout=0L)
 }
 \arguments{
-\item{host}{(string vector) A list of hosts/ports to which to connect.
-    If a port is not given, 27017 is used.
+\item{host}{(string vector) A list of hosts/ports to which to connect. Currently, only IP addresses can be used, since name resolution is not supported yet.
+    If a port is not given, 27017 is used. Seperate ports from the IP address by colon, like "120.0.0.1:12345".
 }
 \item{name}{(string) The name of the replset to which to connect. If name == "" (the default),
     the hosts are tried one by one until a connection is made.  Otherwise, name must be the name of the replset 
