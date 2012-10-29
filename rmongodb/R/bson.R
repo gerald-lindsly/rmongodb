@@ -75,6 +75,13 @@ mongo.bson.int       <- 16L
 mongo.bson.timestamp <- 17L
 mongo.bson.long      <- 18L
 
+mongo.binary.binary  <- 0L 
+mongo.binary.function <- 1L 
+mongo.binary.old     <- 2L 
+mongo.binary.uuid    <- 3L 
+mongo.binary.md5     <- 5L
+mongo.binary.user    <- 128L
+
 mongo.bson.iterator.value <- function(iter)
     .Call(".mongo.bson.iterator.value", iter)
 

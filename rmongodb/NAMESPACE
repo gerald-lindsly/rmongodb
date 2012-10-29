@@ -80,6 +80,12 @@ export(mongo.bson.eoo,   mongo.bson.double,    mongo.bson.string,    mongo.bson.
        mongo.bson.bool,  mongo.bson.date,      mongo.bson.null,      mongo.bson.regex,
        mongo.bson.dbref, mongo.bson.code,      mongo.bson.symbol,    mongo.bson.code.w.scope,
        mongo.bson.int,   mongo.bson.timestamp, mongo.bson.long)
+export(mongo.binary.binary,     
+       mongo.binary.function,
+       mongo.binary.old,
+       mongo.binary.uuid,
+       mongo.binary.md5,
+       mongo.binary.user)
 
 export(mongo.oid.create)
 export(mongo.oid.time)
