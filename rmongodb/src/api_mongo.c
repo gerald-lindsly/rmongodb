@@ -245,7 +245,6 @@ SEXP rmongo_find_one(SEXP mongo_conn, SEXP ns, SEXP query, SEXP fields) {
     bson* _fields = _checkBSON(fields);
     bson out;
     if (mongo_find_one(conn, _ns, _query, _fields, &out) != MONGO_OK) {
-        bson_destroy(&out);
         return R_NilValue;
     }
     SEXP ret = _mongo_bson_create(&out);
