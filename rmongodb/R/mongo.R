@@ -185,7 +185,7 @@ mongo.get.database.collections <- function(mongo, db)
 mongo.distinct <- function(mongo, ns, key, query=mongo.bson.empty()) {
     pos <- regexpr('\\.', ns)
     if (pos == 0) {
-        print("mongo.distict: No '.' in namespace")
+        print("mongo.distinct: No '.' in namespace")
         return(NULL)
     }
     db <- substr(ns, 1, pos-1)
