@@ -20,7 +20,7 @@
 #include "api_mongo.h"
 #include "api_gridfs.h"
 #include "symbols.h"
-#include "net.h"
+#include "env.h"
 
 static const R_CallMethodDef callMethods[] = {
     { ".mongo.create", (DL_FUNC) mmongo_create, 0 },
@@ -168,11 +168,11 @@ static void _err_handler(const char* errmsg) {
 void attribute_visible R_init_rmongodb(DllInfo *dll) {
     R_registerRoutines(dll, NULL, callMethods, NULL, NULL);
 
-    mongo_sock_init();
+    mongo_env_sock_init();
     install_mongo_symbols();
     bson_malloc_func = _malloc;
     bson_realloc_func = _realloc;
-    bson_free = _free;
+    bson_free_func = _free;
     bson_printf = (bson_printf_func)Rprintf;
     bson_errprintf = (bson_printf_func)REprintf;
     set_bson_err_handler(_err_handler);

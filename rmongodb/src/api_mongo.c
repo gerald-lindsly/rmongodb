@@ -13,7 +13,7 @@
    limitations under the License.
 */
 #include <R.h>
-#include "net.h"
+#include "env.h"
 #include "api_mongo.h"
 #include "api_bson.h"
 #include "symbols.h"
@@ -63,7 +63,7 @@ SEXP rmongo_connect(SEXP mongo_conn) {
     if (name[0] == '\0') {
         for (i = 0; i < len; i++) {
             mongo_parse_host(CHAR(STRING_ELT(host, i)), &hp);
-            if (mongo_connect(conn, hp.host, hp.port) == MONGO_OK)
+            if (mongo_client(conn, hp.host, hp.port) == MONGO_OK)
                 break;
         }
         if (i == len) {
@@ -174,7 +174,7 @@ SEXP rmongo_insert(SEXP mongo_conn, SEXP ns, SEXP b) {
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
     bson* _b = _checkBSON(b);
-    LOGICAL(ret)[0] = (mongo_insert(conn, _ns, _b) == MONGO_OK);
+    LOGICAL(ret)[0] = (mongo_insert(conn, _ns, _b, 0) == MONGO_OK);
     UNPROTECT(1);
     return ret;
 }
@@ -199,7 +199,7 @@ SEXP rmongo_insert_batch(SEXP mongo_conn, SEXP ns, SEXP b) {
             blist[i] = _checkBSON(_b);
     }
     if (success)
-        LOGICAL(ret)[0] = (mongo_insert_batch(conn, _ns, blist, len) == MONGO_OK);
+        LOGICAL(ret)[0] = (mongo_insert_batch(conn, _ns, (const bson**)blist, len, 0, 0) == MONGO_OK);
     Free(blist);
     if (!success)
         error("Expected list of mongo.bson class objects");
@@ -220,7 +220,7 @@ SEXP rmongo_update(SEXP mongo_conn, SEXP ns, SEXP cond, SEXP op, SEXP flags) {
         _flags |= INTEGER(flags)[i];
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
-    LOGICAL(ret)[0] = (mongo_update(conn, _ns, _cond, _op, _flags) == MONGO_OK);
+    LOGICAL(ret)[0] = (mongo_update(conn, _ns, _cond, _op, _flags, 0) == MONGO_OK);
     UNPROTECT(1);
     return ret;
 }
@@ -232,7 +232,7 @@ SEXP rmongo_remove(SEXP mongo_conn, SEXP ns, SEXP cond) {
     bson* _cond = _checkBSON(cond);
     SEXP ret;
     PROTECT(ret = allocVector(LGLSXP, 1));
-    LOGICAL(ret)[0] = (mongo_remove(conn, _ns, _cond) == MONGO_OK);
+    LOGICAL(ret)[0] = (mongo_remove(conn, _ns, _cond, 0) == MONGO_OK);
     UNPROTECT(1);
     return ret;
 }
@@ -396,7 +396,6 @@ SEXP mongo_command(SEXP mongo_conn, SEXP db, SEXP command) {
     bson* _command = _checkBSON(command);
     bson out;
     if (mongo_run_command(conn, _db, _command, &out) != MONGO_OK) {
-        bson_destroy(&out);
         return R_NilValue;
     }
     SEXP ret = _mongo_bson_create(&out);
@@ -550,7 +549,7 @@ SEXP mmongo_get_primary(SEXP mongo_conn) {
 
 SEXP mongo_get_hosts(SEXP mongo_conn) {
     mongo* conn = _checkMongo(mongo_conn);
-    mongo_replset* r = conn->replset;
+    mongo_replica_set* r = conn->replica_set;
     if (!r) return R_NilValue;
     int count = 0;
     mongo_host_port* hp;
