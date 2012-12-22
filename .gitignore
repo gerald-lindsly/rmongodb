@@ -2,6 +2,7 @@ rmongodb/Read-and-delete-me
 rmongodb/src-i386
 rmongodb/src-x64
 ipch/
+Debug/
 rmongodb.Rcheck/
 rmongodb.sln
 rmongodb.vcxproj
@@ -21,8 +22,6 @@ rmongodb/src/md5.h
 rmongodb/src/md5.c
 rmongodb/src/mongo.h
 rmongodb/src/mongo.c
-rmongodb/src/net.h
-rmongodb/src/net.c
+rmongodb/src/env.h
+rmongodb/src/env.c
 rmongodb/src/numbers.c
-rmongodb/src/platform.h
-rmongodb/src/platform/
