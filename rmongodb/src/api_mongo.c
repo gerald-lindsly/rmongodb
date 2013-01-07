@@ -75,12 +75,12 @@ SEXP rmongo_connect(SEXP mongo_conn) {
         }
     }
     else {
-        mongo_replset_init(conn, name);
+        mongo_replica_set_init(conn, name);
         for (i = 0; i < len; i++) {
             mongo_parse_host(CHAR(STRING_ELT(host, i)), &hp);
-            mongo_replset_add_seed(conn, hp.host, hp.port);
+            mongo_replica_set_add_seed(conn, hp.host, hp.port);
         }
-        if (mongo_replset_connect(conn) != MONGO_OK)
+        if (mongo_replica_set_client(conn) != MONGO_OK)
             Rprintf("Unable to connect to replset\n");
     }
 
