@@ -15,9 +15,11 @@ mongo.get.primary(mongo)
 String host & port in the format "\%s:\%d".
 }
 \examples{
+\dontrun{
 mongo <- mongo.create(c("127.0.0.1", "192.168.0.3"))
 if (mongo.is.connected(mongo)) {
     print(mongo.get.primary(mongo))
+}
 }
 }
 \seealso{

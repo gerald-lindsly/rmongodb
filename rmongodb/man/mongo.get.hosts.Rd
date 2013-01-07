@@ -16,10 +16,13 @@ NULL if a replica set was not connected to; otherwise, a
 list of host & port strings in the format "%s:%d".
 }
 \examples{
+\dontrun{
 mongo <- mongo.create(c("127.0.0.1", "192.168.0.3"), name="Inventory")
 if (mongo.is.connected(mongo))
     print(mongo.get.hosts(mongo))
 }
+}
+
 \seealso{
 \code{\link{mongo.create}},\cr
 \link{mongo}

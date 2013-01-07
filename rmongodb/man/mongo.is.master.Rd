@@ -17,10 +17,12 @@ mongo.is.master(mongo)
 (logical) TRUE if the server reports that it is a master; otherwise, FALSE.
 }
 \examples{
+\dontrun{
 mongo <- mongo.create(c("127.0.0.1", "192.168.0.3"), name="Accounts")
 if (mongo.is.connected(mongo)) {
     print("isMaster")
     print(if (mongo.is.master(mongo)) "Yes" else "No")
+}
 }
 }
 \seealso{
